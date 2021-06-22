@@ -158,7 +158,7 @@ kubectl apply -f file.pod.yml
 This way we can create a resource and also update an existing resource
 
 ```bash
-# Use --save-config when you waant to use
+# Use --save-config when you want to use
 # kubectl apply in the future
 kubectl create -f file.pod.yml --save-config
 ```
@@ -185,7 +185,7 @@ metadata:
 * --save-config causes the resource's configuration settings to be saved in the annotations
 * Having this allows in-place changes to be made to a Pod in the future using __kubectl apply__
 
-In place/non-disruotive changes  can also be made to a Pod using _kubectl edit_ or _kubectl patch_.
+In place/non-disruotive changes can also be made to a Pod using _kubectl edit_ or _kubectl patch_.
 
 * Deleting a Pod
     - To delete a Pod use kubectl
@@ -202,97 +202,8 @@ kubectl delete -f file.pod.yml
 
 ## kubectl and YAML
 
-```bash
-Jaimes-MacBook-Pro:01_creating_pods jaimesalaszancada$ kubectl create -f nginx.pod.yml --save-config
-pod/my-nginx created
-Jaimes-MacBook-Pro:01_creating_pods jaimesalaszancada$ kubectl describe pod my-nginx
-Name:         my-nginx
-Namespace:    default
-Priority:     0
-Node:         minikube/192.168.64.3
-Start Time:   Sat, 18 Apr 2020 21:52:36 +0200
-Labels:       app=nginx
-              rel=stable
-Annotations:  Status:  Running
-IP:           172.17.0.4
-IPs:
-  IP:  172.17.0.4
-Containers:
-  my-nginx:
-    Container ID:   docker://56660ab37456fe1c8c7b6e0bbc24e3a9b8db4f74fa62a47e498a759902c0acd3
-    Image:          nginx:alpine
-    Image ID:       docker-pullable://nginx@sha256:b942ebabfeff14ec6a7cb7a4826fe1d2e8dd8b7db5e651b81e4bc9cd6c6e91dc
-    Port:           80/TCP
-    Host Port:      0/TCP
-    State:          Running
-      Started:      Sat, 18 Apr 2020 21:52:36 +0200
-    Ready:          True
-    Restart Count:  0
-    Limits:
-      cpu:     500m
-      memory:  128Mi
-    Requests:
-      cpu:        500m
-      memory:     128Mi
-    Environment:  <none>
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-wx46j (ro)
-Conditions:
-  Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
-Volumes:
-  default-token-wx46j:
-    Type:        Secret (a volume populated by a Secret)
-    SecretName:  default-token-wx46j
-    Optional:    false
-QoS Class:       Guaranteed
-Node-Selectors:  <none>
-Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
-                 node.kubernetes.io/unreachable:NoExecute for 300s
-Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  42s   default-scheduler  Successfully assigned default/my-nginx to minikube
-  Normal  Pulled     42s   kubelet, minikube  Container image "nginx:alpine" already present on machine
-  Normal  Created    42s   kubelet, minikube  Created container my-nginx
-  Normal  Started    42s   kubelet, minikube  Started container my-nginx
-```
+[kubectl and YAML - DEMO](02-kubectl-and-yaml-demo/readme.md)
 
-_describe_ is great to get information about the pod and the image.
-
-```bash
-$ kubectl get pod my-nginx -o yaml
-```
-The _--save-config_ added anotations, if we add modifications it knows the starting point.
-
-```bash
-$ kubectl apply -f nginx.pod.yml 
-pod/my-nginx unchanged
-```
-
-_apply_ we can use to create or update, for exmple changing the nginx image. You can't change the ports
-
-```bash
-$ kubectl exec my-nginx -it sh
-kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
-/ # ls
-bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
-```
-
-```bash
-$ kubectl edit -f nginx.pod.yml 
-Edit cancelled, no changes made.
-```
-
-_edit_ pops up and editor (vim)
-
-```bash
-$ kubectl delete -f nginx.pod.yml 
-pod "my-nginx" deleted
-```
 
 ## Pod Health
 
@@ -341,7 +252,8 @@ spec:
 2. Check /index.html on port 80
 3. Wait 15 seconds
 4. Timeout after 2 seconds
-5. Allow 1 failure before failing the Pod
+5. Specifies that the kubelet should perform a liveness probe every 5 seconds.
+6. Allow 1 failure before failing the Pod
 
 We can see another example
 
@@ -369,7 +281,7 @@ spec:
       periodSeconds: 5
 ```
 
-1. Define args for conatainer
+1. Define args for container
 2. Define liveness probe
 3. Define action/command to execute
 
@@ -400,67 +312,7 @@ spec:
 > Readiness Probe: When should a container start receiving traffic?
 > Liveness Probe: When should a container restart?
 
-## Pod Health in Action
+## Pod Health Demo
 
-We can start our pod
+[Pod Health - DEMO](03-pod-health-demo/readme.md)
 
-```bash
-Jaimes-MacBook-Pro:01_creating_pods jaimesalaszancada$ kubectl apply -f nginx-readiness-probe.pod.yml 
-pod/my-nginx created
-```
-
-If we use _describe_ we can find out, that everything is working as we expect.
-
-```bash
-$ kubectl describe pod my-nginx
-```
-
-Now we can interact with the pod and remove _index.html_
-
-```bash
-$ kubectl exec my-nginx -it sh
-```
-
-Inside the container we can move to
-
-```bash
-/usr/share/nginx/html # ls
-50x.html    index.html
-/usr/share/nginx/html # rm -rf index.html
-/usr/share/nginx/html # command terminated with exit code 137
-```
-
-If we run __kubectl describe pod my-nginx__
-
-```
-Events:
-  Type     Reason     Age                From               Message
-  ----     ------     ----               ----               -------
-  Normal   Scheduled  18m                default-scheduler  Successfully assigned default/my-nginx to minikube
-  Normal   Pulled     37s (x2 over 18m)  kubelet, minikube  Container image "nginx:alpine" already present on machine
-  Normal   Created    37s (x2 over 18m)  kubelet, minikube  Created container my-nginx
-  Warning  Unhealthy  37s                kubelet, minikube  Liveness probe failed: HTTP probe failed with statuscode: 404
-  Normal   Killing    37s                kubelet, minikube  Container my-nginx failed liveness probe, will be restarted
-  Normal   Started    36s (x2 over 18m)  kubelet, minikube  Started container my-nginx
-```
-
-Let's see another example
-
-```bash
-$ kubectl apply -f busybox-liveness-probe.pod.yml
-```
-
-If we wait for a while we will get 
-
-```bash
-Events:
-  Type     Reason     Age                From               Message
-  ----     ------     ----               ----               -------
-  Normal   Scheduled  84s                default-scheduler  Successfully assigned default/liveness to minikube
-  Normal   Pulling    33s (x2 over 82s)  kubelet, minikube  Pulling image "k8s.gcr.io/busybox"
-  Normal   Pulled     32s (x2 over 80s)  kubelet, minikube  Successfully pulled image "k8s.gcr.io/busybox"
-  Normal   Created    32s (x2 over 80s)  kubelet, minikube  Created container liveness
-  Normal   Started    31s (x2 over 79s)  kubelet, minikube  Started container liveness
-  Warning  Unhealthy  13s (x6 over 73s)  kubelet, minikube  Liveness probe failed: cat: can't open '/tmp/healthy;': No such file or directory
-  Normal   Killing    13s (x2 over 63s)  kubelet, minikube  Container liveness failed liveness probe, will be restarted
-```
