@@ -20,7 +20,7 @@ __Answer:__ Volumes (although other data storage options exist)
 * A Volume references a storage location
 * Must have a unique name
 * Attached to a Pod and may or may not be tied to the Pod's lifetime (depending on the Volume type)
-* A Volume Mount references a Volume by name and defines a mountPath
+* A Volume Mount references a Volume by name and defines a `mountPath`
 
 * Volumes Type Examples
     - __emptyDir__ - Empty directory for storing "transiet" data (shares a Pod's lifetime) useful for sharing files between containers running in a Pod.
