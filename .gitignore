@@ -1,1 +1,7 @@
+.devcontainer/
+
+bin
+obj
+
+
 todo
