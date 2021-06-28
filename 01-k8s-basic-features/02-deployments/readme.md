@@ -217,8 +217,3 @@ Update a deployment by changing the YAML and applying changes to the cluster wit
 # Apply changes made in a YAML file
 kubectl apply -f file.deployment.yml
 ```
-
-## Zero Downtime Deployments Demo
-
-> Go back after services to create a complete demo
-> Reference: https://app.pluralsight.com/course-player?clipId=32f4f873-30d1-4a70-9cf0-510a899d2223
