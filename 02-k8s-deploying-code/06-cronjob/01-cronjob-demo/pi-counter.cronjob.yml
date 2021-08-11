@@ -1,0 +1,16 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pi-counter
+spec:
+  concurrencyPolicy: Allow
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: pi-counter
+              image: alpine
+              command: ["sh", "-c", "echo 'scale=1000; 4*a(1)' | bc -l;sleep 2;"]
