@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+    role: $TARGET_ROLE
+    env: prod
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+    role: $TARGET_ROLE
+  ports:
+  - port: 80
+    targetPort: 80
