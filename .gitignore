@@ -1,7 +1,13 @@
+# vscode editor
 .devcontainer/
 
+# dotnet
 bin
 obj
 
+# nodejs
+dist/ 
+node_modules/
 
+# helpers
 todo
