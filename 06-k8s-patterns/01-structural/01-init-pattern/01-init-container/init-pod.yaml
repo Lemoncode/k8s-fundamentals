@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lc-init
+  labels:
+    app: initializer
+spec:
+  initContainers:
+    - name: init-ctr
+      image: busybox
+      command: [
+        'sh',
+        '-c',
+        'until nslookup lemoncode-svc; do echo waiting for lemoncode-svc service; sleep 1; done; echo Ready'
+      ]
+  containers:
+  - name: web-ctr
+    image: jaimesalas/web-app
+    resources: {}
+    ports:
+      - containerPort: 8080
+
