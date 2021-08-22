@@ -2,4 +2,7 @@
 minikube-linux-amd64
 kubectl
 
+# keys
+*.pem
+
 todo
