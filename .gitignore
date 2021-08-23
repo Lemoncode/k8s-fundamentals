@@ -12,3 +12,5 @@ todo
 .vagrant
 
 external-resources/
+
+configs/
