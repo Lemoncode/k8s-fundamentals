@@ -1,1 +1,16 @@
+# binaries
+minikube-linux-amd64
+kubectl
+*.deb
+
+# keys
+*.pem
+
+# helpers
+private.readme.md
 todo
+.vagrant
+
+external-resources/
+
+configs/
