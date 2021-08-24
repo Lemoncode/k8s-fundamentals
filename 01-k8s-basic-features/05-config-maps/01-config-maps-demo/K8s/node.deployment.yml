@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-configmap
+spec:
+  selector:
+    matchLabels:
+      app: node-configmap
+  template:
+    metadata:
+      labels:
+        app: node-configmap
+    spec:
+
+      volumes:
+        - name: app-config-vol
+          configMap:
+            name: app-settings
+
+      containers:
+      - name: node-configmap
+        image: jaimesalas/node-configmap
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+        - containerPort: 9000
+        
+        volumeMounts:
+          - mountPath: /etc/config
+            name: app-config-vol
+
+        envFrom:
+          - configMapRef:
+              name: app-settings
+

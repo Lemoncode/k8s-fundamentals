@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-nginx
+  labels:
+    name: my-nginx
+    rel: stable
+spec:
+  containers:
+  - name: my-nginx
+    image: nginx:alpine
+    ports:
+      - containerPort: 80
+    livenessProbe:
+      httpGet:
+        path: /index.html
+        port: 80
+      initialDelaySeconds: 15
+      timeoutSeconds: 2
+      periodSeconds: 5
+      failureThreshold: 1
+    readinessProbe:
+      httpGet:
+        path: /index.html
+        port: 80
+      initialDelaySeconds: 3
+      periodSeconds: 5
+      failureThreshold: 1
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"

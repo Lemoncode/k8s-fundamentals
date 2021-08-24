@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi-counter
+spec:
+  completions: 4
+  parallelism: 2
+  activeDeadlineSeconds: 240
+  template:
+    metadata:
+      name: pi-counter
+    spec:
+      containers:
+      - name: pi-counter
+        image: alpine
+        command: ["sh", "-c", "echo 'scale=1000; 4*a(1)' | bc -l;sleep 2;"]
+      restartPolicy: Never
+

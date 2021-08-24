@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-$TARGET_ROLE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx 
+      role: $TARGET_ROLE
+  template:
+    metadata:
+      labels:
+        app: nginx
+        role: $TARGET_ROLE
+    spec:
+      containers:
+      - name: nginx-$TARGET_ROLE
+        image: $IMAGE_VERSION
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: / 
+            port: 80
+        livenessProbe:
+          httpGet:
+            path: / 
+            port: 80
