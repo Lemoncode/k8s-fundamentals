@@ -20,6 +20,8 @@ kubectl
 
 # keys
 *.pem
+*.crt
+*.key
 
 # helpers
 private.readme.md
