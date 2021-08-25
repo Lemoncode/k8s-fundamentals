@@ -24,7 +24,7 @@ apiVersion: storage.k8s.io/v1
 metadata:
   name: host-first-consumer
 provisioner: k8s.io/minikube-hostpath
-volumeBindingMode: WaitForFirstConsumer
+volumeBindingMode: Immediate
 ```
 
 In this case we're working with `minikube`, but if we would be working with any cloud provider out there (or on-premises), the `StorageClass` will look as follows:
@@ -141,22 +141,26 @@ spec:
 
 ```
 
-1. This is the claim that is using the class that we have created `host-fast`
-
-Remind that we have created with `WaitForFirstConsumer`, so just by adding a PVC, is not going to be created.
+1. This is the claim that is using the class that we have created `host-first-consumer`. Remind that we have created with `WaitForFirstConsumer`, so just by adding a PVC, is not going to be created.
 
 2. The POD declares a volume that will mounted by the containers, is here when the volume is created.
 
 
 > TODO: Add diagram
 
+If we have a look into the current volumes, we will found out that there's no one created:
 
-Lets deploy this
+```bash
+kubectl get pv
+No resources found
+```
+
+Let's deploy this
 
 > NOTE: If we're using `minikube` and we want to use the LB, we have to run `minikube tunnel` in another terminal
 
 ```bash
-$ kubectl apply -f ./ps-scpod.yml 
+$ kubectl apply -f ./lc-scpod.yml 
 persistentvolumeclaim/pvc-htmlvol created
 pod/sc-pod created
 service/lb created
@@ -165,9 +169,9 @@ service/lb created
 If we look for the volume, now is created:
 
 ```bash
- kubectl get pv
-NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
-pvc-dbbb7ef6-17b9-4157-bf2c-b2b665ed17bc   10Mi       RWO            Delete           Bound    default/pvc-htmlvol   host-fast               6m2s
+$ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS          REASON   AGE
+pvc-a35483a0-f92b-44a4-8b35-e23789f4ea73   10Mi       RWO            Delete           Bound    default/pvc-htmlvol   host-first-consumer            78s
 ```
 
 We can inspect the pod and we will find out that containers are mounting the volume
@@ -244,12 +248,19 @@ Now if we refresh the web page we must see it.
 ## Clean up
 
 ```bash
-$ kubectl delete -f ./ps-scpod.yml
+$ kubectl delete -f ./lc-scpod.yml
 ```
 
 ```bash
-$ kubectl delete storageclass host-fast
+$ kubectl delete storageclass host-first-consumer
 ```
+
+Or simply remove everything with:
+
+```bash
+$ kubectl delete -f ./
+```
+
 
 ```bash
 minikube tunnel --cleanup
