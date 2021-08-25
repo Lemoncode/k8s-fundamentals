@@ -80,20 +80,4 @@ curl http://$INGRESSIP/ --header 'Host: what.example.com'
 curl http://192.168.64.6/ --header 'Host: what.example.com'
 ```
 
-### Cleanup
 
-```bash
-kubectl delete ingress ingress-namebased
-```
-
-```bash
-kubectl delete service hello-world-service-blue
-kubectl delete service hello-world-service-red
-kubectl delete service hello-world-service-single
-```
-
-```bash
-kubectl delete deployment hello-world-service-blue
-kubectl delete deployment hello-world-service-red
-kubectl delete deployment hello-world-service-single
-```
