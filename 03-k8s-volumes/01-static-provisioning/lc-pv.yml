@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ps-pv
+  name: lc-pv
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: lc-fast  
   capacity:
     storage: 10Mi
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /data/ps-vol
+    path: /data/lc-vol
 

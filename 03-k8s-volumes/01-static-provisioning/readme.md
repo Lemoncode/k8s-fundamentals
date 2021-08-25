@@ -13,13 +13,13 @@ $ cd /data # or directory where volume lives
 $ sudo rm -rf <volume-directory>
 ```
 
-Create `ps-pv.yml`
+Create `lc-pv.yml`
 
 ```yml
 apiVersion: v1
 kind: PersistentVolume # 1
 metadata:
-  name: ps-pv # 2
+  name: lc-pv # 2
 spec:
   accessModes: # 3
     - ReadWriteOnce
@@ -28,7 +28,7 @@ spec:
     storage: 10Mi
   persistentVolumeReclaimPolicy: Retain # 5
   hostPath: # 4
-    path: /data/ps-vol
+    path: /data/lc-vol
 ```
 
 1. The PV is defined as top level objects in the `apiVersion: v1`. We're telling K8s how to define a PV.
@@ -47,36 +47,34 @@ spec:
 
 4. We're mapping back to `host` in this case `minikube`
 
-???
-5. This is what happen to a PV, when is release from a claim. When you are done with the POD you can remove the PVC, but what happens with the PV? Kubernetes gives us two options, in this case is ok, unbind from PV, but keep it around. The other option is `Delete`, depends on the plug-in
-but it can also remove it from the Volume provisioner
-???
+5. This is what happen to a PV, when is release from a claim. When you are done with the POD you can remove the PVC, but what happens with the PV? Kubernetes gives us two options, in this case is ok, unbind from PV, but keep it around. The other option is `Delete`, depends on the plug-in but it can also remove it from the Volume provisioner
+
 
 To create it on the cluster:
 
 ```bash
-$ kubectl apply -f ./ps-pv.yml
-persistentvolume/ps-pv created
+$ kubectl apply -f ./lc-pv.yml
+persistentvolume/lc-pv created
 ```
 
 ```bash
-$ kubectl get pv ps-pv
+$ kubectl get pv lc-pv
 NAME    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
-ps-pv   10Mi       RWO            Retain           Available           ps-fast                 47s
+lc-pv   10Mi       RWO            Retain           Available                                   38s
 ```
 
 
-Now to use it we need a `PVC`. Create `ps-pvc.yml`
+Now to use it we need a `PVC`. Create `lc-pvc.yml`
 
 ```yml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ps-pvc
+  name: lc-pvc 
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: ps-fast
+  storageClassName: lc-fast
   resources:
     requests:
       storage: 10Mi
@@ -90,25 +88,25 @@ If we compare PVC and PV are pretty much the same, if they don't match this is n
 To deploy on cluster
 
 ```bash
-kubectl apply -f ./ps-pvc.yml
-persistentvolumeclaim/ps-pvc created
+kubectl apply -f ./lc-pvc.yml
+persistentvolumeclaim/lc-pvc created
 ```
 
 ```bash
-$ kubectl get pvc ps-pvc
-NAME     STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-ps-pvc   Bound    ps-pv    10Mi       RWO            ps-fast        34s
+$ kubectl get pvc lc-pvc
+NAME     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+lc-pvc   Bound    pvc-8f629dfb-df78-49c4-9414-707362557144   10Mi       RWO            standard       31s
 ```
 
 If we have a look into the PV again we will find that is bound to this PVC
 
 ```bash
-$ kubectl get pv ps-pv
-NAME    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM            STORAGECLASS   REASON   AGE
-ps-pv   10Mi       RWO            Retain           Bound    default/ps-pvc   ps-fast                 57m
+$ kubectl get pv lc-pv
+AME    CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM            STORAGECLASS   REASON   AGE
+lc-pv   10Mi       RWO            Retain           Bound    default/lc-pvc   lc-fast                 114s
 ```
 
-For last to consume it we're going to use a POD, create `ps-pod.yml`
+For last to consume it we're going to use a POD, create `lc-pod.yml`
 
 
 ```yml
@@ -135,7 +133,7 @@ spec:
 ```
 
 ```bash
-kubectl apply -f ./ps-pod.yml
+kubectl apply -f ./lc-pod.yml
 ```
 
 ## Cleaning resources
@@ -147,10 +145,16 @@ $ kubectl delete pod first-pod
 
 ```bash
 # Delete PVC
-$ kubectl delete pvc ps-pvc
+$ kubectl delete pvc lc-pvc
 ```
 
 ```bash
 # Delete PV
-$ kubectl delete pv ps-pv
+$ kubectl delete pv lc-pv
+```
+
+Or just delete everything under the directory by:
+
+```bash
+$ kubectl delete -f ./
 ```
