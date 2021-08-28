@@ -1,1 +1,0 @@
-# Customize CoreDNS Configuration
