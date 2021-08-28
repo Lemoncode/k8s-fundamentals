@@ -171,4 +171,82 @@ We can also see here that there's routes defined for the other networks running 
 Let's move forward and look at the individual tunnel interface.
 
 ```bash
+ip addr
 ```
+
+We see
+
+```
+7: tunl0@NONE: <NOARP,UP,LOWER_UP> mtu 1480 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+    inet 192.168.77.128/32 scope global tunl0
+       valid_lft forever preferred_lft forever
+```
+
+Is an interface of type IP and IP. It's got an IP address of `192.168.77.128`. So this is a real interface on this server that's going to receive the traffic. It's then going to receive that traffic and send it into a process, it's going to encapsulate it and send it on to the target node that's defined. And so let's look at this from the other perspective. Let's say we have to communicate to `worker‑node01`. 
+
+Open up an SSH session into `worker‑node01`, cd into `00-installing-k8s/04-automated-local-k8s-setup`
+
+```bash
+vagrant ssh node01
+```
+
+On this side let's look at the IP addresses that are available. If I do an ip addr on `worker‑node1`, there we see I have a tunl0 interface on this system as well.
+
+```bash
+ip addr
+```
+
+```
+8: tunl0@NONE: <NOARP,UP,LOWER_UP> mtu 1480 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+    inet 192.168.87.192/32 scope global tunl0
+       valid_lft forever preferred_lft forever
+```
+
+So there we see `192.168.87.192`, so this is the other side of the tunl0. Traffic is going to come in onto the real interface of the node, which if we scroll up, we'll see is `10.0.0.11`, and then get de‑encapsulated and passed on into the Pod. 
+
+```
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:23:f7:44 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.0.11/24 brd 10.0.0.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe23:f744/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+
+Now let's go see how that happens. 
+
+```bash
+route
+```
+
+And so in the route information here we have the routes for the Pod networks that are running on each node. So there we see a different perspective because now we're on `worker‑node01`. We have a route back to `master-node` and then also node 2. 
+
+```
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         _gateway        0.0.0.0         UG    100    0        0 eth0
+10.0.0.0        0.0.0.0         255.255.255.0   U     0      0        0 eth1
+10.0.2.0        0.0.0.0         255.255.255.0   U     0      0        0 eth0
+_gateway        0.0.0.0         255.255.255.255 UH    100    0        0 eth0
+172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+192.168.77.128  master-node     255.255.255.192 UG    0      0        0 tunl0
+192.168.87.192  0.0.0.0         255.255.255.192 U     0      0        0 *
+192.168.87.197  0.0.0.0         255.255.255.255 UH    0      0        0 cali5a8550e3af3
+192.168.87.198  0.0.0.0         255.255.255.255 UH    0      0        0 cali6d8ff9bc555
+192.168.158.0   worker-node02   255.255.255.192 UG    0      0        0 tunl0
+```
+
+We also have two additional routes on the bottom there.
+
+```
+192.168.87.197  0.0.0.0         255.255.255.255 UH    0      0        0 cali5a8550e3af3
+192.168.87.198  0.0.0.0         255.255.255.255 UH    0      0        0 cali6d8ff9bc555
+```
+
+Where do those routes come from? Well, those routes are for Pods that are running on this individual node, and so as traffic comes in on that tunl0 interface, it's going to get de‑encapsulated, it's going to find the route for the Pod that it needs to get to, then get passed on into that individual Pod. 
+
+## Recap
+
+> Pod traffic moving between nodes is passed via tunnels, and this traffic goes into tunl0 interfaces based on routes defined on the nodes. Once that traffic has reached a destination node for the Pod that it's trying to reach, then there's going to be a route on that node that defines an interface that's exposed into the Pod.
