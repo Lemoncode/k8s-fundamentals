@@ -192,4 +192,9 @@ hello-world-clusterip-5f964c6ddf-hsr4v   1/1     Running   0          9m25s   ap
 hello-world-clusterip-5f964c6ddf-ljtdx   1/1     Running   0          9m25s   app=hello-world-clusterip,pod-template-hash=5f964c6ddf
 ```
 
-So let's go ahead and delete this deployment and the service and clean up this part of the demo before we move into the next part of the demo.
+So let's go ahead and delete this deployment and the service and clean up this part.
+
+```bash
+kubectl delete deployments hello-world-clusterip
+kubectl delete service hello-world-clusterip 
+```
