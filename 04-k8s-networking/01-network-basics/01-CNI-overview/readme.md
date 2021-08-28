@@ -250,3 +250,9 @@ Where do those routes come from? Well, those routes are for Pods that are runnin
 ## Recap
 
 > Pod traffic moving between nodes is passed via tunnels, and this traffic goes into tunl0 interfaces based on routes defined on the nodes. Once that traffic has reached a destination node for the Pod that it's trying to reach, then there's going to be a route on that node that defines an interface that's exposed into the Pod.
+
+## Cleanup
+
+```bash
+kubectl delete -f deployment.yml
+```
