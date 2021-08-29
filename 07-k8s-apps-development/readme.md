@@ -1,4 +1,4 @@
-* Overview Skaffold
-* Using Skaffold
 * Overview Kustomize
 * Using Kustomize
+* Overview Skaffold
+* Using Skaffold
