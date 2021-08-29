@@ -125,4 +125,7 @@ Let's clean
 kubectl delete service hello-world-api
 kubectl delete service hello-world-clusterip
 kubectl delete service hello-world-clusterip --namespace ns1
+kubectl delete deployment hello-world-clusterip
+kubectl delete deployment hello-world-clusterip --namespace ns1
+kubectl delete namespace ns1
 ```
