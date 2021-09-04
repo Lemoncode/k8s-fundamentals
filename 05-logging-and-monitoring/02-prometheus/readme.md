@@ -147,6 +147,12 @@ To remove all of the monitoring resources run:
 kubectl delete -f ./ -R
 ```
 
+If you are using `minikube` you can disable `metrics-server` by running:
+
+```bash
+minikube addons disable metrics-server
+```
+
 ## References
 
 Get more details on Prometheus at https://prometheus.io/docs/prometheus/latest/getting_started and https://devopscube.com/setup-prometheus-monitoring-on-kubernetes.
