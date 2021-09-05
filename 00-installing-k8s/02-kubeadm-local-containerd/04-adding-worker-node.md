@@ -1,21 +1,24 @@
 # Adding Worker Nodes to our Cluster
 
+For this demo ssh into c1-node1
+
 ```bash
-#For this demo ssh into c1-node1
 vagrant ssh c1-node1
 ```
 
 ```bash
-#Disable swap, swapoff then edit your fstab removing any entry for swap partitions
-#You can recover the space with fdisk. You may want to reboot to ensure your config is ok. 
-# disable swap 
-sudo swapoff -a
-# keeps the swaf off during reboot
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-``` 
+# Disable all active swap
+swapoff -a
+
+# Edit your fstab removing any entry for swap partitions . This keeps the swap off during reboot
+# You can recover the space with fdisk. You may want to reboot to ensure your config is ok.
+sudo sed -i '/ swap / s/^/#/g' /etc/fstab
+
+# Display the final configuration
+cat /etc/fstab
+```
 
 Check the changes by running `cat /etc/fstab`
-
 
 ```bash
 #0 - Joining Nodes to a Cluster
@@ -40,7 +43,7 @@ net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
-``` 
+```
 
 ```bash
 #Apply sysctl params without reboot
@@ -65,10 +68,9 @@ fs.inotify.max_user_instances = 1024
 * Applying /etc/sysctl.d/10-magic-sysrq.conf ...
 ```
 
-
 ```bash
 #Install containerd
-sudo apt-get update 
+sudo apt-get update
 sudo apt-get install -y containerd
 ```
 
@@ -77,7 +79,6 @@ sudo apt-get install -y containerd
 sudo mkdir -p /etc/containerd
 sudo containerd config default | sudo tee /etc/containerd/config.toml
 ```
-
 
 ```bash
 #Set the cgroup driver for containerd to systemd which is required for the kubelet.
@@ -129,7 +130,7 @@ sudo nano /etc/containerd/config.toml
             ShimCgroup = ""
 -           SystemdCgroup = false
 +           SystemdCgroup = true
-# ...... 
+# ......
 ```
 
 ```bash
@@ -142,7 +143,7 @@ sudo systemctl restart containerd
 #Install Kubernetes packages - kubeadm, kubelet and kubectl
 #Add Google's apt repository gpg key
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-``` 
+```
 
 ```bash
 #Add the Kubernetes apt repository
@@ -152,17 +153,17 @@ EOF'
 ```
 
 ```bash
-#Update the package list 
+#Update the package list
 sudo apt-get update
-apt-cache policy kubelet | head -n 20 
+apt-cache policy kubelet | head -n 20
 ```
 
 ```bash
-#Install the required packages, if needed we can request a specific version. 
+#Install the required packages, if needed we can request a specific version.
 #Pick the same version you used on the Control Plane Node in 0-PackageInstallation-containerd.sh
 VERSION=1.21.4-00
 sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
-sudo apt-mark hold kubelet kubeadm kubectl containerd
+sudo apt-mark hold kubelet kubeadm kubectl
 
 #To install the latest, omit the version parameters
 #sudo apt-get install kubelet kubeadm kubectl
@@ -174,8 +175,8 @@ sudo apt-mark hold kubelet kubeadm kubectl containerd
 
 #Check the status of our kubelet and our container runtime.
 #The kubelet will enter a crashloop until it's joined
-sudo systemctl status kubelet.service 
-sudo systemctl status containerd.service 
+systemctl status kubelet.service
+systemctl status containerd.service
 ```
 
 ```bash
@@ -205,7 +206,6 @@ kubeadm token create
 ```bash
 #On the Control Plane Node, you can find the CA cert hash.
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
-```
 
 #You can also use print-join-command to generate token and print the join command in the proper format
 #COPY THIS INTO YOUR CLIPBOARD
@@ -251,32 +251,31 @@ This node has joined the cluster:
 * The Kubelet was informed of the new secure connection details.
 
 Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
-``` 
-
+```
 
 ```bash
 vagrant ssh c1-cp1
 ```
 
 ```bash
-#Back on Control Plane Node, this will say NotReady until the networking pod is created on the new node. 
-#Has to schedule the pod, then pull the container.
-kubectl get nodes 
-```
-
-```bash
-#On the Control Plane Node, watch for the calico pod and the kube-proxy to change to Running on the newly added nodes.
-kubectl get pods --all-namespaces --watch
-```
-
-```bash
-#Still on the Control Plane Node, look for this added node's status as ready.
+# Back on Control Plane Node, this will say NotReady until the networking pod is created on the new node.
+# Has to schedule the pod, then pull the container.
 kubectl get nodes
 ```
 
 ```bash
-#GO BACK TO THE TOP AND DO THE SAME FOR c1-node2 and c1-node3
-#Just SSH into c1-node2 and c1-node3 and run the commands again.
+# On the Control Plane Node, watch for the calico pod and the kube-proxy to change to Running on the newly added nodes.
+kubectl get pods --all-namespaces --watch
+```
+
+```bash
+# Still on the Control Plane Node, look for this added node's status as ready.
+kubectl get nodes
+```
+
+```bash
+# GO BACK TO THE TOP AND DO THE SAME FOR c1-node2 and c1-node3
+# Just SSH into c1-node2 and c1-node3 and run the commands again.
 vagrant ssh c1-node2
-#You can skip the token re-creation if you have one that's still valid.
+# You can skip the token re-creation if you have one that's still valid.
 ```

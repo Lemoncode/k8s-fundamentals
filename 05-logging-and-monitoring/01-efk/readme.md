@@ -1,11 +1,11 @@
 # Logging with EFK stack
 
-## Prerequistes
+## Prerequisites
 
 `eks` cluster running, the ec2 instances must have more than 3GB of memory, run the following command to create the desired cluster:
 
 ```bash
-eksctl create cluster \
+$ eksctl create cluster \
 --name lc-cluster \
 --version 1.21 \
 --region eu-west-3 \
@@ -45,28 +45,28 @@ We must have a response as follows:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-<title>Welcome to nginx!</title>
-<style>
-    body {
+  <head>
+    <title>Welcome to nginx!</title>
+    <style>
+      body {
         width: 35em;
         margin: 0 auto;
         font-family: Tahoma, Verdana, Arial, sans-serif;
-    }
-</style>
-</head>
-<body>
-<h1>Welcome to nginx!</h1>
-<p>If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.</p>
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p>
 
-<p>For online documentation and support please refer to
-<a href="http://nginx.org/">nginx.org</a>.<br/>
-Commercial support is available at
-<a href="http://nginx.com/">nginx.com</a>.</p>
+    <p>
+      For online documentation and support please refer to <a href="http://nginx.org/">nginx.org</a>.<br />
+      Commercial support is available at
+      <a href="http://nginx.com/">nginx.com</a>.
+    </p>
 
-<p><em>Thank you for using nginx.</em></p>
-</body>
+    <p><em>Thank you for using nginx.</em></p>
+  </body>
 </html>
 ```
 
@@ -76,7 +76,7 @@ Commercial support is available at
 
 ```bash
 $ kubectl apply -f ./fluentd-elasticsearch/create-logging-namespace.yaml
-``` 
+```
 
 ```bash
 $ kubectl get ns
@@ -88,7 +88,7 @@ kube-system       Active   62m
 logging           Active   13s
 ```
 
-2. Create elasticsearch 
+2. Create elasticsearch
 
 ```bash
 $ kubectl apply -f ./fluentd-elasticsearch/elasticsearch-deploy.yaml
@@ -102,13 +102,13 @@ $ kubectl get all -n kube-system
 
 ```bash
 $ kubectl apply -f ./fluentd-elasticsearch/fluentd-deploy.yaml
-``` 
+```
 
 ```bash
 $ kubectl get all -n kube-system
 ```
 
-4. Deploy Kibana 
+4. Deploy Kibana
 
 ```bash
 $ kubectl apply -f ./fluentd-elasticsearch/kibana-deploy.yaml
@@ -128,7 +128,7 @@ Navigate to `Kibana` by running:
 google a02ea42f7f34b4ff8a11f567e790c6ce-602092504.eu-west-3.elb.amazonaws.com:5601
 ```
 
-A new window will be prompted, select eplore by our own, on the left menu select the compass icon (discover). Now we have to create a new index, this is a little bit confusing, we can see `logstash-<date>`, well don't freak out, that is currently `fluentd`, a little bit confusing, but that's `fluentd` and is not `logstash`.
+A new window will be prompted, select explore by our own, on the left menu select the compass icon (discover). Now we have to create a new index, this is a little bit confusing, we can see `logstash-<date>`, well don't freak out, that is currently `fluentd`, a little bit confusing, but that's `fluentd` and is not `logstash`.
 
 On index pattern input, type: `logstash*`, we will see that a new message appears telling us that a new index has been created. Click on next and a new drop down will appear, asking for time filter index, because we have added the configuration on `fluentd` we must see `@timestamp`, select that. Now click on `create index pattern`
 
@@ -139,7 +139,6 @@ Let's try to find out something, let's type `nginx`. Bear in mind that we are on
 ## Cleanup
 
 Delete kubernetes resources
-
 
 ```bash
 #remove app-deploy
