@@ -1,10 +1,11 @@
 import React from 'react';
 import { AppLayout } from 'layouts';
+import { EmpoyeeListContainer } from 'pods/employee-list';
 
 export const EmployeeListScene: React.FunctionComponent = () => {
   return (
     <AppLayout>
-      <h1>Employee List scene</h1>
+      <EmpoyeeListContainer />
     </AppLayout>
   );
 };
