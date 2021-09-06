@@ -1,25 +1,9 @@
 import * as React from 'react';
-import { HashRouter, Switch, Route, BrowserRouter } from 'react-router-dom';
-import { paths } from 'core';
-import { LoginScene, EmployeeScene } from 'scenes';
+import { hot } from 'react-hot-loader/root';
+import { RouterComponent } from 'core/router';
 
 export const App: React.FunctionComponent = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route
-          exact={true}
-          path={[paths.root, paths.index]}
-          component={LoginScene}
-        />
-        <Route
-          exact={true}
-          path={[paths.employeeList]}
-          component={EmployeeScene}
-        />
-      </Switch>
-    </BrowserRouter>
-  );
+  return <RouterComponent />;
 };
 
-export default App;
+export default hot(App);
