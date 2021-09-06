@@ -2,12 +2,22 @@ const { merge } = require('webpack-merge');
 const base = require('./webpack-base');
 const helpers = require('./webpack-helpers');
 
+const hotReloadingEntries = ['react-hot-loader/patch'];
+
 module.exports = merge(base, {
   mode: 'development',
   devtool: 'inline-source-map',
   output: {
     path: helpers.resolveFromRootPath('dist'),
     filename: '[name].js',
+  },
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
+  },
+  entry: {
+    app: hotReloadingEntries,
   },
   devServer: {
     inline: true,
