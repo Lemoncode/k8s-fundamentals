@@ -7,10 +7,6 @@ const hotReloadingEntries = ['react-hot-loader/patch'];
 module.exports = merge(base, {
   mode: 'development',
   devtool: 'inline-source-map',
-  output: {
-    path: helpers.resolveFromRootPath('dist'),
-    filename: '[name].js',
-  },
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
@@ -18,6 +14,10 @@ module.exports = merge(base, {
   },
   entry: {
     app: hotReloadingEntries,
+  },
+  output: {
+    path: helpers.resolveFromRootPath('dist'),
+    filename: '[name].js',
   },
   devServer: {
     inline: true,

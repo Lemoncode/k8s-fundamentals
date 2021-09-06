@@ -1,4 +1,4 @@
 {
-	"presets": ["@babel/preset-typescript", "@babel/preset-react"],
-	"plugins": ["@emotion"]
+  "presets": ["@babel/preset-typescript", "@babel/preset-react"],
+  "plugins": ["react-hot-loader/babel", "@emotion"]
 }
