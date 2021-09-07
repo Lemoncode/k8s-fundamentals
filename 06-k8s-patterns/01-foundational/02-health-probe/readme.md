@@ -140,3 +140,61 @@ Get the output by running:
 ```bash
 kubectl describe pod readiness-check
 ```
+
+We get 
+
+```
+# ....
+Containers:
+  readiness-check:
+    Container ID:   docker://798e8e46ca281ee6a66f8cb69058cea87effbd8dcf92b384e50a2dac124fe656
+    Image:          jaimesalas/random-employee
+    Image ID:       docker-pullable://jaimesalas/random-employee@sha256:c2780cd7a9e2ae48be6f0cb42a09276d19720908978034137e698b8108e61d02
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Tue, 07 Sep 2021 20:34:47 +0200
+    Ready:          True
+    Restart Count:  0
+    Readiness:      exec [stat /opt/app/service-ready] delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-szfhh (ro)
+# ....
+Events:
+  Type     Reason     Age    From               Message
+  ----     ------     ----   ----               -------
+  Normal   Scheduled  8m13s  default-scheduler  Successfully assigned default/readiness-check to minikube
+  Normal   Pulling    8m12s  kubelet            Pulling image "jaimesalas/random-employee"
+  Normal   Pulled     8m6s   kubelet            Successfully pulled image "jaimesalas/random-employee" in 6.80363202s
+  Normal   Created    8m5s   kubelet            Created container readiness-check
+  Normal   Started    8m5s   kubelet            Started container readiness-check
+  Warning  Unhealthy  8m5s   kubelet            Readiness probe failed: stat: can't stat '/opt/app/service-ready': No such file or directory
+```
+
+It is up to your implementation of the health check to decide when your application is ready to do its job and when it should be left alone. While process health checks and liveness checks are intended to recover from the failure by restarting the container, the readiness check buys time for your application and expects it to recover by itself. 
+
+In many cases, you have liveness and readiness probes performing the same checks. However, the presence of a readiness probe gives your container time to start up. 
+
+For last logs are very important for as well, not to take immiediate actions, but for post morten.
+
+It's important as well log the last will of containers, this is registered on `/dev/termination-log`.
+
+We can find this file by running:
+
+```bash
+kubectl exec --stdin --tty readiness-check -- /bin/sh 
+```
+
+And then see its content by running:
+
+```bash
+cat /dev/termination-log
+```
+
+## Clean Up
+
+```bash
+kubectl delete -f ./liveness-probe.yml
+kubectl delete -f ./readiness-probe.yml
+```

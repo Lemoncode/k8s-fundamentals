@@ -2,6 +2,6 @@
 
 - Foundational Patterns
    * Predictable Demands √
-   * Health Probe
+   * Health Probe √
    * Managed Lifecycle
    * Automated Placement
