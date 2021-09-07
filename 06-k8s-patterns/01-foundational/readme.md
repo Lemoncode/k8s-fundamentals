@@ -1,7 +1,7 @@
 ## TODO
 
 - Foundational Patterns
-   * Predictable Demands
+   * Predictable Demands √
    * Health Probe
    * Managed Lifecycle
    * Automated Placement
