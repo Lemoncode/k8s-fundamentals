@@ -1,24 +1,29 @@
-import express from 'express';
-import { employeeRouter } from './routes';
-import config from './config';
-import { delay } from './helpers';
+import fs from "fs/promises";
+import express from "express";
+import { employeeRouter } from "./routes";
+import config from "./config";
+import { delay } from "./helpers";
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/employees', employeeRouter);
+app.use("/employees", employeeRouter);
 
-app.get('/health', (_, res) => {
-    res.status(200).json('ok');
+app.get("/health", (_, res) => {
+  res.status(200).json("ok");
 });
 
-
+// TODO: Create file for readiness probe
 (async () => {
-    await delay(+config.system.delayStartup);
+  await delay(+config.system.delayStartup);
 
-    app.listen(config.http.port, () => {
-        console.log(`Application running on ${config.http.port}`);
-    });
+  app.listen(config.http.port, async () => {
+    console.log(`Application running on ${config.http.port}`);
+    fs.writeFile(
+      `${__dirname}/service-ready`,
+      JSON.stringify(process.resourceUsage())
+    );
+  });
 })();

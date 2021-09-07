@@ -134,6 +134,12 @@ When **Priority feature is enabled**, it affects the order in which the `schedul
 * **On development environments** it's ok to have all containers as *Best Effort* and *Burstable* resouce profiles.
 * **On production environemnts** the conatiners might be *Guranteed* and some *Burstable*.
 
-### Reference
+## Clean Up
+
+```bash
+kubectl delete -f ./
+```
+
+## Reference
 
 [Kubernettes Patterns](https://k8spatterns.io/)
