@@ -14,7 +14,7 @@ interface Props {
   handleSubmit: (login: Login) => void;
 }
 
-export const RegisterLoginComponent: React.FunctionComponent<Props> = ({
+export const NewUserFormComponent: React.FunctionComponent<Props> = ({
   showError,
   isRegister,
   handleSubmit,
@@ -31,7 +31,7 @@ export const RegisterLoginComponent: React.FunctionComponent<Props> = ({
           initialValues={createEmptyLogin()}
           validate={formValidation.validateForm}
         >
-          {({ isSubmitting, setFieldValue, errors }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form className={classes.form}>
               <div className={classes.fields}>
                 <ErrorMessage
@@ -77,7 +77,7 @@ export const RegisterLoginComponent: React.FunctionComponent<Props> = ({
         )}
         {isRegister && (
           <div className={classes.success}>
-            Register user success.{' '}
+            Register user success.
             <Button variant="text" onClick={handleClick}>
               Return to login
             </Button>
