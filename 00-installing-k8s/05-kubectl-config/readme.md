@@ -12,7 +12,7 @@ The output will show the current contexts that we can use:
 
 ```bash
 CURRENT   NAME                                                       CLUSTER                                                    AUTHINFO                                                   NAMESPACE
-          arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks   arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks   arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks   
+          arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks   arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks   arn:aws:eks:eu-west-3:092312727912:cluster/lemoncode-eks
 *         minikube                                                   minikube                                                   minikube                                                   default
 ```
 
@@ -41,7 +41,7 @@ The output is
 
 ```bash
 CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
-*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin  
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
 ```
 
 ```bash
@@ -57,7 +57,7 @@ worker-node01   Ready    worker                 112m   v1.21.4
 worker-node02   Ready    worker                 108m   v1.21.4
 ```
 
-If we run again `minikube start`, and run 
+If we run again `minikube start`, and run
 
 ```bash
 kubectl config get-contexts
@@ -67,7 +67,7 @@ The output is
 
 ```bash
 CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
-          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
 *         minikube                      minikube     minikube           default
 ```
 

@@ -6,12 +6,13 @@ bin
 obj
 
 # nodejs
-dist/ 
+dist/
 node_modules/
 
 # helpers
 todo
-private.readme.md 
+private.readme.md
+.vagrant
 
 # binaries
 minikube-linux-amd64
@@ -22,11 +23,6 @@ kubectl
 *.pem
 *.crt
 *.key
-
-# helpers
-private.readme.md
-todo
-.vagrant
 
 external-resources/
 

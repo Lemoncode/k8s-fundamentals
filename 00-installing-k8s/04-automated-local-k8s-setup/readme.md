@@ -1,8 +1,7 @@
 ## Reference
 
-This is the original [article](https://devopscube.com/kubernetes-cluster-vagrant/) 
+This is the original [article](https://devopscube.com/kubernetes-cluster-vagrant/)
 The following code is extracted from this [repo](https://github.com/scriptcamp/vagrant-kubeadm-kubernetes)
-
 
 ## Prerequisites
 
@@ -12,7 +11,7 @@ Vagrant and VirtualBox
 
 ```bash
 vagrant up
-``` 
+```
 
 Once the system is up we can log into the master by running
 
@@ -32,10 +31,10 @@ worker-node01   Ready    worker                 12m    v1.21.4
 worker-node02   Ready    worker                 9m4s   v1.21.4
 ```
 
-We can find out the pods running in our system by 
+We can find out the pods running in our system by
 
 ```bash
-kubectl get pods --all-namespaces 
+kubectl get pods --all-namespaces
 ```
 
 ```
