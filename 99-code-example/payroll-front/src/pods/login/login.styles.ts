@@ -32,3 +32,11 @@ export const fields = css`
   row-gap: 20px;
   width: 100%;
 `;
+
+export const error = css`
+  color: red;
+`;
+
+export const success = css`
+  color: green;
+`;
