@@ -16,7 +16,7 @@ app.get('/health', (_, res) => {
 
 
 (async () => {
-    await delay(+ config.system.delayStartup);
+    await delay(+config.system.delayStartup);
 
     app.listen(config.http.port, () => {
         console.log(`Application running on ${config.http.port}`);
