@@ -24,7 +24,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ## Linux / macOS upgrade
 
 ```bash
-#Reference: https://gist.github.com/qaiserali/18926b5bd9ca7a0551195d449bf31eb6
+# Reference: https://gist.github.com/qaiserali/18926b5bd9ca7a0551195d449bf31eb6
 ##  Step1: Run the below command to download the latest version of kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 

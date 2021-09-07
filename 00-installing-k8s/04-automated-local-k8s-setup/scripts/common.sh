@@ -4,10 +4,11 @@
 
 KUBERNETES_VERSION="1.21.4-00"
 
-# disable swap 
+# disable swap
 sudo swapoff -a
+
 # keeps the swaf off during reboot
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/ swap / s/^/#/g' /etc/fstab
 
 sudo apt-get update -y
 sudo apt-get install -y \
@@ -43,11 +44,12 @@ sudo systemctl enable docker
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
+sudo gpasswd -a vagrant docker
+
 echo "Docker Runtime Configured Successfully"
 
 
 sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list

@@ -1,24 +1,25 @@
 # Creating a Cluster Control Plane Node
 
-> IMPORTANT: If you are using containerd, make sure docker isn't installed. `kubeadm` init will  try to auto detect the container runtime and at the moment it both are installed it will pick docker first
+> IMPORTANT: If you are using containerd, make sure docker isn't installed. `kubeadm` init will try to auto detect the container runtime and at the moment it both are installed it will pick docker first
 
 ```bash
 vagrant ssh c1-cp1
 ```
 
+### Creating a Cluster
+
 ```bash
-#0 - Creating a Cluster
-#Create our kubernetes cluster, specify a pod network range matching that in calico.yaml! 
-#Only on the Control Plane Node, download the yaml files for the pod network.
+# Create our kubernetes cluster, specify a pod network range matching that in calico.yaml!
+# Only on the Control Plane Node, download the yaml files for the pod network.
 wget https://docs.projectcalico.org/manifests/calico.yaml
 ```
 
 > To make our live more easy, we can edit files in host. By default, Vagrant will share your project directory (the directory with the Vagrantfile) to /vagrant.
 
 ```bash
-#Look inside calico.yaml and find the setting for Pod Network IP address range CALICO_IPV4POOL_CIDR, 
-#adjust if needed for your infrastructure to ensure that the Pod network IP
-#range doesn't overlap with other networks in our infrastructure.
+# Look inside calico.yaml and find the setting for Pod Network IP address range CALICO_IPV4POOL_CIDR,
+# adjust if needed for your infrastructure to ensure that the Pod network IP
+# range doesn't overlap with other networks in our infrastructure.
 nano calico.yaml
 ```
 
@@ -32,16 +33,14 @@ This is the default value:
 #   value: "192.168.0.0/16"
 ```
 
-All pods are going to be allocated IPs from that network range (`192.168.0.0/16`), so we wnat to make sure that network range doesn't overlap with other networks in our infrastructure. If it does, you can set that value here. We're going to stay with the default value.
-
+All pods are going to be allocated IPs from that network range (`192.168.0.0/16`), so we want to make sure that network range doesn't overlap with other networks in our infrastructure. If it does, you can set that value here. We're going to stay with the default value.
 
 ```bash
-#Generate a default kubeadm init configuration file...this defines the settings of the cluster being built.
-#If you get a warning about how docker is not installed...this is OK to ingore and is a bug in kubeadm
-#For more info on kubeconfig configuration files see: 
-#    https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file
-kubeadm config print init-defaults | tee ClusterConfiguration.yaml
-
+# Generate a default kubeadm init configuration file...this defines the settings of the cluster being built.
+# If you get a warning about how docker is not installed...this is OK to ignore and is a bug in kubeadm
+# For more info on kubeconfig configuration files see:
+# https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file
+kubeadm config print init-defaults > ClusterConfiguration.yaml
 ```
 
 Note that we get a warning because Docker is not installed, we can ignore that. Looking inside of the output of this `ClusterConfiguration` document, we see LocalAPIEndpoint
@@ -65,24 +64,31 @@ nodeRegistration:
 We have to update this to `containerd`
 
 ```bash
-#Inside default configuration file, we need to change four things.
-#1. The IP Endpoint for the API Server localAPIEndpoint.advertiseAddress:
-#2. nodeRegistration.criSocket from docker to containerd
-#3. Set the cgroup driver for the kubelet to systemd, it's not set in this file yet, the default is cgroupfs
-#4. Edit kubernetesVersion to match the version you installed in 0-PackageInstallation-containerd.sh
-#5. Update the node name from node to the actual control plane node name, c1-cp1
+# Inside default configuration file, we need to change four things.
+# 1. The IP Endpoint for the API Server `localAPIEndpoint.advertiseAddress`
+# 2. `nodeRegistration.criSocket` from docker to containerd
+# 3. Set the cgroup driver for the kubelet to systemd. This is not set in this file yet. The default is cgroupfs. From version 1.22 the default is systemd
+# 4. Edit `kubernetesVersion` to match the version you installed
+# 5. Update the node name from node to the actual control plane node name, c1-cp1
+# 6. Set the pod subnet CIDR to the same value of CALICO_IPV4POOL_CIDR from calico.yml adding `networking.podSubnet`
 
-#Change the address of the localAPIEndpoint.advertiseAddress to the Control Plane Node's IP address
-sed -i 's/  advertiseAddress: 1.2.3.4/  advertiseAddress: 172.16.94.10/' ClusterConfiguration.yaml
+# Change the address of the localAPIEndpoint.advertiseAddress to the Control Plane Node's IP address
+sed -ri 's|^(\s*advertiseAddress:).*|\1 172.16.94.10|' ClusterConfiguration.yaml
 
-#Set the CRI Socket to point to containerd
-sed -i 's/  criSocket: \/var\/run\/dockershim\.sock/  criSocket: \/run\/containerd\/containerd\.sock/' ClusterConfiguration.yaml
+# Set the CRI Socket to point to containerd
+sed -ri 's|^(\s*criSocket:).*|\1 unix:///run/containerd/containerd.sock|' ClusterConfiguration.yaml
 
-#UPDATE: Added configuration to set the node name for the control plane node to the actual hostname
-sed -i 's/  name: node/  name: c1-cp1/' ClusterConfiguration.yaml
+# Set the node name to the Control Plane Node hostname
+sed -ri 's|^(\s*name:).*|\1 c1-cp1|' ClusterConfiguration.yaml
 
-#Set the cgroupDriver to systemd...matching that of your container runtime, containerd
-cat <<EOF | cat >> ClusterConfiguration.yaml
+# Update `kubernetesVersion` to match our version:
+sed -ri 's|^(\s*kubernetesVersion:).*|\1 1.21.4|' ClusterConfiguration.yaml
+
+# Append after `serviceSubnet` the pod subnet CIDR
+sed -ri 's|^(\s*)serviceSubnet:.*|&\n\1podSubnet: 192.168.0.0/16|' ClusterConfiguration.yaml
+
+# Set the cgroupDriver to systemd...matching that of your container runtime, containerd
+cat <<EOF >> ClusterConfiguration.yaml
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
@@ -90,29 +96,18 @@ cgroupDriver: systemd
 EOF
 ```
 
-The las configuration is missing so we're appending  to the file
-
-```bash
-#Review the Cluster configuration file, update the version to match what you've installed. 
-#We're using 1.21.0...if you're using a newer version update that here.
-nano ClusterConfiguration.yaml
-
-```
-
-> We have to update to `1.21.4`
-
 Finally `ClusterConfiguration.yaml` must look like this:
 
 ```yaml
 apiVersion: kubeadm.k8s.io/v1beta2
 bootstrapTokens:
-- groups:
-  - system:bootstrappers:kubeadm:default-node-token
-  token: abcdef.0123456789abcdef
-  ttl: 24h0m0s
-  usages:
-  - signing
-  - authentication
+  - groups:
+      - system:bootstrappers:kubeadm:default-node-token
+    token: abcdef.0123456789abcdef
+    ttl: 24h0m0s
+    usages:
+      - signing
+      - authentication
 kind: InitConfiguration
 localAPIEndpoint:
   advertiseAddress: 172.16.94.10
@@ -139,6 +134,7 @@ kubernetesVersion: v1.21.4
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.96.0.0/12
+  podSubnet: 192.168.0.0/16
 scheduler: {}
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1
@@ -149,16 +145,15 @@ cgroupDriver: systemd
 Now we can bootstrap the cluster
 
 ```bash
-#Need to add CRI socket since there's a check for docker in the kubeadm init process, 
-#if you don't you'll get this error...
+# Need to add CRI socket since there's a check for docker in the kubeadm init process,
+# if you don't you'll get this error...
 #   error execution phase preflight: docker is required for container runtime: exec: "docker": executable file not found in $PATH
 sudo kubeadm init \
     --config=ClusterConfiguration.yaml \
     --cri-socket /run/containerd/containerd.sock
-
 ```
 
-If the previous command has successed, we must see the following putput:
+If the previous command has succeeded, we must see the following output:
 
 ```bash
 # ....
@@ -184,12 +179,12 @@ kubeadm join 172.16.94.10:6443 --token abcdef.0123456789abcdef \
         --discovery-token-ca-cert-hash sha256:47780398ea95f472ba00996a6facbe27cb55b2fd3ba56d48389a4d071821979
 ```
 
+Before moving on review the output of the cluster creation process including the kubeadm init phases,
+the admin.conf setup and the node join command
+
+Configure our account on the Control Plane Node to have admin access to the API server from a non-privileged account.
+
 ```bash
-#Before moving on review the output of the cluster creation process including the kubeadm init phases, 
-#the admin.conf setup and the node join command
-
-
-#Configure our account on the Control Plane Node to have admin access to the API server from a non-privileged account.
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -197,15 +192,19 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 Now it's time to deploy the pod network
 
+### Creating a Pod Network
+
+Deploy yaml file for your pod network.
+May print a warning about PodDisruptionBudget it is safe to ignore for now.
+
 ```bash
-#1 - Creating a Pod Network
-#Deploy yaml file for your pod network. #May print a warning about PodDisruptionBudget it is safe to ignore for now.
 kubectl apply -f calico.yaml
 ```
 
+The DNS pod won't start (pending) until the Pod network is deployed and Running.
+Look for the all the system pods and calico pods to change to Running.
+
 ```bash
-#Look for the all the system pods and calico pods to change to Running. 
-#The DNS pod won't start (pending) until the Pod network is deployed and Running.
 kubectl get pods --all-namespaces
 ```
 
@@ -229,14 +228,13 @@ We can see our control plane pods `etcd`, `apiserver`, `controler-manager` and `
 Then we see `coredns` pods on status creating, what that means is those pods are out pulling the container images to start those pods up. We also see the calico pods on state of initializing.
 
 ```bash
-#Gives you output over time, rather than repainting the screen on each iteration.
+# Gives you output over time, rather than repainting the screen on each iteration.
 kubectl get pods --all-namespaces --watch
 ```
 
 ```bash
-#All system pods should be Running
+# All system pods should be Running
 kubectl get pods --all-namespaces
-
 ```
 
 If we wait enough time, we must see the following output
@@ -254,11 +252,10 @@ kube-system   kube-proxy-rtdmt                           1/1     Running   0    
 kube-system   kube-scheduler-c1-cp1                      1/1     Running   0          40m
 ```
 
+Get a list of our current nodes, just the Control Plane Node/Master Node...should be Ready.
 
 ```bash
-#Get a list of our current nodes, just the Control Plane Node/Master Node...should be Ready.
-kubectl get nodes 
-
+kubectl get nodes
 ```
 
 The output of above command
@@ -268,19 +265,18 @@ NAME     STATUS   ROLES                  AGE   VERSION
 c1-cp1   Ready    control-plane,master   42m   v1.21.4
 ```
 
+Check out the systemd unit...it's no longer crashlooping because it has static pods to start
+Remember the kubelet starts the static pods, and thus the control plane pods
+
 ```bash
-#2 - systemd Units...again!
-#Check out the systemd unit...it's no longer crashlooping because it has static pods to start
-#Remember the kubelet starts the static pods, and thus the control plane pods
-sudo systemctl status kubelet.service 
+systemctl status kubelet.service
 ```
 
+Let's check out the static pod manifests on the Control Plane Node
 
 ```bash
-#3 - Static Pod manifests
-#Let's check out the static pod manifests on the Control Plane Node
 ls /etc/kubernetes/manifests
-``` 
+```
 
 The above command prints out
 
@@ -288,17 +284,17 @@ The above command prints out
 etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
 ```
 
+And look more closely at API server and etcd's manifest.
+
 ```bash
-#And look more closely at API server and etcd's manifest.
 sudo more /etc/kubernetes/manifests/etcd.yaml
 sudo more /etc/kubernetes/manifests/kube-apiserver.yaml
-
 ```
 
-```bash
-#Check out the directory where the kubeconfig files live for each of the control plane pods.
-ls /etc/kubernetes
+Check out the directory where the kubeconfig files live for each of the control plane pods.
 
+```bash
+ls /etc/kubernetes
 ```
 
 The output of above command
@@ -306,5 +302,3 @@ The output of above command
 ```bash
 admin.conf  controller-manager.conf  kubelet.conf  manifests  pki  scheduler.conf
 ```
-
-
