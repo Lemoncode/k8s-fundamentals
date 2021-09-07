@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { switchRoutes } from 'core/router';
-import { validateLoginUser, registerNewUser } from './api/form.api';
+import { validateLoginUser } from './api/form.api';
 import { Login } from './login.vm';
 import { LoginComponent } from './login.component';
 
