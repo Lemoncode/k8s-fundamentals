@@ -10,6 +10,8 @@ COPY employee-generator.service.ts .
 
 COPY routes.ts .
 
+COPY helpers.ts .
+
 COPY package*.json .
 
 COPY tsconfig.json .

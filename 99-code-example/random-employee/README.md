@@ -37,3 +37,9 @@ docker login
 ```bash
 docker push <your user>/random-employee:<version>
 ```
+
+Or running both by:
+
+```bash
+./build-push.sh "<your user>/random-employee:<version>"
+```
