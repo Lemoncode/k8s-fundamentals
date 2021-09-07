@@ -21,3 +21,9 @@ And check the API, by running:
 ```bash
 curl localhost:3000/employees/random
 ```
+
+## Building Container Image
+
+```bash
+docker build -t <your user>/random-employee:<version> .
+```
