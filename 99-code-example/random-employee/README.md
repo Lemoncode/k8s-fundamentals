@@ -27,3 +27,13 @@ curl localhost:3000/employees/random
 ```bash
 docker build -t <your user>/random-employee:<version> .
 ```
+
+## Publishing the Image
+
+```bash
+docker login
+```
+
+```bash
+docker push <your user>/random-employee:<version>
+```
