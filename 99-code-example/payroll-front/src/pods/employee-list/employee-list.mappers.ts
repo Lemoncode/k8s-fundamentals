@@ -6,7 +6,6 @@ export const mapEmployeeFromApiToVm = (
   employee: apiModel.Employee
 ): vm.Employee => ({
   ...employee,
-  id: employee.id.toString(),
 });
 
 export const mapEmployeeListFromApiToVm = (
