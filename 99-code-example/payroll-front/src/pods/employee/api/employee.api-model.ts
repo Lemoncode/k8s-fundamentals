@@ -7,7 +7,7 @@ export interface Employee {
   phone: string;
   website?: string;
   company: Company;
-  payrollInfo?: PayrollMonth;
+  payrollInfo: PayrollMonth;
 }
 
 export interface Address {
