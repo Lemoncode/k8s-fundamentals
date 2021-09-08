@@ -31,7 +31,9 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Show chart</Button>
+        <Button size="small" color="primary">
+          Show chart
+        </Button>
       </CardActions>
     </Card>
   );

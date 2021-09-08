@@ -7,6 +7,7 @@ export interface Employee {
   phone: string;
   website?: string;
   company: Company;
+  payrollList?: PayrollMonth;
 }
 
 export interface Address {
@@ -21,6 +22,27 @@ export interface Company {
   name: string;
   catchPhrase?: string;
   bs?: string;
+}
+
+export interface PayrollMonth {
+  month: number;
+  year: number;
+  payrollList: PayrollData[];
+  totalAccruals: number;
+  totalWithholds: number;
+  total: number;
+}
+
+export interface PayrollData {
+  selected: boolean;
+  id: string;
+  access: boolean;
+  date: Date;
+  type: string;
+  cost: number;
+  accrual: number;
+  amount: number;
+  withhold: number;
 }
 
 export const createEmptyEmployeeList = (): Employee[] => [
