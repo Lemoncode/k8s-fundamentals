@@ -15,13 +15,17 @@ app.get("/health", (_, res) => {
   res.status(200).json("ok");
 });
 
+app.get("/shutdown", (_, res) => {
+  res.status(200).json("shutting down");
+});
+
 // TODO: Create file for readiness probe
 (async () => {
   await delay(+config.system.delayStartup);
 
   app.listen(config.http.port, async () => {
     console.log(`Application running on ${config.http.port}`);
-    fs.writeFile(
+    await fs.writeFile(
       `${__dirname}/service-ready`,
       JSON.stringify(process.resourceUsage())
     );
