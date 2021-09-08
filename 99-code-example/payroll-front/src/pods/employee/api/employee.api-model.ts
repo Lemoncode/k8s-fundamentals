@@ -1,5 +1,5 @@
 export interface Employee {
-  id: string;
+  id: number;
   name: string;
   username: string;
   email: string;
@@ -22,19 +22,3 @@ export interface Company {
   catchPhrase?: string;
   bs?: string;
 }
-
-export const createEmptyEmployeeList = (): Employee[] => [
-  {
-    id: '',
-    name: '',
-    username: '',
-    email: '',
-    phone: '',
-    address: {
-      street: '',
-    },
-    company: {
-      name: '',
-    },
-  },
-];

@@ -1,4 +1,4 @@
-import { Employee } from './employee.api-model';
+import { Employee } from '../../pods/employee-list/api/employee-list.api-model';
 
 export const employeeList: Employee[] = [
   {

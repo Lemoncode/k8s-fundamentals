@@ -1,5 +1,5 @@
 import React from 'react';
-import { getEmployeeList } from './api/employee-list.api';
+import { getEmployeeList } from './api';
 import { mapEmployeeListFromApiToVm } from './employee-list.mappers';
 import { EmployeeListComponent } from './employee-list.component';
 import { Employee, createEmptyEmployeeList } from './employee-list.vm';
