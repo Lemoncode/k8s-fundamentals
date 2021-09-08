@@ -15,8 +15,16 @@ app.get("/health", (_, res) => {
   res.status(200).json("ok");
 });
 
-app.get("/shutdown", (_, res) => {
-  res.status(200).json("shutting down");
+let variable = 'not called'
+
+process.on('SIGTERM', () => {
+  console.log('variable value', variable);
+});
+
+app.get("/shutdown", async (_, res) => {
+  // TODO: Investigate why this is not called.
+  variable = 'called';
+  res.send('closing');
 });
 
 // TODO: Create file for readiness probe
