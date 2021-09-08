@@ -4,17 +4,17 @@ import { Formik, Form, ErrorMessage } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { switchRoutes } from 'core/router';
-import { formValidation } from './login.validations';
-import { Login, createEmptyLogin } from './login.vm';
-import * as classes from './login.styles';
+import { formValidation } from './sign-in.validations';
+import { SignIn, createEmptySignIn } from './sign-in.vm';
+import * as classes from './sign-in.styles';
 
 interface Props {
   showError: boolean;
   isRegister: boolean;
-  handleSubmit: (login: Login) => void;
+  handleSubmit: (signIn: SignIn) => void;
 }
 
-export const NewUserFormComponent: React.FunctionComponent<Props> = ({
+export const SignInComponent: React.FunctionComponent<Props> = ({
   showError,
   isRegister,
   handleSubmit,
@@ -28,12 +28,25 @@ export const NewUserFormComponent: React.FunctionComponent<Props> = ({
       <div className={classes.container}>
         <Formik
           onSubmit={handleSubmit}
-          initialValues={createEmptyLogin()}
+          initialValues={createEmptySignIn()}
           validate={formValidation.validateForm}
         >
           {({ isSubmitting, setFieldValue }) => (
             <Form className={classes.form}>
               <div className={classes.fields}>
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className={classes.error}
+                />
+                <TextField
+                  label="Name"
+                  type="name"
+                  name="name"
+                  onChange={(event) =>
+                    setFieldValue('name', event.target.value)
+                  }
+                />
                 <ErrorMessage
                   name="email"
                   component="div"

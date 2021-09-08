@@ -1,11 +1,11 @@
 import { Validators } from '@lemoncode/fonk';
 import { createFormikValidation } from '@lemoncode/fonk-formik';
-import { existEmail } from './api/validators.api';
-import { passValidator } from './validations/pass-security-policy';
+import { passValidator, checkEmailExistsValidator } from './validations';
 
 const validationSchema = {
   field: {
-    email: [Validators.required, Validators.email, existEmail],
+    name: [Validators.required],
+    email: [Validators.required, Validators.email, checkEmailExistsValidator],
     password: [Validators.required, passValidator],
   },
 };

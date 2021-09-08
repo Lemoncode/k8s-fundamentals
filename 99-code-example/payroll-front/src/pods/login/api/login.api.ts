@@ -7,8 +7,3 @@ export const validateLoginUser = async (
   Promise.resolve(
     email === 'prueba@prueba.com' && password === '1234' ? true : false
   );
-
-export const registerNewUser = async (
-  email: string,
-  password: string
-): Promise<boolean> => Promise.resolve(email && password ? true : false);

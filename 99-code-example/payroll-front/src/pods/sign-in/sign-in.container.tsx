@@ -1,14 +1,16 @@
 import React from 'react';
-import { registerNewUser } from './api/form.api';
-import { Login } from './login.vm';
-import { NewUserFormComponent } from './new-user-form.component';
+import { registerNewUser } from './api/sign-in.api';
+import { mapSignInFromVmToApiModel } from './sign-in.mappers';
+import { SignIn } from './sign-in.vm';
+import { SignInComponent } from './sign-in.component';
 
-export const NewUserFormContainer: React.FunctionComponent = () => {
+export const SignInContainer: React.FunctionComponent = () => {
   const [showError, setShowError] = React.useState<boolean>(false);
   const [isRegister, setIsRegister] = React.useState<boolean>(false);
 
-  const onRegister = async (login: Login) => {
-    const result = await registerNewUser(login.email, login.password);
+  const onRegister = async (data: SignIn) => {
+    const result = await registerNewUser(mapSignInFromVmToApiModel(data));
+
     if (result) {
       setIsRegister(true);
       setShowError(false);
@@ -19,7 +21,7 @@ export const NewUserFormContainer: React.FunctionComponent = () => {
   };
 
   return (
-    <NewUserFormComponent
+    <SignInComponent
       isRegister={isRegister}
       handleSubmit={onRegister}
       showError={showError}
