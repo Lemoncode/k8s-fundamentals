@@ -1,13 +1,26 @@
 import React from 'react';
 import { getEmployeeList } from './api/employee-list.api';
+import { mapEmployeeListFromApiToVm } from './employee-list.mappers';
 import { EmployeeListComponent } from './employee-list.component';
+import { Employee, createEmptyEmployeeList } from './employee-list.vm';
 
-export const EmpoyeeListContainer: React.FunctionComponent = () => {
-  const loadEmployeeList = () => getEmployeeList();
+export const EmployeeListContainer: React.FunctionComponent = () => {
+  const [employeeList, setEmployeeList] = React.useState<Employee[]>(
+    createEmptyEmployeeList()
+  );
+
+  const loadEmployeeList = async () => {
+    try {
+      const list = await getEmployeeList();
+      setEmployeeList(mapEmployeeListFromApiToVm(list));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   React.useEffect(() => {
     loadEmployeeList();
   }, []);
 
-  return <EmployeeListComponent employeeList={loadEmployeeList} />;
+  return <EmployeeListComponent employeeList={employeeList} />;
 };

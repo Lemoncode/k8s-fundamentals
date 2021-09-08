@@ -20,27 +20,23 @@ export const EmployeeListComponent: React.FunctionComponent<Props> = ({
       <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Lastname</TableCell>
-            <TableCell align="right">Email</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">User Name</TableCell>
+            <TableCell align="left">Email</TableCell>
             <TableCell align="right">Phone</TableCell>
             <TableCell align="right">Address</TableCell>
-            <TableCell align="right">Department</TableCell>
+            <TableCell align="left">Department</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {employeeList.map((employee) => (
-            <TableRow key={employee.id}>
-              <TableCell component="th" scope="row">
-                {employee.firstName}
-              </TableCell>
-              <TableCell align="right">{employee.id}</TableCell>
-              <TableCell align="right">{employee.lastName}</TableCell>
-              <TableCell align="right">{employee.email}</TableCell>
+            <TableRow key={employee.phone}>
+              <TableCell align="left">{employee.name}</TableCell>
+              <TableCell align="left">{employee.username}</TableCell>
+              <TableCell align="left">{employee.email}</TableCell>
               <TableCell align="right">{employee.phone}</TableCell>
-              <TableCell align="right">{employee.address}</TableCell>
-              <TableCell align="right">{employee.department}</TableCell>
+              <TableCell align="right">{employee.address.street}</TableCell>
+              <TableCell align="left">{employee.company.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

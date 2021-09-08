@@ -1,19 +1,24 @@
 export interface Employee {
   id: number;
-  firstName: string;
-  lastName: string;
+  name: string;
+  username: string;
   email: string;
+  address: Address;
   phone: string;
-  address: string;
-  department: string;
+  website?: string;
+  company: Company;
 }
 
-export const createEmptyEmployee = (): Employee => ({
-  id: null,
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  address: '',
-  department: '',
-});
+export interface Address {
+  street: string;
+  suite?: string;
+  city?: string;
+  zipcode?: string;
+  geo?: { lat: string; lng: string };
+}
+
+export interface Company {
+  name: string;
+  catchPhrase?: string;
+  bs?: string;
+}
