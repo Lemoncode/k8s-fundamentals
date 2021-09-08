@@ -46,6 +46,7 @@ export const SignInComponent: React.FunctionComponent<Props> = ({
                   onChange={(event) =>
                     setFieldValue('name', event.target.value)
                   }
+                  required
                 />
                 <ErrorMessage
                   name="email"
@@ -59,6 +60,7 @@ export const SignInComponent: React.FunctionComponent<Props> = ({
                   onChange={(event) =>
                     setFieldValue('email', event.target.value)
                   }
+                  required
                 />
                 <ErrorMessage
                   name="password"
@@ -72,6 +74,7 @@ export const SignInComponent: React.FunctionComponent<Props> = ({
                   onChange={(event) =>
                     setFieldValue('password', event.target.value)
                   }
+                  required
                 />
               </div>
               <Button

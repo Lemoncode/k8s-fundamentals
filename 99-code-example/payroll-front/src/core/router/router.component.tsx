@@ -5,7 +5,7 @@ import {
   EmployeeScene,
   LoginScene,
   EmployeeListScene,
-  NewUserScene,
+  SignInScene,
 } from 'scenes';
 
 export const RouterComponent: React.FunctionComponent = () => {
@@ -20,7 +20,7 @@ export const RouterComponent: React.FunctionComponent = () => {
         <Route
           exact={true}
           path={[switchRoutes.register]}
-          component={NewUserScene}
+          component={SignInScene}
         />
         <Route
           exact={true}
