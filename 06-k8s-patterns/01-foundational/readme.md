@@ -3,5 +3,5 @@
 - Foundational Patterns
    * Predictable Demands √
    * Health Probe √
-   * Managed Lifecycle
+   * Managed Lifecycle - Pending review on Nodejs √
    * Automated Placement
