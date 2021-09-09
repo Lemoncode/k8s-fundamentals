@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import { routes } from 'core/router';
-import ChartComponent from './components/charts/chart.component';
+import ChartComponent from 'common/components/charts/chart.component';
 import { Employee } from './employee.vm';
 
 interface Props {
