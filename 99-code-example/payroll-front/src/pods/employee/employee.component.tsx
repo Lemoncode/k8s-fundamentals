@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import { routes } from 'core/router';
 import ChartComponent from './components/charts/chart.component';
 import { Employee } from './employee.vm';
 
@@ -17,12 +19,14 @@ interface Props {
 export const EmployeeComponent: React.FunctionComponent<Props> = ({
   employee,
 }) => {
+  const history = useHistory();
+  const handleClick = () => history.push(routes.employeeList);
   const dataChart = employee.payrollInfo.payrollList
+    .sort((a, b) => (a.date > b.date ? 1 : -1))
     .map((payroll) => ({
-      label: payroll.date.getFullYear().toString(),
+      label: `${payroll.date.getMonth()} / ${payroll.date.getFullYear()}`,
       amount: payroll.amount,
-    }))
-    .sort((a, b) => (a.label > b.label ? 1 : -1));
+    }));
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -31,6 +35,9 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
 
   return (
     <>
+      <Button color="primary" variant="contained" onClick={handleClick}>
+        Return Employee List
+      </Button>
       <Card variant="outlined">
         <CardContent>
           <Typography variant="h5" component="h2">
@@ -50,15 +57,12 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            Show chart
-          </Button>
           <IconButton
             onClick={handleExpandClick}
             aria-expanded={expanded}
             aria-label="show more"
           >
-            <ExpandMoreIcon />
+            Show payrolls <ExpandMoreIcon />
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
