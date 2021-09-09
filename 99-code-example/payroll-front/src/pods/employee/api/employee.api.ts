@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { employeeList } from 'common/mock-data/employee-list.mock-data';
+import { employeeList } from 'common/api/employee-list.mock-data';
 import { Employee } from './employee.api-model';
 
 export const getEmployee = (id: string): Promise<Employee> =>
