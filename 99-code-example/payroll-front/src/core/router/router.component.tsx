@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import { switchRoutes } from './routes';
+import { switchRoutes } from './router';
 import {
   EmployeeScene,
   LoginScene,
@@ -8,15 +8,19 @@ import {
   SignInScene,
 } from 'scenes';
 
-export const RouterComponent: React.FunctionComponent = () => {
+interface Props {
+  onLogin: (login) => void;
+}
+
+export const RouterComponent: React.FunctionComponent<Props> = ({
+  onLogin,
+}) => {
   return (
     <Router>
       <Switch>
-        <Route
-          exact={true}
-          path={[switchRoutes.root, switchRoutes.login]}
-          component={LoginScene}
-        />
+        <Route exact={true} path={[switchRoutes.root, switchRoutes.login]}>
+          <LoginScene onLogin={onLogin} />
+        </Route>
         <Route
           exact={true}
           path={[switchRoutes.register]}

@@ -6,7 +6,7 @@ import { AuthProvider } from 'core/providers/auth';
 export const App: React.FunctionComponent = () => {
   return (
     <AuthProvider>
-      <RouterComponent />;
+      <RouterComponent onLogin={AuthProvider} />;
     </AuthProvider>
   );
 };

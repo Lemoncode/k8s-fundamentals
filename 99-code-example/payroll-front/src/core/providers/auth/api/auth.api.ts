@@ -1,15 +1,13 @@
 import axios from 'axios';
-import { AuthUserContextModel } from './auth.api-model';
+import { AuthUserContextModel, Login } from './auth.api-model';
 import { authUsersMockData } from './auth-users.mock-data';
 
-export const validateLoginUser = async (
-  email: string,
-  password: string
-): Promise<boolean> =>
+export const validateLoginUser = async (login: Login): Promise<boolean> =>
   Promise.resolve(
     authUsersMockData.find(
       (userData) =>
-        userData.login.email === email && userData.login.password === password
+        userData.login.email === login.email &&
+        userData.login.password === login.password
     )
       ? true
       : false

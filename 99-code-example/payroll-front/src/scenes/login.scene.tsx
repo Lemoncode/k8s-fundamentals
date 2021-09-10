@@ -2,10 +2,14 @@ import React from 'react';
 import { AppLayout } from 'layouts';
 import { LoginContainer } from 'pods/login';
 
-export const LoginScene: React.FunctionComponent = () => {
+interface Props {
+  onLogin: (login) => void;
+}
+
+export const LoginScene: React.FunctionComponent<Props> = ({ onLogin }) => {
   return (
     <AppLayout>
-      <LoginContainer />
+      <LoginContainer onLogin={onLogin} />
     </AppLayout>
   );
 };
