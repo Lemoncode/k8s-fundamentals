@@ -93,6 +93,12 @@ Kubernetes supports many more flexible ways to configure the scheduling processe
 
 Node affinity works at node granularity, but Pod affinity is not limited to nodes and can express rules at multiple topology levels. Using the topologyKey field, and the matching labels, it is possible to enforce more fine-grained rules, which combine rules on domains like node, rack, cloud provider zone, and region.
 
+## Taints and Tolerations
+
+A more advanced feature that controls where `Pods` can be scheduled and are allowed to run is based on `taints` and `tolerations`. While node affinity is a property of Pods that allows them to choose nodes, `taints` and `tolerations` are the opposite. **They allow the nodes to control which Pods should or should not be scheduled on them**. A `taint` is a characteristic of the node, and when it is present, **it prevents Pods from scheduling onto the node unless the Pod has toleration for the taint**.
+
+Taints and tolerations allow for complex use cases like having dedicated nodes for an exclusive set of Pods, or force eviction of Pods from problematic nodes by tainting those nodes.
+
 ## References
 
 [Scheduling Configuration](https://kubernetes.io/docs/reference/scheduling/policies/)
