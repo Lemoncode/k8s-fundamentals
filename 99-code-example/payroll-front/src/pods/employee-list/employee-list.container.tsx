@@ -9,13 +9,11 @@ export const EmployeeListContainer: React.FunctionComponent = () => {
     createEmptyEmployeeList()
   );
 
-  const loadEmployeeList = async () => {
-    try {
-      const list = await getEmployeeList();
-      setEmployeeList(mapEmployeeListFromApiToVm(list));
-    } catch (error) {
-      console.log(error);
-    }
+  const loadEmployeeList = () => {
+    getEmployeeList()
+      .then(mapEmployeeListFromApiToVm)
+      .then(setEmployeeList)
+      .catch(console.log);
   };
 
   React.useEffect(() => {

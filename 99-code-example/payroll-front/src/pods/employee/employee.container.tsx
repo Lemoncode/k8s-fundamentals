@@ -11,13 +11,11 @@ export const EmployeeContainer: React.FunctionComponent = () => {
   );
   const { id } = useParams<{ id: string }>();
 
-  const loadEmployee = async () => {
-    try {
-      const employee = await getEmployee(id);
-      setEmployee(mapEmployeeFromApiToVm(employee));
-    } catch (error) {
-      console.log(error);
-    }
+  const loadEmployee = () => {
+    getEmployee(id)
+      .then(mapEmployeeFromApiToVm)
+      .then(setEmployee)
+      .catch(console.log);
   };
 
   React.useEffect(() => {
