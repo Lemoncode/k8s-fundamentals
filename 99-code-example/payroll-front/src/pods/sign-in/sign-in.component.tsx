@@ -7,13 +7,11 @@ import { SignIn } from './sign-in.vm';
 import * as classes from './sign-in.styles';
 
 interface Props {
-  showError: boolean;
   isRegister: boolean;
   handleSubmit: (signIn: SignIn) => void;
 }
 
 export const SignInComponent: React.FunctionComponent<Props> = ({
-  showError,
   isRegister,
   handleSubmit,
 }) => {
@@ -25,9 +23,6 @@ export const SignInComponent: React.FunctionComponent<Props> = ({
     <div className={classes.root}>
       <div className={classes.container}>
         <SignInFormComponent handleSubmit={handleSubmit} />
-        {showError && (
-          <div className={classes.error}>Email or password incorrect</div>
-        )}
         {isRegister && (
           <div className={classes.success}>
             Register user success.
