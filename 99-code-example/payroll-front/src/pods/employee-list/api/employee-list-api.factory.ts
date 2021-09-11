@@ -16,8 +16,8 @@ export const createEmployeeListApi = (): EmployeeListApi => {
       if (apiConfig.isMock) {
         return Promise.resolve(employeeList);
       }
-
-      return axios.get(`${baseApiUrl}/api/employee/`);
+      console.log(baseApiUrl);
+      return axios.get(`${baseApiUrl}/api/employee/`).then(({ data }) => data);
     },
   };
 };
