@@ -6,9 +6,11 @@ COPY app.ts .
 
 COPY config.ts .
 
-COPY routes.ts .
+COPY employee.model.ts .
 
-COPY helpers.ts .
+COPY employee-mock-data.ts .
+
+COPY routes.ts .
 
 COPY package*.json .
 

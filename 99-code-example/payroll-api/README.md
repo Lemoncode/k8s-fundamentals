@@ -40,7 +40,7 @@ docker login
 ```
 
 ```bash
-docker push <your user>/random-employee:<version>
+docker push <your user>/payroll-api:<version>
 ```
 
 Or running both by:
