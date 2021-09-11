@@ -1,0 +1,22 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: 
+  name: high-priority
+value: 1000
+globalDefault: false
+description: Pod high priority class 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-employee
+  labels:
+    name: random-employee
+spec:
+  containers:
+  - name: random-employee
+    image: jaimesalas/random-employee
+    imagePullPolicy: Always
+    resources: {}
+  priorityClassName: high-priority
+

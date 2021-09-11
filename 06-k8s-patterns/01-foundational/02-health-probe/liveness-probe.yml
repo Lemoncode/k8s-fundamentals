@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lieveness-check
+  labels:
+    name: lieveness-check
+spec:
+  containers:
+  - name: lieveness-check
+    image: jaimesalas/random-employee
+    imagePullPolicy: Always
+    env:
+      - name: DELAY_STARTUP
+        value: "20"
+    resources: {}
+    ports:
+      - containerPort: 3000
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+      initialDelaySeconds: 30
+

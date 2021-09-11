@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-check
+  labels:
+    name: readiness-check
+spec:
+  containers:
+  - name: readiness-check
+    image: jaimesalas/random-employee
+    imagePullPolicy: Always
+    resources: {}
+    readinessProbe:
+      exec:
+        command: [
+          "stat",
+          "/opt/app/service-ready"
+        ]
+            
