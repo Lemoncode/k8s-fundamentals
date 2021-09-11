@@ -1,0 +1,27 @@
+version: "3.9"
+
+services: 
+  payrollapi:
+    container_name: payrollapi
+    image: jaimesalas/payroll-api
+    networks: 
+      - payrollnet
+  
+
+  payrollfront:
+    container_name: payrollfront
+    image: jaimesalas/payroll-front
+    networks: 
+      - payrollnet
+
+  reverse: 
+    container_name: reverse
+    image: jaimesalas/reverse-proxy-payroll
+    networks: 
+      - payrollnet
+    ports: 
+      - "80:80"
+
+networks: 
+  payrollnet:
+    driver: bridge
