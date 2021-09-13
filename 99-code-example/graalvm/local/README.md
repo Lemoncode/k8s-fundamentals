@@ -3,10 +3,10 @@
 In this example a Java application will be executed with GraalVM locally.
 
 ## System requirements
-The computer used for this example is a GCP VM with the following technical details:
+The computer used for this example is a GCP VM (machine type _e2-custom_) with the following technical details:
 - OS: Ubuntu 18.04.1 LTS
-- CPU: Intel(R) Xeon(R) CPU @ 2.20GH
-- Memory: 8GB
+- CPU: 1x Intel(R) Xeon(R) CPU @ 2.30GH
+- Memory: 4,5GB
 
 ## Installing GraalVM
 Version 21.2.0 based on Java 11 has been used. First of all it is necessary to download it from [GraalVM's Github](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.2.0) and install it.
@@ -45,4 +45,13 @@ Compile it (`javac HelloWorld.java`) and execute it (`java HelloWorld`).
 
 ## Running a Spring application
 
-TO DO...
+A simple Spring application has been developed and it is located under folder [salary](./salary).
+It has only one single endpoint (**/api/salary**) that generates a random number between 1500 and 2500 and returns a JSON object similar to this one: _{"salary":2192}_
+
+In order to compile and run the API, please execute commands described below:
+```bash
+$ ./mvnw package
+$ ./mvnw spring-boot:run
+```
+
+Now it is possible to make an HTTP request to the API. With a command line, use `curl http://$API_URL:8080/api/salary`.
