@@ -18,6 +18,16 @@ interface Props {
   employee: Employee;
 }
 
+const mapPayrollDate = (date: string | Date) => {
+  if (date instanceof Date) {
+    return date;
+  }
+
+  return new Date(date);
+};
+
+const formatDate = (date: Date) => `${date.getMonth()} / ${date.getFullYear()}`;
+
 export const EmployeeComponent: React.FunctionComponent<Props> = ({
   employee,
 }) => {
@@ -26,7 +36,7 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
   const dataChart = employee.payrollInfo.payrollList
     .sort((a, b) => (a.date > b.date ? 1 : -1))
     .map((payroll) => ({
-      label: `${payroll.date.getMonth()} / ${payroll.date.getFullYear()}`,
+      label: formatDate(mapPayrollDate(payroll.date)),
       amount: payroll.amount,
     }));
   const [expanded, setExpanded] = React.useState(false);

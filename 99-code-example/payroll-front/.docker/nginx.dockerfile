@@ -1,5 +1,6 @@
 FROM node:14.17.0 as builder
 
+#TODO: Use sed
 ARG API_MOCK=true
 
 WORKDIR /opt/app

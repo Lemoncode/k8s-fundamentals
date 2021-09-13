@@ -19,7 +19,11 @@ export const createEmployeeApi = (): EmployeeApi => {
         );
       }
 
-      return axios.get(`${baseApiUrl}/api/employee/${id}`);
+      return axios.get(`${baseApiUrl}/api/employee/${id}`).then(({ data }) => {
+        console.log(data);
+        // return JSON.parse(data);
+        return data;
+      });
     },
   };
 };

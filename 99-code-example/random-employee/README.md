@@ -12,6 +12,14 @@ PORT=
 
 ## Running Locally
 
+Install dependencies
+
+```bash
+npm ci
+```
+
+Start up the application
+
 ```bash
 npm run start:development
 ```
