@@ -9,6 +9,7 @@ module.exports = merge(
     resolve: {
       alias: {
         '@material-ui/core': '@material-ui/core/es',
+        common: helpers.resolveFromRootPath('src/common'),
         core: helpers.resolveFromRootPath('src/core'),
         layouts: helpers.resolveFromRootPath('src/layouts'),
         pods: helpers.resolveFromRootPath('src/pods'),

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: post-start
+  labels:
+    name: post-start
+spec:
+  containers:
+  - name: post-start
+    image: jaimesalas/random-employee
+    resources:
+      limits: {}
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/sh", "-c", "sleep 15  && echo Hello from the postStart handler > /tmp/poststart"]
