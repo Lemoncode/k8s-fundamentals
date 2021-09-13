@@ -26,5 +26,7 @@ kubectl
 *.key
 
 external-resources/
-
+private-resources/
 configs/
+
+.env
