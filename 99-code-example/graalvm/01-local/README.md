@@ -1,6 +1,6 @@
 # Running on local
 
-In this example a Java application will be executed with GraalVM locally.
+In this example a couple of Java applications will be executed with GraalVM locally.
 
 ## System requirements
 The computer used for this example is a GCP VM (machine type _e2-custom_) with the following technical details:
