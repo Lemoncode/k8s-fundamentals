@@ -1,8 +1,5 @@
-import axios from 'axios';
-import { employeeList } from 'common/api/employee-list.mock-data';
-import { Employee } from './employee.api-model';
+import { createEmployeeApi } from './employee-api.factory';
 
-export const getEmployee = (id: string): Promise<Employee> =>
-  Promise.resolve(
-    employeeList.find((employee) => employee.id.toString() === id)
-  );
+const { getEmployeeFn } = createEmployeeApi();
+
+export const getEmployee = getEmployeeFn;
