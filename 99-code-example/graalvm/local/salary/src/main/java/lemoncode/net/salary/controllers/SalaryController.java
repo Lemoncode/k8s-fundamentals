@@ -1,6 +1,6 @@
 package lemoncode.net.salary.controllers;
 
-import lemoncode.net.salary.models;
+import lemoncode.net.salary.models.Salary;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
