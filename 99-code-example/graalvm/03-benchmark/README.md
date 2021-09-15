@@ -31,3 +31,12 @@ $ java --version
 > OpenJDK Runtime Environment (build 11.0.11+9-Ubuntu-0ubuntu2.18.04)
 > OpenJDK 64-Bit Server VM (build 11.0.11+9-Ubuntu-0ubuntu2.18.04, mixed mode, sharing)
 ```
+
+## Results
+The next picture shows the time spent making a total of 200 request to salary API in both VMs.
+
+![](./resources/results.png)
+
+As we can see, the difference between both approaches is not relevant (even OpenJDK had a bit better result). Next steps for further testing:
+- Increasing the total number of requests
+- Implementing a new API resource more complex in order to make use of the virtues of GraalVm
