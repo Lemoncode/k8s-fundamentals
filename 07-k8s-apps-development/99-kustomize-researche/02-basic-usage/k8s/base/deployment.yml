@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  selector:
+    matchLabels:
+      app: lc-app
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:alpine
+          resources: {}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
