@@ -597,3 +597,135 @@ spec:
 ```
 
 1. You can see the `secretKeyRef.name` used is automatically modified to follow the name defined by Kustomize
+
+## Change the image of a deployment
+
+There is a custom directive to allow changing of image or tag directly from the command line, very useful in case we need the image previously tagged by `ci system`
+
+```bash
+cd k8s/overlays/prod
+TAG_VERSION=3.4.5
+kustomize edit set image nginx:alpine=nginx:alpine:$TAG_VERSION
+```
+
+Or using Docker 
+
+```bash
+docker run -it \
+ --entrypoint /bin/sh \
+ -v `pwd`/k8s/overlays/prod:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7
+```
+
+From inside of container run:
+
+```bash
+cd /tmp
+TAG_VERSION=3.4.5
+/app/kustomize edit set image nginx:alpine=nginx:alpine:$TAG_VERSION
+```
+
+`./k8s/overlays/prod/kustomization.yml` will be modified as follows:
+
+```yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+patchesStrategicMerge:
+  - custom-env.yml
+  - replica-and-rollout-strategy.yml
+  - database-secret.yml
+
+resources:
+  - ../../base
+
+secretGenerator:
+  - literals:
+      - db-password=12345
+    name: lc-secret
+    type: Opaque
+
+images:
+  - name: nginx:alpine
+    newName: nginx:alpine
+    newTag: 3.4.5
+
+```
+
+And if we build:
+
+```bash
+kustomize build k8s/overlays/prod
+```
+Or using Docker:
+
+```bash
+docker run \
+ -v `pwd`:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7 build /tmp/k8s/overlays/prod
+```
+
+We get the following output:
+
+```yml
+apiVersion: v1
+data:
+  db-password: MTIzNDU=
+kind: Secret
+metadata:
+  name: lc-secret-gkmm8tkdd7
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lc-app
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: lc-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: lc-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+      - env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: db-passwordd
+              name: lc-secret-gkmm8tkdd7
+        - name: CUSTOM_ENV_VARIABLE
+          value: Value define by Kustomize
+        image: nginx:alpine:3.4.5
+        name: app
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+```
+
+## Conclusion
+
+We see in these examples how we can leverage the power of Kustomize to define your Kubernetes files without even using a templating system. All the modification files you made will be applied above the original files without altering it with curly braces and imperative modification.
+
+There is a lot of advanced topic in Kustomize, like the mixins and inheritance logic or other directive allowing to define a name, label or namespace to every created object… You can follow the [official Kustomize github repository](https://github.com/kubernetes-sigs/kustomize) to see advanced examples and documentation.

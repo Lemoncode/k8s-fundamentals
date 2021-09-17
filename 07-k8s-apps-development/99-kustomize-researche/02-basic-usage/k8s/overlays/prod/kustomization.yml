@@ -14,3 +14,8 @@ secretGenerator:
       - db-password=12345
     name: lc-secret
     type: Opaque
+
+images:
+  - name: nginx:alpine
+    newName: nginx:alpine
+    newTag: 3.4.5
