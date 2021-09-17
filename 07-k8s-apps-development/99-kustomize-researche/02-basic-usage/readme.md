@@ -243,3 +243,357 @@ docker run \
  -v `pwd`:/tmp \
  k8s.gcr.io/kustomize/kustomize:v3.8.7 build /tmp/k8s/overlays/prod
 ```
+
+We get the following output:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: lc-app
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: lc-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  selector:
+    matchLabels:
+      app: lc-app
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+      - env:
+        - name: CUSTOM_ENV_VARIABLE
+          value: Value define by Kustomize
+        image: nginx:alpine
+        name: app
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+```
+
+Our `env` block has been applied above our base and now the **CUSTOM_ENV_VARIABLE** will be defined inside our `deployment.yml`.
+
+## Change the number of replicas
+
+We will extend our base to define variables not already defined.
+
+> NOTE: You can also override some variables already present in your base files
+
+We would like to add information about the number of replica. 
+
+Create `./k8s/overlays/prod/replica-and-rollout-strategy.yml`
+
+```yml
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: lc-app
+spec:
+  replicas: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+```
+
+Now we have to update `k8s/overlays/prod/kustomization.yml`
+
+```diff
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+patchesStrategicMerge:
+  - custom-env.yml
++ - replica-and-rollout-strategy.yml
+```
+
+If we build this now:
+
+```bash
+kustomize build k8s/overlays/prod
+```
+
+Or using Docker:
+
+```bash
+docker run \
+ -v `pwd`:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7 build /tmp/k8s/overlays/prod
+```
+
+We get the following output:
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: lc-app
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: lc-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: lc-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+      - env:
+        - name: CUSTOM_ENV_VARIABLE
+          value: Value define by Kustomize
+        image: nginx:alpine
+        name: app
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+```
+
+## Use a secret define through command line
+
+`Kustomize` has a sub-command to edit a `kustomization.yaml` and create a secret for you. You just have to use it in your deployment like if it already exists.
+
+```bash
+cd k8s/overlays/prod
+kustomize edit add secret lc-secret --from-literal=db-password=12345
+```
+
+> Note: You can also use secret comming from properties file (with `--from-file=file/path`) or from env file (with `--from-env-file=env/path.env`)
+
+Or using Docker 
+
+```bash
+docker run -it \
+ --entrypoint /bin/sh \
+ -v `pwd`/k8s/overlays/prod:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7
+```
+
+From inside of container run:
+
+```bash
+cd /tmp
+/app/kustomize edit add secret lc-secret --from-literal=db-password=12345
+```
+
+If we run:
+
+```bash
+kustomize build k8s/overlays/prod
+```
+Or using Docker:
+
+```bash
+docker run \
+ -v `pwd`:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7 build /tmp/k8s/overlays/prod
+```
+
+We get the following output:
+
+```yml
+apiVersion: v1
+data:
+  db-password: MTIzNDU=
+kind: Secret
+metadata:
+  name: lc-secret-gkmm8tkdd7
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lc-app
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: lc-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: lc-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+      - env:
+        - name: CUSTOM_ENV_VARIABLE
+          value: Value define by Kustomize
+        image: nginx:alpine
+        name: app
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+```
+
+[Decode base64 online](https://codebeautify.org/base64-decode)
+
+> NOTE: The secret name is `lc-secret-gkmm8tkdd7` instead `lc-secret`. This is made to trigger a rolling update of deployemnt if secrets content is changed.
+
+If we want to use the secret, we have to add a new layer:
+
+Create `k8s/overlays/prod/database-secret.yml`
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: lc-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          env:
+          - name: "DB_PASSWORD"
+            valueFrom: 
+              secretKeyRef:
+                key: db-passwordd
+                name: lc-secret
+```
+Now we have to update `k8s/overlays/prod/kustomization.yml`
+
+```diff
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+patchesStrategicMerge:
+  - custom-env.yml
+  - replica-and-rollout-strategy.yml
++ - database-secret.yml
+
+resources:
+  - ../../base
+
+secretGenerator:
+  - literals:
+      - db-password=12345
+    name: lc-secret
+    type: Opaque
+
+```
+
+If we run:
+
+```bash
+kustomize build k8s/overlays/prod
+```
+Or using Docker:
+
+```bash
+docker run \
+ -v `pwd`:/tmp \
+ k8s.gcr.io/kustomize/kustomize:v3.8.7 build /tmp/k8s/overlays/prod
+```
+
+We get the following output:
+
+```yml
+apiVersion: v1
+data:
+  db-password: MTIzNDU=
+kind: Secret
+metadata:
+  name: lc-secret-gkmm8tkdd7
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lc-app
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: lc-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lc-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: lc-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lc-app
+    spec:
+      containers:
+      - env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: db-passwordd
+              name: lc-secret-gkmm8tkdd7 # 1
+        - name: CUSTOM_ENV_VARIABLE
+          value: Value define by Kustomize
+        image: nginx:alpine
+        name: app
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+```
+
+1. You can see the `secretKeyRef.name` used is automatically modified to follow the name defined by Kustomize

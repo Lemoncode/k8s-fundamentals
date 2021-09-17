@@ -39,3 +39,9 @@ docker run k8s.gcr.io/kustomize/kustomize:v3.8.7 version
 [Kustomize 101 - The right way to do templating on Kubernetes](https://blog.stack-labs.com/code/kustomize-101/)
 
 [Kustomize GitHub Repository](https://github.com/kubernetes-sigs/kustomize)
+
+[Kustomize components](https://kubectl.docs.kubernetes.io/guides/config_management/components/)
+
+[json 6902 standard](https://datatracker.ietf.org/doc/html/rfc6902)
+
+[kustomize introduction official guide](https://kubectl.docs.kubernetes.io/guides/introduction/kustomize/)
