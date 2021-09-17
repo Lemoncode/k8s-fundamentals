@@ -3,3 +3,6 @@ kind: Kustomization
 
 bases:
   - ../../base
+
+patchesStrategicMerge:
+  - custom-env.yml
