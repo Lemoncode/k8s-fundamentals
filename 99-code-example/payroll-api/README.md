@@ -71,3 +71,34 @@ Start up the Redis container
 ```bash
 docker run -d --rm -p 6379:6379 redis:6.2.5
 ```
+
+## Using MONGO on local
+
+```ini
+PORT=3000
+MONGO_ENABLED=true
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_USER=admin
+MONGO_PASSWORD=admin
+MONGO_DB=payrolldb
+```
+
+Start up the Mongo container `cd` to `99-code-example` and run:
+
+```bash
+docker run -d -p 27017:27017 \
+  --name mongo \
+  -v `pwd`/mongo:/docker-entrypoint-initdb.d \
+  -v payrolldb:/data/db \
+  -e MONGO_INITDB_ROOT_USERNAME="admin" \
+  -e MONGO_INITDB_ROOT_PASSWORD="admin" \
+  -e MONGO_INITDB_DATABASE="payrolldb" \
+  mongo:4.4.7
+```
+
+To connect to the running instance
+
+```bash
+docker exec -it mongo mongo --username admin --password admin
+```
