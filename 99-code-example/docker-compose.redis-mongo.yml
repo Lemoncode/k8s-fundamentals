@@ -1,0 +1,55 @@
+version: "3.9"
+
+services: 
+  mongo:
+    build: ./mongo
+    volumes: 
+      - payrolldb:/data/db
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=payrolldb
+
+  cache:
+    container_name: cache
+    image: redis:6.2.5
+    networks: 
+      - payrollnet
+     
+  payrollapi:
+    container_name: payrollapi
+    image: jaimesalas/payroll-api
+    networks: 
+      - payrollnet
+    environment: 
+      - PORT=3000
+      - CACHE_ENABLED=true
+      - REDIS_PORT=6379
+      - REDIS_HOST=cache 
+      - MONGO_ENABLED=true
+      - MONGO_HOST=localhost
+      - MONGO_PORT=27017
+      - MONGO_USER=admin
+      - MONGO_PASSWORD=admin
+      - MONGO_DB=payrolldb
+    depends_on: 
+      - cache
+      - mongo
+  
+  payrollfront:
+    container_name: payrollfront
+    image: jaimesalas/payroll-front
+    networks: 
+      - payrollnet
+
+  reverse: 
+    container_name: reverse
+    image: jaimesalas/reverse-proxy-payroll
+    networks: 
+      - payrollnet
+    ports: 
+      - "80:80"
+
+networks: 
+  payrollnet:
+    driver: bridge
