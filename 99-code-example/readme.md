@@ -24,6 +24,12 @@ docker-compose -f docker-compose.redis.yml down
 docker-compose -f docker-compose.redis-mongo.yml up -d 
 ```
 
+To ensure dumping data
+
+```bash
+docker-compose -f docker-compose.redis-mongo.yml up -d --build db
+``` 
+
 ```bash
 docker-compose -f docker-compose.redis-mongo.yml down
 ```

@@ -12,7 +12,9 @@ export const employeeRouter = (cacheService?: CacheService, dalService?: DalServ
     let result;
 
     if (dalService) {
+      console.log('requesting to dal');
       result = await dalService.getEmployees();
+      console.log('dal response', result);
     } else {
       result = employeeList;
     }
@@ -33,7 +35,8 @@ export const employeeRouter = (cacheService?: CacheService, dalService?: DalServ
   };
 
   router.get("/", async (_, res) => {
-    res.send(await retrieveEmployeeList());
+    const result = await retrieveEmployeeList();
+    res.send(result);
   });
 
   const cacheEmployee = async (key: string, employee: Employee | undefined | null) => {

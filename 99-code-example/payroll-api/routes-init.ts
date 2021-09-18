@@ -21,8 +21,8 @@ export const routesInit = async (app: Express) => {
   if (config.mongo.isEnabled) {
     console.log('mongo is enabled');
     const dalClient = await getDalClient();
-    // dalService = dal(dalClient)
-    // console.log('mongo dal created');
+    dalService = dal(dalClient)
+    console.log('mongo dal created');
   }
 
   app.use('/api/employee', employeeRouter(cacheService, dalService));

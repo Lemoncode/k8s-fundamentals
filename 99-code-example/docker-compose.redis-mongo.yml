@@ -1,7 +1,8 @@
 version: "3.9"
 
 services: 
-  mongo:
+  db:
+    container_name: db
     build: ./mongo
     volumes: 
       - payrolldb:/data/db
@@ -9,6 +10,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=payrolldb
+    networks: 
+      - payrollnet
 
   cache:
     container_name: cache
@@ -27,14 +30,14 @@ services:
       - REDIS_PORT=6379
       - REDIS_HOST=cache 
       - MONGO_ENABLED=true
-      - MONGO_HOST=localhost
+      - MONGO_HOST=db
       - MONGO_PORT=27017
       - MONGO_USER=admin
       - MONGO_PASSWORD=admin
       - MONGO_DB=payrolldb
     depends_on: 
       - cache
-      - mongo
+      - db
   
   payrollfront:
     container_name: payrollfront
@@ -49,7 +52,13 @@ services:
       - payrollnet
     ports: 
       - "80:80"
+    depends_on: 
+      - payrollapi
+      - payrollfront
 
 networks: 
   payrollnet:
     driver: bridge
+
+volumes: 
+  payrolldb:

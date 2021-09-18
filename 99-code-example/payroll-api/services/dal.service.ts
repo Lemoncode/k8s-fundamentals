@@ -9,11 +9,11 @@ export interface DalService {
 export const dal = (dalClient: Db) => {
   return {
     async getEmployees(): Promise<Employee[]> {
-      const documents = await dalClient.collection<Employee>('employees').find().toArray();
+      const documents = await dalClient.collection<Employee>('employee').find().toArray();
       return documents;
     },
     async getEmployee(id: number): Promise<Employee | null> {
-      return await dalClient.collection<Employee>('employees').findOne({ id })
+      return await dalClient.collection<Employee>('employee').findOne({ id })
     }
   };
 }
