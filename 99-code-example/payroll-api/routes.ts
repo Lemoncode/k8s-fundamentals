@@ -4,6 +4,7 @@ import { employeeList } from "./employee-mock-data";
 import { Employee } from './employee.model';
 
 export const employeeRouter = (cacheService?: CacheService) => {
+  console.log('employee router started');
   const router = Router();
 
   router.get("/", (_, res) => {
