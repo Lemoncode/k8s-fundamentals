@@ -39,6 +39,12 @@ To build without mocking:
 docker build --build-arg API_MOCK=false -t jaimesalas/payroll-front -f ./.docker/nginx.dockerfile .
 ```
 
+Or run
+
+```bash
+./build-push.sh jaimesalas/payroll-front
+```
+
 ## TODO
 
 Investigate how to integrate axios with mock requests - https://dev.to/asantos00/using-mocked-apis-to-increase-developer-productivity-13a6

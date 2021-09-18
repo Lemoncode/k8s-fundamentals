@@ -23,3 +23,9 @@ docker run -d --name reverse \
     -p 80:80 \
     nginx
 ```
+
+## Building and Publishing image
+
+```bash
+./build-push.sh "jaimesalas/reverse-proxy-payroll"
+```
