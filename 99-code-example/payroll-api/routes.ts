@@ -13,6 +13,7 @@ export const employeeRouter = (cacheService?: CacheService) => {
   const cacheEmployee = async (key: string, employee: Employee | undefined) => {
     if (cacheService) {
       await cacheService.setValue(key, JSON.stringify(employee));
+      console.log('caching value', employee);
     }
   };
 
@@ -20,6 +21,7 @@ export const employeeRouter = (cacheService?: CacheService) => {
     let employee;
     if (cacheService) {
       employee = await cacheService?.getValue(id);
+      console.log('cached value', employee);
     }
 
     if (!employee) {
