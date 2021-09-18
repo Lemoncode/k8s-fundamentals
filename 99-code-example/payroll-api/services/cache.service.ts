@@ -5,7 +5,7 @@ export interface CacheService {
   getValue(key: string): Promise<string | null>;
 }
 
-export const cache = (client: RedisClient) => {
+export const cache = (client: RedisClient): CacheService => {
   return {
     setValue(key: string, value: string): Promise<void> {
       return new Promise((resolve, reject) => {

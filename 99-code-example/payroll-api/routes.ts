@@ -2,16 +2,44 @@ import { Router } from "express";
 import { CacheService } from './services/cache.service';
 import { employeeList } from "./employee-mock-data";
 import { Employee } from './employee.model';
+import { DalService } from './services/dal.service';
 
-export const employeeRouter = (cacheService?: CacheService) => {
+export const employeeRouter = (cacheService?: CacheService, dalService?: DalService) => {
   console.log('employee router started');
   const router = Router();
 
-  router.get("/", (_, res) => {
-    res.send(employeeList);
+  const retrieveEmployeeList = async () => {
+    let result;
+
+    if (dalService) {
+      console.log('requesting to dal');
+      result = await dalService.getEmployees();
+      console.log('dal response', result);
+    } else {
+      result = employeeList;
+    }
+
+    return result;
+  }
+
+  const retrieveEmployee = async (id: string) => {
+    let result;
+
+    if (dalService) {
+      result = await dalService.getEmployee(+id);
+    } else {
+      result = employeeList.find((e) => e.id === +id);
+    }
+
+    return result;
+  };
+
+  router.get("/", async (_, res) => {
+    const result = await retrieveEmployeeList();
+    res.send(result);
   });
 
-  const cacheEmployee = async (key: string, employee: Employee | undefined) => {
+  const cacheEmployee = async (key: string, employee: Employee | undefined | null) => {
     if (cacheService) {
       await cacheService.setValue(key, JSON.stringify(employee));
       console.log('caching value', employee);
@@ -26,7 +54,7 @@ export const employeeRouter = (cacheService?: CacheService) => {
     }
 
     if (!employee) {
-      employee = employeeList.find((e) => e.id === +id);
+      employee = await retrieveEmployee(id);
       await cacheEmployee(id, employee);
     }
 
