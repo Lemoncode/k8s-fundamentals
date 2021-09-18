@@ -6,6 +6,7 @@ import { cache } from './services/cache.service';
 
 export const routesInit = (app: Express) => {
   let cacheService;
+
   if (config.redis.isEnabled) {
     const redisClient = getRedisClient();
     cacheService = cache(redisClient);
