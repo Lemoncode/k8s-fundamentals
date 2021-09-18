@@ -5,6 +5,7 @@ const { user, port, password, host, dbName } = config.mongo;
 
 let db: Db;
 const uri = `mongodb://${user}:${password}@${host}:${port}`;
+console.log(uri);
 const mongoClient = new MongoClient(uri);
 
 export const getDalClient = async () => {

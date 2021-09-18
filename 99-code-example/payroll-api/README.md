@@ -1,5 +1,9 @@
 # Payroll API
 
+## Requirements
+
+node version > 12
+
 ## Environment Variables
 
 ```ini

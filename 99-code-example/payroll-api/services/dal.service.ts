@@ -3,9 +3,17 @@ import { Db } from 'mongodb';
 
 export interface DalService {
   getEmployees(): Promise<Employee[]>;
-  getEmployee(id: number): Promise<Employee>;
+  getEmployee(id: number): Promise<Employee | null>;
 }
 
-export const dal = (client: Db) => {
-  return {};
+export const dal = (dalClient: Db) => {
+  return {
+    async getEmployees(): Promise<Employee[]> {
+      const documents = await dalClient.collection<Employee>('employees').find().toArray();
+      return documents;
+    },
+    async getEmployee(id: number): Promise<Employee | null> {
+      return await dalClient.collection<Employee>('employees').findOne({ id })
+    }
+  };
 }
