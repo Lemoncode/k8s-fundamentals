@@ -289,4 +289,3 @@ $ kubectl delete deployment my-nginx
 $ kubectl delete pod nginx-standalone
 $ minikube tunnel --cleanup
 ```
-
