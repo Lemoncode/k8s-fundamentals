@@ -216,3 +216,8 @@ Update a deployment by changing the YAML and applying changes to the cluster wit
 # Apply changes made in a YAML file
 kubectl apply -f file.deployment.yml
 ```
+
+## References
+
+https://stackoverflow.com/questions/47369351/kubectl-apply-vs-kubectl-create
+https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl_create/
