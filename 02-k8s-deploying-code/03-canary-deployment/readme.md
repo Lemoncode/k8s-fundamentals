@@ -1,6 +1,6 @@
 ## Introduction
 
-In a nutshell, this is a way to run two version of a deployment in production at the same time. Is a way to test out the new version, not have a lot of people hit it, though, Have most of the people hit the older version and then monitor that new version to make sure everything's good. And then if it is, we can cut over to it.
+In a nutshell, this is a way to run two version of a deployment in production at the same time. Is a way to test out the new version, not have a lot of people hit it, and have most of the people hit the older version and then monitor that new version to make sure everything's good. And then if it is, we can cut over to it.
 
 ## Understanding Canary Deployments
 
