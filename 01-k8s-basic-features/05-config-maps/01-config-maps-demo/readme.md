@@ -399,8 +399,9 @@ const handler = (_, response) => {
             'ENEMIES' (from ConfigMap): ${process.env.enemies} <br />
             'LIVES' (from ConfigMap): ${process.env.lives} <br />
         `);
+        /*diff*/
         response.write(`'enimies.cheat.level' (from volume): ${fileData}`);
-        
+        /*diff*/
         response.end();
     });
 };
