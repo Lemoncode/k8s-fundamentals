@@ -16,6 +16,8 @@ Inside a `Pod` we can define `initContainers` entry, this give us the cahnce to 
 
 ## Init Container Demo
 
-[Init Container Demo](01-init-pattern/01-init-container/readme.md)
+[Init Container Demo](./01-init-container/readme.md)
 
 ## Init Git Container Demo
+
+[Init Git Sync Demo](./02-init-git-sync/readme.md)
