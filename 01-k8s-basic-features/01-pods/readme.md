@@ -10,7 +10,9 @@
     - Scale horizontally by adding Pod replicas
     - Pods live and die but never come back to life.
 
-Pods within a node are going to have a unique IP address, and this by default will be a cluster IP address it's called, and then the containers within pods can have their own unique ports. So pod containers share the same network namespace, they share the same IP. Now they're going to use the same loopback network interface within a pod, that's localhost so if one needs to talk to another, that's going to be very simple, and just using that local loopback. Now container processes within the same pod need to have a different port. The pod itself gets a unique IP address, but the ports if you had multiple containers within a pod to be unique. 
+Pods within a node have a unique IP address, and this by default will be a cluster IP, and then the containers within pods can have their own unique ports. Pod containers share the same network namespace, they share the same IP. They're going to use the same loopback network interface within a pod, that's localhost, so if one needs to talk to another, that's going to be very simple, and just using that local loopback. 
+
+Container processes within the same pod need to have a different port. The pod itself gets a unique IP address, but the ports if you had multiple containers within a pod to be unique. 
 
 * Pod containers share the same Network namespace (share IP/port)
 * Pod containers have the same loopback network interface (localhost)
@@ -57,9 +59,13 @@ kubectl get all
 kubectl port-forward [name-of-pod] 8080:80
 ```
 
-As a pod is brought to life, it's going to get a cluster IP address. Now a cluster IP address is only exposed to the nodes and the pods within a given cluster and it's not accesible outside of the cluster. We need to expose the pod port to be able to get be able to get to it, we can run __kubectl port-fordward command__, give it a pod name, and then we can give it ports. 
+As a `pod` is started, it's going to get a cluster IP address. A cluster IP address is only exposed to the nodes and the pods within a given cluster and it's not accesible outside of the cluster. 
 
-_8080_ is the extenal pod, _80_ internal port, that would be the port that the container is actually running on inside the pod, but what it does is it exposes that port through the nodes so that we can all into it. This is kind of the most basic way that you can do this port fordwarding.
+We need to expose the pod port to be able to get be able to get to it, we can run __kubectl port-fordward command__, give it a pod name, and then we can give it ports. 
+
+_8080_ is the extenal pod, _80_ internal port, that would be the port that the container is actually running on inside the `pod`, but what it does is it exposes that port through the nodes so that we can all into it. 
+
+This is kind of the most basic way that you can do this port fordwarding.
 
 * Deleting a Pod
     - Running a Pod will cause a deployment to be created
@@ -72,7 +78,7 @@ kubectl delete pod [name-of-pod]
 Will cause pod to be recreated
 
 ```bash
-kubectl delete deployement [name-of-deployment]
+kubectl delete deployment [name-of-deployment]
 ```
 
 ## kubectl and Pods
@@ -142,7 +148,7 @@ spec: # 4
 kubetcl create -f file.pod.yml --dry-run --validate=true
 
 # Create a Pod from YAML
-# Will error if Pod alreadt
+# Will error if Pod already exists
 kubectl create -f file.pod.yml
 ```
 
@@ -185,7 +191,7 @@ metadata:
 * --save-config causes the resource's configuration settings to be saved in the annotations
 * Having this allows in-place changes to be made to a Pod in the future using __kubectl apply__
 
-In place/non-disruotive changes can also be made to a Pod using _kubectl edit_ or _kubectl patch_.
+In place/non-disructive changes can also be made to a Pod using _kubectl edit_ or _kubectl patch_.
 
 * Deleting a Pod
     - To delete a Pod use kubectl
