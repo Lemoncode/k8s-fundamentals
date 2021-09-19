@@ -6,7 +6,7 @@ With Canary Deployments we deployed two versions of a deployment at the same tim
 
 > Have you ever deployed an application to production and experience problems? 
 
-Now, as I put in pregnancies don't laugh too much because I think we all have hit that scenario regardless of how much testing you might have done in your QA, staging, test, whatever you call it, environment problems just come up from time to time. 
+We all have hit this scenario regardless of how much testing you might have done in your QA, staging, test, whatever you call it, environment problems just come up from time to time. 
 
 Blue / Green simple definition: 
 
@@ -78,9 +78,9 @@ So the first thing we're gonna do is create a standard kubernetes service in yam
 
 * app: nginx
 * role: blue-test - Clarify what is for.
-* env: test - This might run on production environment, we're going to use test service to test things, so we're using this label to set the environment.Now, don't confuse this with a dedicated test environment. This is more just a different route to get into these pods, so that sums up the metadata for this particular blue test service. 
+* env: test - This might run on production environment, we're going to use test service to test things, so we're using this label to set the environment. Now, don't confuse this with a dedicated test environment. This is more just a different route to get into these pods, so that sums up the metadata for this particular blue test service. 
 
-Now jumping down to the spec, 
+Now jumping down to the `spec section` 
 
 ```yaml
 kind: Service
@@ -198,7 +198,7 @@ But looking down the selector, you'll notice this is `role: blue` again, and the
 
 Now the final thing is noticed the `image` in this case, this would be what we call our stable deployment. And then once this is ready to go would use our `kubectl commands` whether its create or apply, and we get our test service, our public service and demployment out there. 
 
-For the green, we're going to do the same thing. We're going to create a test service first, get that green deployment out there tested out. And then once it's good we could change over to the green.. 
+For the green, we're going to do the same thing. We're going to create a test service first, get that green deployment out there tested out. And then once it's good we could change over to the green. 
 
 So in changing from blue to green, what we can do is simply change the selector from `role: blue` to `role green`. 
 
@@ -213,13 +213,18 @@ kubectl apply -f file.service.yml
 kubectl set selector svc [service-name] 'role=green'
 ```
 
+## Creating K8s Objects for Blue / Green Deployment
+
+[Creating K8s Objects for Blue / Green Deployment](./01-blue-green-deployment/readme.md)
+
+
 ## Blue-Green Deployments - The Blue Deployment Demo
 
-[Blue-Green Blue Deployment Demo](02-k8s-deploying-code/04-blue-green-deployment/01-blue-green-deployment/blue-deployment.readme.md)
+[Blue-Green Blue Deployment Demo](./01-blue-green-deployment/blue-deployment.readme.md)
 
 ## Blue-Green Deployments  - The Green Deployment Demo
 
-[Blue-Green Green Deployment Demo](02-k8s-deploying-code/04-blue-green-deployment/01-blue-green-deployment/green-deployment.readme.md)
+[Blue-Green Green Deployment Demo](./01-blue-green-deployment/green-deployment.readme.md)
 
 ### Cleanup
 
