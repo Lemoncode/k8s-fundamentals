@@ -120,7 +120,7 @@ Reading: 0 Writing: 1 Waiting: 0
 root@web:/# 
 ```
 
-Remember that `Prometheus` can't read this, for `Prometheus`, we have the adapter container listening on `localhost:9113/metrics`
+Remember tha `Prometheus` can't read this, for `Prometheus`, we have the adapter container listening on `localhost:9113/metrics`
 
 ```bash
 root@web:/# curl localhost:9113/metrics
