@@ -82,7 +82,7 @@ spec:
 
 1. Kubernetes API version and resource type (Deployment)
 2. Metedata about the Deployment. It contains name for deployment, but it also has _labels_. Labels can be used when you're querying multiple resources. Also can be used to tie things together.
-3. The selector is used to "select" the template to use (based on labels). The selector property has a _matchLabels_. Only matched on one label, and the key or the name of that label is tier and the value frontend. What's going to do is if you look down a little bit lower, notice that in the metadata for the template we have _labels tier: frontend_. So the template and the template spec that you see right below it is now going to be hooked to the selector for this deployment. In fact, any label out there of _tier: frontend_, in a Pod template even, would be hooked to this deployement. We can put the template in a separate file.
+3. The selector is used to "select" the template to use (based on labels). The selector property has a _matchLabels_. Only matched on one label, and the key or the name of that label is `tier` and the value `frontend`. If you look down a little bit lower, notice that in the metadata for the template we have _labels tier: frontend_. So the template and the template spec that you see right below it is now going to be hooked to the selector for this deployment. Any label out there of _tier: frontend_, in a Pod template even, would be hooked to this deployment. We can put the template in a separate file.
 4. Template to use to create the Pod/Containers (note that the selector matches the label)
 
 We can define our probes for health checking right here:
@@ -119,14 +119,13 @@ kubectl create -f file.deployment.yml
 
 Creating a Deployment: Use the _kubectl_ command along with the --filename or -f switch.
 
-Creating or Applying Changes: Use the _kubectl apply_ command along with the --filenaem or -f switch
+Creating or Applying Changes: Use the _kubectl apply_ command along with the --filename or -f switch
 
 ```bash
-# Alternate way to create or apply changes to a
-# Deployment ffrom YAML
+# Alternate way to create or apply changes to a Deployment from YAML
 kubectl apply -f file.deployment.yml
 
-# Use --save-configwhen you want to use
+# Use --save-config when you want to use
 # kubectl apply in the future
 kubectl apply -f file.deployment.yml --save-config
 ```
@@ -217,3 +216,8 @@ Update a deployment by changing the YAML and applying changes to the cluster wit
 # Apply changes made in a YAML file
 kubectl apply -f file.deployment.yml
 ```
+
+## References
+
+https://stackoverflow.com/questions/47369351/kubectl-apply-vs-kubectl-create
+https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl_create/
