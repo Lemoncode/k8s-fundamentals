@@ -145,4 +145,4 @@ spec:
 
 ## Secrets Demo
 
-> TODO: Create simple demo
+[mongo deployement](01-k8s-basic-features/06-secrets/02-secrets-demo)
