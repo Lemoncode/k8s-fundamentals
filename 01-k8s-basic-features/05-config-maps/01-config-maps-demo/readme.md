@@ -23,8 +23,6 @@ www.listen(9000);
 ```
 
 1. We're reading the environment variable `ENEMIES` from global Nodejs object.
-2. We're reading the data from `/etc/config/enemies.cheat.level`
-
 
 Create `app/Dockerfile`
 
@@ -79,7 +77,7 @@ app-settings       4      67s
 
 To make this image available in a `Kubernetes Deployment`, we need to rely over a registry. During the following demos we will be using `Docker Hub`, but it's good to now that we have other options like using `minikube` internals.
 
-Start by `cd` into Dockerfile directory.
+Start by `cd` into Dockerfile directory host, `cd` to `app`.
 
 > Reference: https://minikube.sigs.k8s.io/docs/handbook/pushing/
 
@@ -87,7 +85,7 @@ To point your terminal to use the docker daemon inside minikube run this:
 
 `eval $(minikube docker-env)`
 
-Now any ‘docker’ command you run in this current terminal will run against the docker inside minikube cluster, so if you do the following commands, it will show you the containers inside the minikube, inside minikube’s VM or Container.
+Now any `docker` command you run in this current terminal will run against the docker inside minikube cluster, so if you do the following commands, it will show you the containers inside the minikube, inside minikube’s VM or Container.
 
 `docker ps`
 
@@ -97,11 +95,13 @@ Now you can ‘build’ against the docker inside `minikube`, which is instantly
 Build Docker image
 
 ```bash
-$ docker build -t node-configmap .
+docker build -t node-configmap .
+```
 
+```bash
 # To rely on DockeHub
-$ docker build -t jaimesalas/node-configmap .
-$ docker push jaimesalas/node-configmap
+docker build -t jaimesalas/node-configmap .
+docker push jaimesalas/node-configmap
 ```
 
 We can check that the image has been created by running:
@@ -114,6 +114,10 @@ node-configmap                            latest     4eb04892586b   10 seconds a
 ```
 
 To verify your terminal is using minikuber’s docker-env you can check the value of the environment variable MINIKUBE_ACTIVE_DOCKERD to reflect the cluster name.
+
+```bash
+echo ${MINIKUBE_ACTIVE_DOCKERD}
+```
 
 > Tip 1: Remember to turn off the imagePullPolicy:Always (use imagePullPolicy:IfNotPresent or imagePullPolicy:Never) in your yaml file. Otherwise Kubernetes won’t use your locally build image and it will pull from the network.
 
@@ -181,19 +185,19 @@ spec:
 Now let's move to `K8s` directory and create our `Deployment`
 
 ```bash
-$ kubectl apply -f ./node.deployment.yml
+kubectl apply -f ./node.deployment.yml
 ```
 
 Or 
 
 ```bash
-$ kubectl create -f ./node.deployment.yml --save-config
+kubectl create -f ./node.deployment.yml --save-config
 ```
 
 Check that Deployment has been successfuly deployed:
 
 ```bash
-$ kubectl get all
+kubectl get all
 NAME                                  READY   STATUS    RESTARTS   AGE
 pod/node-configmap-5b474b7595-672qp   1/1     Running   0          6s
 
@@ -210,15 +214,14 @@ replicaset.apps/node-configmap-5b474b7595   1         1         1       6s
 Now to see our deployment on our local browser, we can run:
 
 ```bash
-$ kubectl port-forward <pod-name> 9000
+kubectl port-forward <pod-name> 9000
 ```
 
 ```bash
-$ kubectl port-forward node-configmap-5b474b7595-672qp 9000
+kubectl port-forward node-configmap-5b474b7595-672qp 9000
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
-
 
 ### Step 5. Reading environment variables in Deployment
 
@@ -306,9 +309,16 @@ www.listen(9000);
 
 ```
 
+Build Docker image
+
 ```bash
-$ docker build -t jaimesalas/node-configmap .
-$ docker push jaimesalas/node-configmap
+docker build -t node-configmap .
+```
+
+```bash
+# To rely on DockeHub
+docker build -t jaimesalas/node-configmap .
+docker push jaimesalas/node-configmap
 ```
 
 Update `K8s/node.deployment.yml`
@@ -384,15 +394,19 @@ First lets update our code `server.js`
 
 ```js
 const http = require('http'), 
+      /*diff*/
       fs = require('fs');
-
+      /*diff*/
 const handler = (_, response) => {
+    /*diff*/
     fs.readFile('/etc/config/enemies.cheat.level', 'UTF-8', (err, fileData) => {
-        
+    /*diff*/
+        /*diff*/    
         if (err) {
             console.log(err);
             return;
         }
+        /*diff*/
 
         response.writeHead(200, { "Content-Type": "text/html" });
         response.write(`
@@ -410,16 +424,21 @@ const www = http.createServer(handler);
 www.listen(9000);
 
 ```
+Build the image
+
+```bash
+docker build -t node-configmap .
+```
 
 Build and push a new image 
 
 ```bash
+# To rely on Docker Hub
 $ docker build -t jaimesalas/node-configmap .
 $ docker push jaimesalas/node-configmap
 ```
 
 Update `K8s/node.deployment.yml`
-
 
 ```yaml
 apiVersion: apps/v1
@@ -435,12 +454,12 @@ spec:
       labels:
         app: node-configmap
     spec:
-
+      # diff
       volumes:
         - name: app-config-vol
           configMap:
             name: app-settings
-
+      # diff
       containers:
       - name: node-configmap
         image: jaimesalas/node-configmap
@@ -448,11 +467,11 @@ spec:
         resources: {}
         ports:
         - containerPort: 9000
-        
+        # diff
         volumeMounts:
           - mountPath: /etc/config
             name: app-config-vol
-
+        # diff
         envFrom:
           - configMapRef:
               name: app-settings
@@ -460,6 +479,7 @@ spec:
 
 ```
 
+Update the deployment
 
 ```bash
 $ kubectl apply -f ./node.deployment.yml
@@ -488,6 +508,13 @@ replicaset.apps/node-configmap-6f77855478   0         0         0       12m
 $ kubectl port-forward node-configmap-5bf6576cb9-wkqcn 9000
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
+```
+
+We can also have a look on the mounting files on running container 
+
+```bash
+kubectl exec -it node-configmap-5bf6576cb9-wkqcn -- /bin/sh
+ls /etc/config
 ```
 
 ### Cleanup resources
