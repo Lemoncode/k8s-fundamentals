@@ -102,7 +102,7 @@ With Grafana open on host, on a browser:
 
 4. Click on `Import`
 
-![manage dashboard import](./resources/manage-dashboard-import.png)
+![managa dashboard import](./resources/manage-dashboard-import.png)
 
 5. Enter an ID value of `10000` into the `Grafana.com Dashboard` textbox and click `Load`. This will load the `Cluster Monitoring for Kubernetes` dashboard.
 
