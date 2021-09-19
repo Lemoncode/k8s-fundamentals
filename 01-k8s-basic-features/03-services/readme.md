@@ -83,7 +83,6 @@ spec:
 4. Select Pod template label(s) that service will apply to
 5. Define container target port and the port for the service
 
-
 ```yaml
 apiVersion: v1 # 1
 kind: Service

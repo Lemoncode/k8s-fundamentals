@@ -1,16 +1,18 @@
 import express from 'express';
 import cors from 'cors';
-import { employeeRouter } from './routes';
 import config from './config';
+import { routesInit } from './routes-init';
 
-const app = express();
+(async () => {
+  const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cors());
+  await routesInit(app);
 
-app.use('/api/employee', employeeRouter);
-
-app.listen(config.http.port, () => {
+  app.listen(config.http.port, () => {
     console.log(`Application running on ${config.http.port}`);
-});
+  });
+})();
+
