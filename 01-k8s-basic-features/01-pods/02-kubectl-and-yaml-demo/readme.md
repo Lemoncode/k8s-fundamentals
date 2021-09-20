@@ -111,7 +111,7 @@ pod/my-nginx unchanged
 _apply_ we can use to create or update, for exmple changing the nginx image. You can't change the ports
 
 ```bash
-$ kubectl exec my-nginx -it sh
+$ kubectl exec my-nginx -it -- sh
 kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
 / # ls
 bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
