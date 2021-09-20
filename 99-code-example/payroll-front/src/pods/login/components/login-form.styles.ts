@@ -1,4 +1,4 @@
-import { css } from "@emotion/css"
+import { css } from '@emotion/css';
 
 export const form = css`
   display: flex;
@@ -14,4 +14,8 @@ export const fields = css`
   flex-direction: column;
   row-gap: 20px;
   width: 100%;
+`;
+
+export const error = css`
+  color: red;
 `;

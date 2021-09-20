@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { AuthUserContextModel, Login } from './auth.api-model';
+import { AuthUserContextApiModel, Login } from './auth.api-model';
 import { authUsersMockData } from './auth-users.mock-data';
 
 export const validateLoginUser = async (login: Login): Promise<boolean> =>
-  Promise.resolve(
+  await Promise.resolve(
     authUsersMockData.find(
       (userData) =>
         userData.login.email === login.email &&
@@ -15,7 +15,7 @@ export const validateLoginUser = async (login: Login): Promise<boolean> =>
 
 export const getAuthorise = async (
   email: string
-): Promise<AuthUserContextModel> =>
-  Promise.resolve(
+): Promise<AuthUserContextApiModel> =>
+  await Promise.resolve(
     authUsersMockData.find((userData) => userData.login.email === email)
   );

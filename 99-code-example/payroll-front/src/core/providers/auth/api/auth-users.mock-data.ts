@@ -1,6 +1,6 @@
-import { AuthUserContextModel } from './auth.api-model';
+import { AuthUserContextApiModel } from './auth.api-model';
 
-export const authUsersMockData: AuthUserContextModel[] = [
+export const authUsersMockData: AuthUserContextApiModel[] = [
   {
     userId: '1',
     name: 'John Doe',

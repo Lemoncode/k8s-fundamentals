@@ -2,18 +2,31 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Login, createEmptyLogin } from '../login.vm';
+import { useHistory } from 'react-router-dom';
+import { switchRoutes } from 'core/router';
+import { useAuthContext } from 'core/providers/auth';
+import { createEmptyLogin, Login } from '../login.vm';
 import * as classes from './login-form.styles';
 
-interface Props {
-  handleSubmit: (login: Login) => void;
-}
+export const LoginFormComponent: React.FunctionComponent = () => {
+  const [showError, setShowError] = React.useState<boolean>(false);
+  const authUser = useAuthContext();
+  const history = useHistory();
 
-export const LoginFormComponent: React.FunctionComponent<Props> = (props) => {
-  const { handleSubmit } = props;
+  const handleLogin = (login: Login) => {
+    authUser.login(login);
+  };
+
+  React.useEffect(() => {
+    if (authUser.isLoggedIn) {
+      history.push(switchRoutes.employeeList);
+    } else {
+      console.log(authUser.isLoggedIn);
+    }
+  }, [authUser]);
 
   return (
-    <Formik onSubmit={handleSubmit} initialValues={createEmptyLogin()}>
+    <Formik onSubmit={handleLogin} initialValues={createEmptyLogin()}>
       {({ isSubmitting, setFieldValue }) => (
         <Form className={classes.form}>
           <div className={classes.fields}>
@@ -42,6 +55,9 @@ export const LoginFormComponent: React.FunctionComponent<Props> = (props) => {
           >
             Login
           </Button>
+          {showError && (
+            <div className={classes.error}>Email or password incorrect</div>
+          )}
         </Form>
       )}
     </Formik>

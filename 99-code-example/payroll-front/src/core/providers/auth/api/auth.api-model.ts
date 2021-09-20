@@ -3,7 +3,12 @@ export interface Login {
   password: string;
 }
 
-export interface AuthUserContextModel {
+export interface LoginResponse {
+  accessToken: string;
+  userInfo: AuthUserContextApiModel;
+}
+
+export interface AuthUserContextApiModel {
   login: Login;
   userId: string;
   name: string;

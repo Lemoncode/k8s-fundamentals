@@ -1,9 +1,8 @@
 import { createContext, useContext } from 'react';
-import { AuthUserContextModel, createEmptyAuthUserContext } from './auth.model';
+import { AuthUserContextVm, createEmptyAuthUserContext } from './auth.model';
 
-export const AuthContext = createContext<AuthUserContextModel>(
+export const AuthContext = createContext<AuthUserContextVm>(
   createEmptyAuthUserContext()
 );
 
-export const useAuthContext = () =>
-  useContext<AuthUserContextModel>(AuthContext);
+export const useAuthContext = () => useContext<AuthUserContextVm>(AuthContext);

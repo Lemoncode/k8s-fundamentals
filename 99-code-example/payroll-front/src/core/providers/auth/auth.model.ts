@@ -1,15 +1,20 @@
-export interface AuthUserContextModel {
+export interface Login {
+  email: string;
+  password: string;
+}
+export interface AuthUserContextVm {
   name: string;
   role: string;
   isLoggedIn: boolean;
   token: string;
-  logout?: () => void;
+  logout?: (id: string) => void;
+  login?: (login: Login) => void;
 }
 
-export const createEmptyAuthUserContext = (): AuthUserContextModel => ({
+export const createEmptyAuthUserContext = (): AuthUserContextVm => ({
   name: '',
   role: '',
   isLoggedIn: false,
   token: '',
-  logout: null,
+  login: null,
 });
