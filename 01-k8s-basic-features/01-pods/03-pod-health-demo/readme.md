@@ -93,8 +93,7 @@ Inside the container we can move to
 ```bash
 /usr/share/nginx/html # ls
 50x.html    index.html
-/usr/share/nginx/html # rm -rf index.html
-/usr/share/nginx/html # command terminated with exit code 137
+/usr/share/nginx/html # rm index.html
 ```
 
 If we run __kubectl describe pod my-nginx__
@@ -131,7 +130,7 @@ spec:
     args:
     - /bin/sh
     - -c
-    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    - touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600
     livenessProbe:
       exec:
         command:
@@ -163,5 +162,5 @@ Events:
 ### Cleanup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```
