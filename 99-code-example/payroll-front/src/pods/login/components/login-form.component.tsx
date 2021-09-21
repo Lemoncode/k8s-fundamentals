@@ -15,13 +15,12 @@ export const LoginFormComponent: React.FunctionComponent = () => {
 
   const handleLogin = (login: Login) => {
     authUser.login(login);
+    authUser.isLoggedIn ? setShowError(false) : setShowError(true);
   };
 
   React.useEffect(() => {
     if (authUser.isLoggedIn) {
       history.push(switchRoutes.employeeList);
-    } else {
-      console.log(authUser.isLoggedIn);
     }
   }, [authUser]);
 
@@ -51,7 +50,7 @@ export const LoginFormComponent: React.FunctionComponent = () => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={isSubmitting}
+            // disabled={isSubmitting}
           >
             Login
           </Button>

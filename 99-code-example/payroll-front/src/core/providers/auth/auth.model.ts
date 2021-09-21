@@ -7,8 +7,8 @@ export interface AuthUserContextVm {
   role: string;
   isLoggedIn: boolean;
   token: string;
-  logout?: (id: string) => void;
-  login?: (login: Login) => void;
+  logout: (id: string) => void;
+  login: (login: Login) => void;
 }
 
 export const createEmptyAuthUserContext = (): AuthUserContextVm => ({
@@ -17,4 +17,5 @@ export const createEmptyAuthUserContext = (): AuthUserContextVm => ({
   isLoggedIn: false,
   token: '',
   login: null,
+  logout: null,
 });

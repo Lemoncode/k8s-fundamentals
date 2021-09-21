@@ -10,9 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import { routes } from 'core/router';
+import { useAuthContext } from 'core/providers/auth';
+import { switchRoutes } from 'core/router';
 import ChartComponent from 'common/components/charts/chart.component';
 import { Employee } from './employee.vm';
+import * as classes from './employee.styles';
 
 interface Props {
   employee: Employee;
@@ -22,14 +24,28 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
   employee,
 }) => {
   const history = useHistory();
-  const handleClick = () => history.push(routes.employeeList);
+  const authUser = useAuthContext();
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleReturn = () => history.push(switchRoutes.employeeList);
+
+  const handleLogout = () => {
+    authUser?.logout;
+    history.push(switchRoutes.login);
+  };
+
+  React.useEffect(() => {
+    if (!authUser.isLoggedIn) {
+      history.push(switchRoutes.login);
+    }
+  }, [authUser]);
+
   const dataChart = employee.payrollInfo.payrollList
     .sort((a, b) => (a.date > b.date ? 1 : -1))
     .map((payroll) => ({
       label: `${payroll.date.getMonth()} / ${payroll.date.getFullYear()}`,
       amount: payroll.amount,
     }));
-  const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -38,9 +54,12 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
   return (
     <>
       <AppBar position="static">
-        <Toolbar>
-          <Button color="inherit" onClick={handleClick}>
+        <Toolbar className={classes.toolbar}>
+          <Button color="inherit" onClick={handleReturn}>
             Return Employee List
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleLogout}>
+            LogOut
           </Button>
         </Toolbar>
       </AppBar>
@@ -100,11 +119,12 @@ export const EmployeeComponent: React.FunctionComponent<Props> = ({
           ))}
         </Collapse>
       </Card>
-
-      <ChartComponent
-        dataChart={dataChart}
-        title={`${employee.name} ${employee.username}`}
-      />
+      {authUser.role === 'admin' && (
+        <ChartComponent
+          dataChart={dataChart}
+          title={`${employee.name} ${employee.username}`}
+        />
+      )}
     </>
   );
 };

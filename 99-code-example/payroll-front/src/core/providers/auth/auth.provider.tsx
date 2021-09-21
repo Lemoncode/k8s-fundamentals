@@ -23,8 +23,11 @@ export const AuthProvider: React.FunctionComponent = (props) => {
     }
   };
 
+  const handleLogOut = async () =>
+    Promise.resolve(setAuthUser(createEmptyAuthUserContext));
+
   React.useEffect(() => {
-    setAuthUser({ ...authUser, login: handleLogin });
+    setAuthUser({ ...authUser, login: handleLogin, logout: handleLogOut });
   }, []);
 
   return (
