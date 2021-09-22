@@ -1,8 +1,10 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
+import { usePromiseTracker } from 'react-promise-tracker';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { switchRoutes } from 'core/router';
 import { useAuthContext } from 'core/providers/auth';
 import { createEmptyLogin, Login } from '../login.vm';
@@ -12,6 +14,10 @@ export const LoginFormComponent: React.FunctionComponent = () => {
   const [showError, setShowError] = React.useState<boolean>(false);
   const authUser = useAuthContext();
   const history = useHistory();
+  const { promiseInProgress } = usePromiseTracker({
+    area: 'default',
+    delay: 10000,
+  });
 
   const handleLogin = (login: Login) => {
     authUser.login(login);
@@ -46,14 +52,18 @@ export const LoginFormComponent: React.FunctionComponent = () => {
               required
             />
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            // disabled={isSubmitting}
-          >
-            Login
-          </Button>
+          {promiseInProgress ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              // disabled={isSubmitting}
+            >
+              Login
+            </Button>
+          )}
           {showError && (
             <div className={classes.error}>Email or password incorrect</div>
           )}

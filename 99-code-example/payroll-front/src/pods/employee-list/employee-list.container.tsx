@@ -1,8 +1,10 @@
 import React from 'react';
+import { trackPromise } from 'react-promise-tracker';
 import { getEmployeeList } from './api';
 import { mapEmployeeListFromApiToVm } from './employee-list.mappers';
 import { EmployeeListComponent } from './employee-list.component';
 import { Employee, createEmptyEmployeeList } from './employee-list.vm';
+import { LoadingSpinnerComponent } from 'common/components/spinner';
 
 export const EmployeeListContainer: React.FunctionComponent = () => {
   const [employeeList, setEmployeeList] = React.useState<Employee[]>(
@@ -20,5 +22,10 @@ export const EmployeeListContainer: React.FunctionComponent = () => {
     loadEmployeeList();
   }, []);
 
-  return <EmployeeListComponent employeeList={employeeList} />;
+  return (
+    <>
+      <LoadingSpinnerComponent />
+      <EmployeeListComponent employeeList={employeeList} />
+    </>
+  );
 };
