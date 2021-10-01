@@ -5,7 +5,7 @@
 `eks` cluster running, the ec2 instances must have more than 3GB of memory, run the following command to create the desired cluster:
 
 ```bash
-$ eksctl create cluster \
+eksctl create cluster \
 --name lc-cluster \
 --version 1.21 \
 --region eu-west-3 \
@@ -145,7 +145,7 @@ Delete kubernetes resources
 $ kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove kibana
-$ kubectl delete -f ./fluentd-elasticsearch/kibana-deploy.yaml
+$ kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove fluentd
 $ kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
