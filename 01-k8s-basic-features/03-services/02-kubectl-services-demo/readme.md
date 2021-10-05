@@ -56,15 +56,15 @@ spec:
 ```
 
 ```bash
-$ kubectl create -f nginx.deployment.yml
+kubectl create -f nginx.deployment.yml
 ```
 
 ```bash
-$ kubectl create -f nginx.pod.yml
+kubectl create -f nginx.pod.yml
 ```
 
 ```bash
-$ kubectl get pods
+kubectl get pods
 NAME                        READY   STATUS    RESTARTS   AGE
 my-nginx-6ff7745b59-926jt   1/1     Running   0          41s
 my-nginx-6ff7745b59-pwzxz   1/1     Running   0          41s
@@ -74,8 +74,8 @@ nginx-standalone            1/1     Running   0          34s
 2. Get into the stand alone pod
 
 ```bash
-$ kubectl exec nginx-standalone -it -- sh
-kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
+kubectl exec nginx-standalone -it -- sh
+
 / # apk add curl
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/community/x86_64/APKINDEX.tar.gz
@@ -91,7 +91,7 @@ OK: 24 MiB in 41 packages
 3. Now we're going to grab the IP of one of the deployment's pod
 
 ```bash
-$ kubectl get pod my-nginx-6ff7745b59-926jt -o yaml
+kubectl get pod my-nginx-6ff7745b59-926jt -o yaml
 ```
 
 Close to the bottom we have the _podIP_, in this case: `podIP: 172.17.0.7`, if we go back to the other terminal, we can use it:
@@ -142,11 +142,11 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f clusterIP.service.yml
+kubectl apply -f clusterIP.service.yml
 ```
 
 ```bash
-$ kubectl get services
+kubectl get services
 NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
 kubernetes        ClusterIP   10.96.0.1      <none>        443/TCP    63d
 nginx-clusterip   ClusterIP   10.98.249.39   <none>        8080/TCP   60s
@@ -155,7 +155,7 @@ nginx-clusterip   ClusterIP   10.98.249.39   <none>        8080/TCP   60s
 This service is applying to the pods on deployment because of the labels. We can use the service IP address to reach the deployment pods. Going back to the terminal executing on independent pod:
 
 ```bash
-$ kubectl exec nginx-standalone -it -- sh
+kubectl exec nginx-standalone -it -- sh
 / # curl http://10.98.249.39:8080
 <!DOCTYPE html>
 <html>
@@ -193,7 +193,7 @@ Because we're using a service, we have load balancing and DNS so we can do as fo
 Let's delete the service
 
 ```bash
-$ kubectl delete service nginx-clusterip
+kubectl delete service nginx-clusterip
 ```
 
 4. Create a new service _nodeport.service.yml_
@@ -215,11 +215,11 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f nodeport.service.yml
+kubectl apply -f nodeport.service.yml
 ```
 
 ```bash
-$ kubectl get services
+kubectl get services
 NAME             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 kubernetes       ClusterIP   10.96.0.1      <none>        443/TCP        63d
 nginx-nodeport   NodePort    10.99.89.234   <none>        80:31000/TCP   37s
@@ -228,14 +228,14 @@ nginx-nodeport   NodePort    10.99.89.234   <none>        80:31000/TCP   37s
 To access our service using `minikube` run:
 
 ```bash
-$ minikube service --url nginx-nodeport
+minikube service --url nginx-nodeport
 http://192.168.64.6:31000
 ```
 
 We can remove the service by running:
 
 ```bash
-$ kubectl delete service nginx-nodeport
+kubectl delete service nginx-nodeport
 ```
 
 5. For last we're going to create a load balancer service, create _loadbalancer.service.yml_
@@ -257,7 +257,7 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f loadbalancer.service.yml
+kubectl apply -f loadbalancer.service.yml
 ```
 
 > https://minikube.sigs.k8s.io/docs/handbook/accessing/
@@ -265,13 +265,13 @@ $ kubectl apply -f loadbalancer.service.yml
 _minikube tunnel_ runs as a process, creating a network route on the host to the service CIDR of the cluster using the cluster’s IP address as a gateway. The tunnel command exposes the external IP directly to any program running on the host operating system.
 
 ```bash
-$ minikube tunnel
+minikube tunnel
 ```
 
 Ask for _password_
 
 ```bash
-$ kubectl get svc
+kubectl get svc
 NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 kubernetes           ClusterIP      10.96.0.1     <none>        443/TCP        64d
 nginx-loadbalancer   LoadBalancer   10.98.52.89   10.98.52.89   80:32004/TCP   51s
@@ -284,8 +284,8 @@ http://10.98.52.89
 ### Cleanup
 
 ```bash
-$ kubectl delete service nginx-loadbalancer
-$ kubectl delete deployment my-nginx
-$ kubectl delete pod nginx-standalone
-$ minikube tunnel --cleanup
+kubectl delete service nginx-loadbalancer
+kubectl delete deployment my-nginx
+kubectl delete pod nginx-standalone
+minikube tunnel --cleanup
 ```
