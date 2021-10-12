@@ -1,12 +1,12 @@
 [
   {
     "_id": "1",
-    "tite": "Foo todo",
+    "title": "Foo todo",
     "done": false
   },
   {
     "_id": "2",
-    "tite": "Boo todo",
+    "title": "Boo todo",
     "done": true
   }
 ]

@@ -12,12 +12,10 @@ const createSortFunc = (property, obj) => {
   }
 }
 
-const first = (collection) => collection[0];
-
 const getMaxValue = (collection = [], property) => {
   const maxValueFunctor = collection.reduce((acc, curr) => {
-    const accId = acc[property];
-    const currId = curr[property];
+    const accId = +acc[property];
+    const currId = +curr[property];
     if (accId >= currId) {
       return acc;
     }
@@ -25,8 +23,10 @@ const getMaxValue = (collection = [], property) => {
     return curr;
   });
 
-  return first(maxValueFunctor);
+  return maxValueFunctor;
 }
+
+const select = (property, obj) => obj[property];
 
 class Collection {
   constructor() {
@@ -36,9 +36,10 @@ class Collection {
   insert(todo, cb) {
     try {
       const maxValue = getMaxValue(this.data, '_id');
+      const maxId = select('_id', maxValue);
       const newTodo = {
         ...todo,
-        _id: maxValue + 1
+        _id: +maxId + 1
       };
 
       this.data = [...this.data, newTodo];

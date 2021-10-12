@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
 
 const { collection } = require('./db.service');
 
 
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/todos', (req, res) => {
   console.log('Todos API GET');
@@ -15,6 +17,7 @@ app.get('/todos', (req, res) => {
 });
 
 app.post('/todos', (req, res) => {
+  console.log(req.body);
   if (!req.body) {
     res.statusCode(400);
     return res.send('Post syntax incorrect');
