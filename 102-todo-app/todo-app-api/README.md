@@ -33,3 +33,26 @@ With this database configuration, create `.env` and set the following content
 ```ini
 MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin
 ```
+
+## How to use as running container
+
+Build your image tagging with any value that you disare:
+
+```bash
+./dockerize.sh "todo-app-backend:0.0.2"
+```
+
+Without `mongo`
+
+```bash
+docker run -d -p 3000:3000 \
+  todo-app-backend:0.0.2
+```
+
+With `mongo`
+
+```bash
+docker run -d -p 3000:3000 \
+  -e MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin \
+  todo-app-backend:0.0.2
+```
