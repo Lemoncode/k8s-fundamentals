@@ -3,7 +3,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 
-require('dotenv').config();
+try {
+  const dotenv = require('dotenv');
+  if (dotenv) {
+    dotenv.config();
+  }
+} catch (err) {
+  console.warn(err);
+  console.log(`NODE ENV ${process.env.NODE_ENV}, dotenv not init`);
+}
+
+
 
 const { collectionAsync } = require('./db.service');
 
@@ -40,6 +50,3 @@ app.use(bodyParser.json());
     console.log('Todos API lsiten on port 3000');
   });
 })();
-
-
-

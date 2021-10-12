@@ -52,7 +52,22 @@ docker run -d -p 3000:3000 \
 With `mongo`
 
 ```bash
+docker network create todonet
+```
+
+```bash
+docker run -d -p 27017:27017 \
+  --rm --name mongo \
+  --network todonet \
+  -e MONGO_INITDB_DATABASE=tododb \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  mongo:4.4.7
+```
+
+```bash
 docker run -d -p 3000:3000 \
-  -e MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin \
+  --network todonet \
+  -e MONGODB_URI="mongodb://admin:password@mongo:27017/tododb?authSource=admin" \
   todo-app-backend:0.0.2
 ```
