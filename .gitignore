@@ -28,5 +28,6 @@ kubectl
 external-resources/
 private-resources/
 configs/
+exercise-solution/
 
 .env
