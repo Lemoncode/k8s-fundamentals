@@ -8,6 +8,7 @@ export const TodoListContainer = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   useEffect(() => {
+    // TODO: Call API
     setTodos([
       {
         title: 'Foo',

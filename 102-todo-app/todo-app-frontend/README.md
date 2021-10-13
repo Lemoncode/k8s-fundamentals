@@ -7,7 +7,12 @@ Create `.env` file on root directory, adding the host for the API
 ```ini
 TODO_APP_API=localhost:8081
 TODO_APP_TITLE=Default
+CORS_ACTIVE=true
 ```
+
+* **TODO_APP_API** - Host where is exposed the API
+* **TODO_APP_TITLE** - Simple identifier for different versions
+* **CORS_ACTIVE** - `false` if api and front solution are on the same origin domain
 
 Start the application on dev mode by running `npm start` 
 
