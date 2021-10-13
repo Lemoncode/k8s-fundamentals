@@ -3,19 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { TodoListComponent } from './tod-list.component';
 import { TodoEditComponent } from './todo-edit.component';
 import { TodoItem } from './todo.model';
+import { apiToItem, apiToItemCollection } from '../services/api-mapper.service';
+import { getTodos, createTodo } from '../api/todo-api.service';
 
 export const TodoListContainer = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   useEffect(() => {
-    // TODO: Call API
-    setTodos([
-      {
-        title: 'Foo',
-        id: '1',
-        done: false
-      }
-    ])
+    getTodos()
+      .then(apiToItemCollection)
+      .then((todos) => {
+        setTodos(todos);
+      })
+      .catch(console.log);
   }, []);
 
   const toggleTodo = (id: string) => {
@@ -29,10 +29,14 @@ export const TodoListContainer = () => {
     setTodos(newTodos);
   };
 
+  // TODO: Handle in a safer way
   const handleCreateTodo = (todo: TodoItem) => {
-    // TODO: Call to API
-    const id = Date.now().toString();
-    setTodos([...todos, { ...todo, id }]);
+    const { title, done } = todo;
+    createTodo({ title, done })
+      .then((result) => {
+        const newTodo = apiToItem(result);
+        setTodos([...todos, newTodo]);
+      });
   };
 
   return (
