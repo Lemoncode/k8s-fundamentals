@@ -29,6 +29,13 @@ app.use(bodyParser.json());
     });
   });
 
+  const mapResult = (result) => {
+    if (result['ops'] && result['ops'].length > 0) {
+      return result['ops'][0];
+    }
+    return result;
+  };
+
   app.post('/todos', (req, res) => {
     console.log(req.body);
     if (!req.body) {
@@ -37,12 +44,12 @@ app.use(bodyParser.json());
     }
 
     const todo = req.body;
-    collection.insert(todo, (err, todo) => {
+    collection.insertOne(todo, (err, todo) => {
       if (err) {
         console.log(err);
       }
 
-      res.send(todo);
+      res.send(mapResult(todo));
     });
   });
 

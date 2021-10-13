@@ -17,7 +17,7 @@ In a new terminal, create a new todo by running:
 curl -d '{"title":"Testing service", "done":"true"}' -H "Content-Type: application/json" -X POST http://localhost:3000/todos
 ```
 
-For testing agains mongo we can use Docker:
+For testing against mongo we can use Docker:
 
 ```bash
 docker run -d -p 27017:27017 \

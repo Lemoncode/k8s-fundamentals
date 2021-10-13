@@ -49,6 +49,10 @@ class Collection {
     }
   }
 
+  insertOne(todo, cb) {
+    this.insert(todo, cb);
+  }
+
   find() {
     return this;
   }

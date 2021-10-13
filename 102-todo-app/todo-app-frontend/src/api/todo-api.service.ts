@@ -12,7 +12,7 @@ export interface TodoApi {
 
 const url = setProtocol(baseUrl());
 
-console.log(url);
+console.log(`API service url: ${url}`);
 
 export const getTodos = (): Promise<TodoApi[]> => (
   axios.get<TodoApi[]>(`${url}/todos`)
