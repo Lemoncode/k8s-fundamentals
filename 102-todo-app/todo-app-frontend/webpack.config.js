@@ -9,7 +9,7 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx']
   },
   entry: {
-    app: ['./index.ts'],
+    app: ['./index.tsx'],
   },
   devtool: 'eval-source-map',
   stats: 'errors-only',
