@@ -4,3 +4,4 @@
    - Custom Charts - Templates
    - Dependency Management
    - Hooks
+* Kustomize

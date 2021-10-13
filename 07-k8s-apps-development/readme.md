@@ -1,4 +1,4 @@
-* Overview Kustomize
-* Using Kustomize
+* Overview Kompose
+* Using Kompose
 * Overview Skaffold
 * Using Skaffold
