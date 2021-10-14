@@ -1,3 +1,5 @@
+# Introduction
+
 ## Why Helm?
 
 * `kubectl` don't install the application as an atomic set of Kubernetes objects.
@@ -27,3 +29,5 @@ The Helm library uses the `K8s client` to communicate with the K8s API, it uses 
 With Helm, you install your application as an entity defined by your chart and not as a set of independent Kubernetes objects. The chart is the definition of your application, and the release is an instance of that chart.
 
 Where does Helm store the release configuration and history? Helm stores released manifests inside Kubernetes as secrets. Provides a kind of persistence and history for all the different releases installed with Helm. It's centralized in the cluster, and it's stored in the same namespace as your application. 
+
+## Demos structured
