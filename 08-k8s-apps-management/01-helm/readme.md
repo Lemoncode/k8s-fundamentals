@@ -31,3 +31,7 @@ With Helm, you install your application as an entity defined by your chart and n
 Where does Helm store the release configuration and history? Helm stores released manifests inside Kubernetes as secrets. Provides a kind of persistence and history for all the different releases installed with Helm. It's centralized in the cluster, and it's stored in the same namespace as your application. 
 
 ## Demos structured
+
+## References
+
+https://codefresh.io/docs/docs/new-helm/helm-best-practices/

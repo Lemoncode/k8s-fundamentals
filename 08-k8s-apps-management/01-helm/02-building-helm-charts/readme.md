@@ -89,4 +89,47 @@ The `Chart.yaml` file also contains the dependencies configuration.
 
 ## Demo: Building a Helm Chart
 
-[Demo: Building a Helm Chart](./02-building-helm-chart/readme.md)
+[Demo: Building a Helm Chart](./02-building-helm-chart/01-creating-chart.md)
+
+## Defining Helm Concepts
+
+The chart is the definition of our application. When the chart is installed in the Kubernetes cluster by hand, we say that a release is running, so the **chart is the definition of the application and the release is an instance of the chart running in the Kubernetes cluster**. 
+
+If you made some change in your application and want to install it, you don't have to install a new release. **Instead, you can update an existing release and make a new revision of that release. This is another important concept in Helm, release revision. This is not considered as a new release, it's a new revision of the same release.** 
+
+> Don't confuse `release revision` with the `chart version` that we saw previously in the `Chart.yaml` file. The chart version refers to a change in the chart's file structure, meaning a change in the application definition. For example, if there are new Kubernetes objects like a service account and a persistent volume, the chart structure changes so the chart version should also change. 
+
+`release revision` refers to a change in the running instance of that chart, either because the chart itself changed and the release was updated or simply because the chart did not change, but the same chart version is installed with different values. 
+
+## Main Commands
+
+|             Action             |              Command              |
+| :----------------------------: | :-------------------------------: |
+|       Install a Release        |   helm install [release][chart]   |
+|   Upgrade a Release revision   |   helm upgrade [release][chart]   |
+| Rollback to a Release revision | helm rollback [release][revision] |
+|     Print Release history      |      helm history [release]       |
+|     Display Release status     |       helm status [release]       |
+|   Show Details of a Release    |      helm get all [release]       |
+|      Uninstall a Release       |     helm uninstall [release]      |
+|         List Releases          |             helm list             |
+
+* `helm install` - installs a chart as a release. 
+
+* `helm upgrade` - upgrades a release to a new revision. 
+
+* `helm rollback` - rolls backs a release to a previous revision. For example, if you find a bug and want to go back to the previous revision. 
+
+* `helm history` - lists the revision history of a release. 
+
+* `helm status` - displays the status of a release, which objects are installed, and their running status. 
+
+* `helm get` - shows the details of a release manifest and current values. 
+
+* `helm uninstall` - uninstalls a release from the Kubernetes cluster. Note that in Helm 2 we use helm delete instead of helm install. 
+
+* `helm list` - lists all release names with some basic information.
+
+## Demo: Installing a Helm Chart
+
+[Demo: Installing a Helm Chart](./02-building-helm-chart/02-installing-chart.md.md)
