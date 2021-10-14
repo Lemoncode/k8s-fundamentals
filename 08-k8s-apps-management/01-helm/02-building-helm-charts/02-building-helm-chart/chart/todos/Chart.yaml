@@ -1,0 +1,6 @@
+apiVersion: v2
+name: todos
+appVersion: "1.0"
+description: A Helm Chart for Todos Awesome App
+version: 0.1.0
+type: application
