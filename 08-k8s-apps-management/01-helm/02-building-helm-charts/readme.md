@@ -62,8 +62,8 @@ description: A Helm chart for Kubernetes # 2.
 keywords: # 3.
   - demo
 type: application # 4.
-appVersion: 1.16.0
-version: 0.1.0
+appVersion: 1.16.0 # 6.
+version: 0.1.0 # 7.
 dependencies:
     ...
 ```
@@ -73,3 +73,20 @@ dependencies:
 3. Useful to find the Chart on a repository
 4. We can use between `library` and `application`
 5. This is the Helm version `v2` maps to `Helm 3`
+6. Version of the application you plan to install with Helm. It can be any version number or string.
+7. The version of the `Chart`. It has to follow semantic version 2.0 specifications with a patch, minor, and major number.
+
+> Note that the appVersion and chart version are not related. 
+ 
+* You could **have a new appVersion if your app changes** but **keep the same chart version because the chart structure and templates remain the same**. 
+* Or you could have the opposite, the **same application version** but a **new chart version because the chart files changed**. 
+
+The `Chart.yaml` file also contains the dependencies configuration.
+
+## Demo: Deploying Frontend
+
+[Demo: Deploying Frontend](./01-deploying-frontend/readme.md)
+
+## Demo: Building a Helm Chart
+
+[Demo: Building a Helm Chart](./02-building-helm-chart/readme.md)
