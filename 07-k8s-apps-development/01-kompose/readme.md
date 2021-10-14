@@ -137,7 +137,9 @@ kompose convert --out k8s.yml
 kompose convert --out ./output --replicas 3
 ```
 
-## kompose conevert in Action
+## Demo:kompose convert
+
+[Demo: Using Kompose](./01-using-kompose/readme.md)
 
 ## Exploring the generated YAML
 
