@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: frontend-ctr
-          image: jaimesalas/todo-app-frontend:0.1.0
+          # image: jaimesalas/todo-app-frontend:0.1.0
+          image: jaimesalas/todo-app-frontend:0.1.1
           imagePullPolicy: IfNotPresent
           ports:
             - name: frontend

@@ -34,3 +34,5 @@ Now we can create the `templates` directory and populate with the `yaml` directo
 ```bash
 cp -r yaml/ chart/todos/templates
 ```
+
+> Continue with Helm Concepts
