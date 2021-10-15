@@ -270,4 +270,5 @@ Containers:
 To uninstall the release we can do:
 
 ```bash
+helm uninstall demo
 ```

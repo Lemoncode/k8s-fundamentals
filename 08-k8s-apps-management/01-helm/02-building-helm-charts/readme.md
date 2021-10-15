@@ -133,3 +133,5 @@ If you made some change in your application and want to install it, you don't ha
 ## Demo: Installing a Helm Chart
 
 [Demo: Installing a Helm Chart](./02-building-helm-chart/02-installing-chart.md.md)
+
+## Demo: Deploying Full App
