@@ -258,3 +258,176 @@ data:
 
 Now we have to update frontend and ingress, to make all parts of our application reachable.
 
+Update `yaml/ingress`
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-ingress
+spec:
+  rules:
+    - host: frontend.minikube.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    # diff
+    - host: backend.minikube.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 80
+
+```
+
+Create `yaml/frontend-configmap.yaml`
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  todo-title: "Default"
+  backend-uri: "backend.minikube.local"
+  cors: "true"
+```
+
+Update `frontend.yaml`
+
+
+```diff
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-ctr
+          image: jaimesalas/todo-app-frontend:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: frontend
+              containerPort: 8080
++         env:
++           - name: TODO_APP_API
++             valueFrom:
++               configMapKeyRef:
++                 name: frontend-config
++                 key: backend-uri
++           - name: TODO_APP_TITLE
++             valueFrom:
++               configMapKeyRef:
++                 name: frontend-config
++                 key: todo-title
++           - name: CORS_ACTIVE
++             valueFrom:
++               configMapKeyRef:
++                 name: frontend-config
++                 key: cors
++         resources: {}
+
+```
+
+### 4. Start up
+
+Change directory to `./yaml` and run
+
+```bash
+kubectl apply -f backend-secret.yaml
+kubectl apply -f backend-service.yaml 
+kubectl apply -f backend.yaml 
+kubectl apply -f frontend-configmap.yaml 
+kubectl apply -f frontend-service.yaml 
+kubectl apply -f frontend.yaml 
+kubectl apply -f ingress.yaml 
+kubectl apply -f mongodb-persistent-volume.yaml
+kubectl apply -f mongodb-persistent-volume-claim.yaml
+kubectl apply -f mongodb-secret.yaml
+kubectl apply -f mongodb-service.yaml
+kubectl apply -f mongodb.yaml
+```
+
+Check the state of the cluster by running:
+
+```bash
+kubectl get all
+```
+
+We get something like:
+
+```
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/backend-b75b6f9bc-bp5sv     1/1     Running   2          2m5s
+pod/frontend-5b7cf59787-cffnw   1/1     Running   0          2m3s
+pod/mongodb-75d8848dd8-cwbwb    1/1     Running   0          2m1s
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)           AGE
+service/backend      ClusterIP   10.99.81.1       <none>        80/TCP            2m5s
+service/frontend     ClusterIP   10.109.244.219   <none>        80/TCP            2m4s
+service/kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP           54d
+service/mongodb      NodePort    10.98.248.205    <none>        27017:32126/TCP   2m1s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend    1/1     1            1           2m5s
+deployment.apps/frontend   1/1     1            1           2m3s
+deployment.apps/mongodb    1/1     1            1           2m1s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/backend-b75b6f9bc     1         1         1       2m5s
+replicaset.apps/frontend-5b7cf59787   1         1         1       2m3s
+replicaset.apps/mongodb-75d8848dd8    1         1         1       2m1s
+```
+
+For last if we want to acceess the application from our browser, we need to update `/etc/hosts`
+
+```bash
+kubectl get ingress
+```
+
+We get something similar to this:
+
+```
+NAME           CLASS    HOSTS                                            ADDRESS        PORTS   AGE
+todo-ingress   <none>   frontend.minikube.local,backend.minikube.local   192.168.49.2   80      4m29s
+```
+
+Now we can update `/etc/hosts`
+
+
+### 5. Clean up
+
+```bash
+kubectl delete -f backend-secret.yaml
+kubectl delete -f backend-service.yaml
+kubectl delete -f backend.yaml
+kubectl delete -f frontend-configmap.yaml
+kubectl delete -f frontend-service.yaml
+kubectl delete -f frontend.yaml
+kubectl delete -f ingress.yaml
+kubectl delete -f mongodb-secret.yaml
+kubectl delete -f mongodb-service.yaml
+kubectl delete -f mongodb.yaml
+kubectl delete -f mongodb-persistent-volume-claim.yaml
+kubectl delete -f mongodb-persistent-volume.yaml
+```

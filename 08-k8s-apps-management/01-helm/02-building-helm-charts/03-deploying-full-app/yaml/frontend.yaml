@@ -19,4 +19,20 @@ spec:
           ports:
             - name: frontend
               containerPort: 8080
+          env:
+            - name: TODO_APP_API
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: backend-uri
+            - name: TODO_APP_TITLE
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: todo-title
+            - name: CORS_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: cors
           resources: {}
