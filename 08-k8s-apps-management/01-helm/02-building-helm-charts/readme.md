@@ -135,3 +135,13 @@ If you made some change in your application and want to install it, you don't ha
 [Demo: Installing a Helm Chart](./02-building-helm-chart/02-installing-chart.md.md)
 
 ## Demo: Deploying Full App
+
+[Demo: Deploying Full App](./03-deploying-full-app/readme.md)
+
+## Umbrella Chart
+
+> TODO: Add a definition for Umbrella Chart
+
+## Demo: Building an Umbrella Helm Chart
+
+[]()

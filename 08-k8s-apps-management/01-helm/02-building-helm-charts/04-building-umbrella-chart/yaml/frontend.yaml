@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-ctr
+          image: jaimesalas/todo-app-frontend:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: frontend
+              containerPort: 8080
+          env:
+            - name: TODO_APP_API
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: backend-uri
+            - name: TODO_APP_TITLE
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: todo-title
+            - name: CORS_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: cors
+          resources: {}
