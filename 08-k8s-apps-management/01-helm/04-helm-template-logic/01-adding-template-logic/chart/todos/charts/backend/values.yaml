@@ -1,5 +1,10 @@
 secret:
-  mongodb_uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4K
+  mongodb_uri:
+    username: your_db_username
+    password: your_db_password
+    dbchart: database
+    dbport: 27017
+    dbconn: "tododb?authSource=admin"
   # mongodb://admin:password@mongodb:27017/tododb?authSource=admin
 image:
   repository: jaimesalas/todo-app-api

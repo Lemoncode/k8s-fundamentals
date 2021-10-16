@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ include "backend.fullname" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-{{ .Chart.Name }}
+      app: {{ include "backend.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-{{ .Chart.Name }}
+        app: {{ include "backend.fullname" . }}
     spec:
       containers:
-        - name: {{ .Release.Name }}-{{ .Chart.Name }}-ctr
+        - name: {{ include "backend.fullname" . }}-ctr
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: Always
           ports:
@@ -23,6 +23,6 @@ spec:
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: {{.Release.Name }}-{{ .Chart.Name }}-secret
+                  name: {{ include "backend.fullname" . }}-secret
                   key: mongodb-uri
           resources: {}

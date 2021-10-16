@@ -1,7 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress
+  # name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress
+  name: {{ include "backend.fullname" . }}-ingress
 spec:
   rules:
     - host: {{ .Values.ingress.host }}
@@ -11,6 +12,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-{{ .Chart.Name }}
+                # name: {{ .Release.Name }}-{{ .Chart.Name }}
+                name: {{ include "backend.fullname" . }}-{{ .Chart.Name }}
                 port:
                   number: 80
