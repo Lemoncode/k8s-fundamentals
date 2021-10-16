@@ -49,7 +49,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
 - name: frontend-config
-+ name: {{ .Release.name }}-{{ .Chart.Name }}-config
++ name: {{ .Release.Name }}-{{ .Chart.Name }}-config
 data:
   todo-title: "Default"
   backend-uri: "backend.minikube.local"

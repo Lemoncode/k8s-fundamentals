@@ -4,12 +4,9 @@ secret:
 image:
   repository: jaimesalas/todo-app-api
   tag: "0.1.0"
-
 replicaCount: 1
-
 service:
   type: ClusterIP
   port: 80
-
 ingress:
   host: backend.minikube.local
