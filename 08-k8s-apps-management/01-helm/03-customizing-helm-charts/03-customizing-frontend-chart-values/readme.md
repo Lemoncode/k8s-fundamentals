@@ -441,21 +441,29 @@ It prints the manifest built by the template engine. We see the Secret and the C
 
 All resources are generated, the persistent volumes, the services, and notice that in the deployment, the image is based on the repository and tag coming from the values.yaml file. 
 
-DevOps can run a second check with `helm install [NAME] [CHART] ‑‑dry‑run ‑‑debug`. 
+We can run a second check with `helm install [NAME] [CHART] ‑‑dry‑run ‑‑debug`. 
 
 ```bash
-helm install demo-guestbook guestbook --dry-run --debug
+helm install demo todos --dry-run --debug
 ```
 
-Notice that they now have more data, including debug data where you can find bugs in your template, computed values, as they are seen by the template engine, and the generated manifest. Notice that the release name is now demo‑guestbook. 
+Notice that they now have more data, including debug data where you can find bugs in your template, computed values, as they are seen by the template engine, and the generated manifest. Notice that the release name is now `demo`. 
 
-If everything is okay, DevOps can run a helm install without a dry run to install the actual release. 
+If everything is okay, we can run a `helm install` without a dry run to install the actual release. 
 
 ```bash
-helm install demo-guestbook guestbook
+helm install demo todos
 ```
 
-All the resources are being created, and if we wait a little bit, we can check that the services are available and that the ports are running. There is an error with the back end. Let's look at the Minikube dashboard to analyze this. The back end is fading. Let's check the logs. MongoDB not found. Ah, yes, we get it. Now the database service name is dynamically generated based on the release name, so it's not MongoDB anymore as hard coded in the mongodb_uri in the back‑end secret. We'll solve that issue in the next demo.
+All the resources are being created, and if we wait a little bit, we can check that the services are available and that the ports are running. 
+
+There is an error with the back end. Let's look at the Minikube dashboard to analyze this. 
+
+```bash
+minikube dashboard
+```
+
+The back end is fading. Let's check the logs. MongoDB not found. Ah, yes, we get it. Now the database service name is dynamically generated based on the release name, so it's not MongoDB anymore as hard coded in the mongodb_uri in the back‑end secret. We'll solve that issue in the next demo.
 
 ```
 MongoNetworkError: failed to connect to server [mongodb:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongodb mongodb:27017]
