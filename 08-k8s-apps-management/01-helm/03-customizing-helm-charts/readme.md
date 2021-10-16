@@ -373,3 +373,9 @@ What about the values in the case of an umbrella chart?
 Every sub‑chart can be used as a standalone chart or as a sub‑chart. So each sub‑chart contains its own `values.yaml` file, which contains the default values for that chart. The parent chart also has a `values.yaml` file with its own properties, **but it can override the values from a child chart under a property that has the name of that chart**. 
 
 ## Demo: Values and Subcharts
+
+[Demo: Values and Subcharts](02-values-and-subcharts/readme.md)
+
+## Demo: Customizing Frontend Chart Values
+
+[## Demo: Customizing Frontend Chart Values](03-customizing-frontend-chart-values/readme.md)
