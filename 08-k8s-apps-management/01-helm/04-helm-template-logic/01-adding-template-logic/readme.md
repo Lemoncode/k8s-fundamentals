@@ -264,8 +264,8 @@ Create `chart/todos/values.yaml`
 backend:
   secret:
     mongodb_uri:
-      username: your_db_username
-      password: your_db_password
+      username: admin
+      password: password
 ```
 
 We go in the top chart `values.yaml` file, we create a backend property, and as a child of this property, we copy the block with the secret property object. **That way we can override the username and password from the parent chart**. 
