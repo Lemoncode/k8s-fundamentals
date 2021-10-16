@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: {{.Release.Name }}-{{ .Chart.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: {{.Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: backend
+        app: {{.Release.Name }}-{{ .Chart.Name }}
     spec:
       containers:
-        - name: backend
-          image: jaimesalas/todo-app-api:0.1.0
+        - name: {{.Release.Name }}-{{ .Chart.Name }}-ctr
+          image: {{ .Values.image.repository }}:{{ .Values.image.tags }}
           imagePullPolicy: Always
           ports:
             - name: backend
@@ -23,6 +23,6 @@ spec:
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
+                  name: {{.Release.Name }}-{{ .Chart.Name }}-secret
                   key: mongodb-uri
           resources: {}

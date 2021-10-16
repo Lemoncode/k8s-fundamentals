@@ -363,7 +363,8 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend
+-               name: frontend
++               name: {{ .Release.Name }}-{{ .Chart.Name }}
                 port:
                   number: 80
 ```
@@ -377,15 +378,18 @@ That's it for the frontend. We have to do the same job for the back end and for 
 
 ```yaml
 secret:
-  mongodb_uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvZ3Vlc3Rib29rP2F1dGhTb3VyY2U9YWRtaW4=
-  #              "mongodb://admin:password@mongodb:27017/guestbook?authSource=admin"
-image: 
-  repository: jaimesalas/backend
-  tag: "2.0"
-replicaCount:
+  mongodb_uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4K
+  # mongodb://admin:password@mongodb:27017/tododb?authSource=admin
+image:
+  repository: jaimesalas/todo-app-api
+  tag: "0.1.0"
+
+replicaCount: 1
+
 service:
   type: ClusterIP
   port: 80
+
 ingress:
   host: backend.minikube.local
 

@@ -1,6 +1,6 @@
 # Helm Data In Cluster
 
-> Start from `03-customizing-helm-charts/01-helm-data`
+> Start from `02-building-helm-charts/04-building-umbrella-chart`
 
 ## Steps
 

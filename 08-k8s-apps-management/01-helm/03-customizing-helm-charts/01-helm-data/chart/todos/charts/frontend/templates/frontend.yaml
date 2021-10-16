@@ -1,25 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  # name: frontend
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: frontend
 spec:
-  # replicas: 1
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      # app: frontend
-      app: {{ .Release.Name }}-{{ .Chart.Name }}
+      app: frontend
   template:
     metadata:
       labels:
-        # app: frontend
-        app: {{ .Release.Name }}-{{ .Chart.Name }}
+        app: frontend
     spec:
       containers:
-        - name: {{ .Release.Name }}-{{ .Chart.Name }}-ctr
-          # image: jaimesalas/todo-app-frontend:0.1.0
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        - name: frontend-ctr
+          image: jaimesalas/todo-app-frontend:0.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: frontend
@@ -28,19 +23,16 @@ spec:
             - name: TODO_APP_API
               valueFrom:
                 configMapKeyRef:
-                  # name: frontend-config
-                  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+                  name: frontend-config
                   key: backend-uri
             - name: TODO_APP_TITLE
               valueFrom:
                 configMapKeyRef:
-                  # name: frontend-config
-                  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+                  name: frontend-config
                   key: todo-title
             - name: CORS_ACTIVE
               valueFrom:
                 configMapKeyRef:
-                  # name: frontend-config
-                  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
+                  name: frontend-config
                   key: cors
           resources: {}
