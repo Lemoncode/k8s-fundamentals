@@ -14,8 +14,8 @@ secret:
   mogodb_uri:
     username: your_user
     password: your_password
-  service:
-    type: NodePort
+service:
+  type: NodePort
 ```
 
 ### 2. Create values.yaml on parent Chart

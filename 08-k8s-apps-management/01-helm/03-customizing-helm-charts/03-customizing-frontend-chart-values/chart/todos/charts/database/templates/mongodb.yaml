@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: mongodb
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
     spec:
       containers:
-        - name: mongodb
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}
           image: mongo
           env:
             - name: MONGO_INITDB_DATABASE
@@ -21,21 +21,21 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret
+                  name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
                   key: mongodb-username
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret
+                  name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
                   key: mongodb-password
           ports:
             - name: mongodb
               containerPort: 27017
           volumeMounts:
-            - name: mongodb-volume
+            - name: {{ .Release.Name }}-{{ .Chart.Name }}-volume
               mountPath: /data/db
           resources: {}
       volumes:
-        - name: mongodb-volume
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}-volume
           persistentVolumeClaim:
-            claimName: mongodb-pvc
+            claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc

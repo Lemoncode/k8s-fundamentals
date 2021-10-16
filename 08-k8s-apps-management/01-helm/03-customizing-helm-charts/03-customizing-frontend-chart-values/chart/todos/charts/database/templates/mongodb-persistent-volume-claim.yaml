@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongodb-pvc
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
 spec:
   storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.volume.storage }}

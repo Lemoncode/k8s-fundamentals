@@ -421,23 +421,20 @@ spec:
 secret:
   mongodb_username: "YWRtaW4="
   mongodb_password: "cGFzc3dvcmQ="
-service:
-  type: NodePort
-  port: 80
 volume:
   storage: 100Mi
 ```
 
 * Update `charts/database/templates`
 
-When this is done, DevOps first check the templates with the command helm template, name of the chart. 
+When this is done, we first check the templates with the command `helm template`, name of the chart. 
 
 ```bash
 cd chart
 ```
 
 ```bash
-helm template guestbook | less
+helm template todos | less
 ```
 
 It prints the manifest built by the template engine. We see the Secret and the ConfigMaps. Notice that the name is the concatenation of the relase name and the chart name. `RELEASE‑NAME` is the default name used by helm template command, which, as a reminder, is a static template rendering not calling the Kubernetes API. 
