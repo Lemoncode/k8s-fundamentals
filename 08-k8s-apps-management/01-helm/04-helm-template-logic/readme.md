@@ -576,3 +576,7 @@ Each time a user installs your chart, the content of that file is printed in the
 ## Demo: Adding Template Logic
 
 [Demo: Adding Template Logic](01-adding-template-logic/readme.md)
+
+## Demo: Installing Dev and Test Releases
+
+[Demo: Installing Dev and Test Releases](02-installing-dev-and-test/readme.md)
