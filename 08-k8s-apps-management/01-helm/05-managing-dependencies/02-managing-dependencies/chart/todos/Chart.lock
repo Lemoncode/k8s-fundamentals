@@ -1,0 +1,12 @@
+dependencies:
+- name: backend
+  repository: http://localhost:8080
+  version: 0.1.0
+- name: frontend
+  repository: http://localhost:8080
+  version: 1.1.0
+- name: database
+  repository: http://localhost:8080
+  version: 0.1.0
+digest: sha256:32118490d3fcee3fd93853ce2d9fe0ca0a10c9ed2a35598567f526ea62e73bf7
+generated: "2021-10-17T12:40:40.608405606+02:00"
