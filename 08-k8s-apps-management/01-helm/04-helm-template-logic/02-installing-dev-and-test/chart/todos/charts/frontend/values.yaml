@@ -10,4 +10,5 @@ service:
   port: 80
   type: ClusterIP
 ingress:
+  enabled: true
   host: frontend.minikube.local

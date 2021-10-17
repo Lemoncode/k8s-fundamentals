@@ -1,10 +1,10 @@
+{{- if .Values.ingress.enbled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress
 spec:
   rules:
-    # - host: frontend.minikube.local
     - host: {{ .Values.ingress.host }}
       http:
         paths:
@@ -15,13 +15,4 @@ spec:
                 name: {{ .Release.Name }}-{{ .Chart.Name }}
                 port:
                   number: 80
-    # - host: backend.minikube.local
-    #   http:
-    #     paths:
-    #       - path: /
-    #         pathType: Prefix
-    #         backend:
-    #           service:
-    #             name: backend
-    #             port:
-    #               number: 80
+{{- end}}
