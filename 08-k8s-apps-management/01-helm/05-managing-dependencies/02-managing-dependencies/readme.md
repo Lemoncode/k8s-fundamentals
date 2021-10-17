@@ -1,4 +1,4 @@
-## Demo: managing Dependencies
+## Demo: Managing Dependencies
 
 > Start from: `05-managing-dependencies/01-packaging-and-publishing-charts`
 > NOTE: Remove `chart/todos/charts` and `chart/dist`

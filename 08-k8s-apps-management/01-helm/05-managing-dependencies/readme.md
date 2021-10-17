@@ -284,3 +284,9 @@ helm install demo foo --set tags.api=false
 ```
 
 **Conditions and tags only have a role when you install a chart**. If you run `helm install demo todos`, **some charts are installed and others are not depending on the conditions, tags, and values**. 
+
+## Demo: Managing Dependencies
+
+[Demo: Managing Dependencies](05-managing-dependencies/02-managing-dependencies/readme.md)
+
+## Demo: Controlling Dependencies with Conditions and Tags
