@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "1",
+    "title": "Foo todo",
+    "done": false
+  },
+  {
+    "_id": "2",
+    "title": "Boo todo",
+    "done": true
+  }
+]

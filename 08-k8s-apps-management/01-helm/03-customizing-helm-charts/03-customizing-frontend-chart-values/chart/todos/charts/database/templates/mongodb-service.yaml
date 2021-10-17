@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+spec:
+  selector:
+    app: {{ .Release.Name }}-{{ .Chart.Name }}
+  ports:
+    - name: monongodb
+      port: 27017
+      targetPort: 27017
