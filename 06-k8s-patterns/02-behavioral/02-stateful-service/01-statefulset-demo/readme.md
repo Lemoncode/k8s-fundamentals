@@ -187,5 +187,5 @@ Hostremp-0.random-employee.default.svc.cluster.local:3000User-AgentWgetConnectio
 ## Clean up
 
 ```bash
-kubectl delete -f .
+kubectl delete -f ./
 ```
