@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: remp
+spec:
+  serviceName: random-employee
+  replicas: 2
+  selector:
+    matchLabels:
+      app: random-employee
+  template:
+    metadata:
+      labels:
+        app: random-employee
+    spec:
+      containers:
+        - name: random-employee
+          image: jaimesalas/random-employee:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          volumeMounts:
+            - mountPath: /opt/app/logs
+              name: logs
+  volumeClaimTemplates:
+    - metadata:
+        name: logs
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 10Mi
