@@ -25,6 +25,12 @@ app.get("/shutdown", async (_, res) => {
   res.send('closing');
 });
 
+app.get("/downward", (_, res) => {
+  const memoryLimit = config.downwardAPI['memoryLimit'];
+  const podIp = config.downwardAPI['podIp'];
+  res.send(JSON.stringify({ podIp, memoryLimit }));
+});
+
 // TODO: Create file for readiness probe
 (async () => {
   await delay(+config.system.delayStartup);
