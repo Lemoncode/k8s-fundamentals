@@ -1,0 +1,7 @@
+#Parent Chart values.yaml
+Todos:
+  title: "Super"
+backend:
+  mogodb_uri:
+    username: admin
+    password: password

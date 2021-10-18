@@ -1,0 +1,14 @@
+#frontend values.yaml
+config:
+  todo_title: "Default"
+  backend_uri: "backend.minikube.local"
+replicaCount: 1
+image:
+  repository: jaimesalas/todo-app-frontend
+  tag: "0.1.0"
+service:
+  port: 80
+  type: ClusterIP
+ingress:
+  enabled: true
+  host: frontend.minikube.local

@@ -23,7 +23,7 @@ metadata:
 spec:
   accessModes: # 3
     - ReadWriteOnce
-  storageClassName: ps-fast
+  storageClassName: lc-fast
   capacity:
     storage: 10Mi
   persistentVolumeReclaimPolicy: Retain # 5
@@ -118,7 +118,7 @@ spec:
   volumes:
     - name: fast10m
       persistentVolumeClaim:
-        claimName: ps-pvc
+        claimName: lc-pvc
   containers:
   - name: ctr1
     image: ubuntu:latest

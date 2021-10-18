@@ -15,7 +15,6 @@ Rolling Update deployments are the default strategy that K8s uses to move pods i
     - Rolling Update (default)
     - Recreate (can result in down-time) -> what it would do is delete the older pods and recreate them. An that way you can get a fresh copy out there if you need to. 
 
-
 > TODO: Add diagrams
 
 ## Creating a Rolling Update Deployment
@@ -41,7 +40,7 @@ spec:
 
 1. Number of Pod replicas
 2. Seconds new Pod should be ready to be considered healthy (0)
-3. Seconds to wait before reporting stalled (estanacado) Deployment
+3. Seconds to wait before reporting stalled (estancado) Deployment
 4. Number of ReplicaSets that can be rolled back (default 10) -> I want five items in the history for this deployment so I could deploy five times they'd be tracked, and then on the sixth, it would start to override the oldest one.
 
 ```yaml
@@ -54,7 +53,7 @@ strategy:
 
 1. RollingUpdate (default) or Recreate strategy
 2. Max Pods that can exceed the replicas count (25%) (surge - oleada) -> when it goes to roll out new pods. If we had a replicas of two. let's say and that's our replicas in this case, then how many pods above two is it allowed to go? In this case we are saying a max of one that would mean a total of three.
-3. Max Pods that are not operational (25%) -> It's going tobe deleting pods as well. At some point, how many pods could be unavailable while it's doing the rolling update?
+3. Max Pods that are not operational (25%) -> It's going to be deleting pods as well. At some point, how many pods could be unavailable while it's doing the rolling update?
 
 ### Understanding maxSurge
 

@@ -1,7 +1,6 @@
 
 ## Secrets Core Concepts
 
-
 A __Secret__ is an object that contains a small amount of sensitive data such as a password, a token, or a key.
 
 * Secrets:
@@ -145,4 +144,4 @@ spec:
 
 ## Secrets Demo
 
-> TODO: Create simple demo
+[mongo deployement](01-k8s-basic-features/06-secrets/02-secrets-demo)

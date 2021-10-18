@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: nginx:alpine
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: static 
+        resources:
+          limits: {}
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: static
+          persistentVolumeClaim:
+            claimName: deployment-lc-pvc

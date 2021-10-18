@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: other-lc-pvc 
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: lc-fast
+  resources:
+    requests:
+      storage: 10Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otherapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: otherapp
+  template:
+    metadata:
+      labels:
+        app: otherapp
+    spec:
+      containers:
+      - name: otherapp
+        image: nginx:alpine
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: static 
+        resources:
+          limits: {}
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: static
+          persistentVolumeClaim:
+            claimName: other-lc-pvc
+            # claimName: deployment-lc-pvc

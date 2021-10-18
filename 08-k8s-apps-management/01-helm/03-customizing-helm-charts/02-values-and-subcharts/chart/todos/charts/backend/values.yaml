@@ -1,0 +1,6 @@
+secret:
+  mongodb_uri:
+    username: your_user
+    password: your_password
+  service:
+    type: NodePort

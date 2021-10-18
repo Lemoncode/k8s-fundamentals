@@ -1,6 +1,6 @@
 # Blue-Green Deployments - The Blue Deployment Demo
 
-Once we have [published our image](01-blue-green-deployment/blue/readme.md)
+Once we have [published our image](./blue/readme.md)
 
 ```bash
 $ export TARGET_ROLE=blue

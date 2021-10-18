@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: deployment-lc-pvc
+spec:
+  resources:
+    requests:
+      storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: lc-fast
