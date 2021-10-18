@@ -1,0 +1,5 @@
+node_modules
+build-push.sh
+Dockerfile
+service-ready
+logs
