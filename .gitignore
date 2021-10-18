@@ -31,4 +31,8 @@ private-resources/
 configs/
 exercise-solution/
 
+# configuration
 .env
+
+# logs
+logs
