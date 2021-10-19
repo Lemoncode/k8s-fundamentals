@@ -8,3 +8,11 @@ Packages configuration data into an immutable container image and links the conf
 
 
 This way we ensure always have a well-defined state for our configuration data.
+
+## Demo: Immutable Docker
+
+[Demo: Immutable Docker](00-immutable-docker/readme.md)
+
+## Kubernetes Init Containers
+
+In order to use `Immutable Configuration` we can use init containers.
