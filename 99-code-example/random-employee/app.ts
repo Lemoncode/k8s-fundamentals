@@ -33,7 +33,7 @@ app.get("/downward", (_, res) => {
 
 app.get('/downward/pod-info', async (_, res) => {
   try {
-    const content = fs.readdir(`${__dirname}/pod-info`);
+    const content = await fs.readdir(`${__dirname}/pod-info`);
     res.send(content);
   } catch (exception) {
     console.error(exception);
