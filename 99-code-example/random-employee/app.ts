@@ -27,7 +27,7 @@ app.get("/shutdown", async (_, res) => {
 
 app.get("/downward", (_, res) => {
   const memoryLimit = config.downwardAPI['memoryLimit'];
-  const podIp = config.downwardAPI['podIp'];
+  const podIp = config.downwardAPI['podIP'];
   res.send(JSON.stringify({ podIp, memoryLimit }));
 });
 

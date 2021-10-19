@@ -6,7 +6,7 @@ export default {
     port: process.env.PORT || '3000',
   },
   downwardAPI: {
-    podIp: process.env.POD_IP || '',
+    podIP: process.env.POD_IP || '',
     memoryLimit: process.env.MEMORY_LIMIT || '',
   }
 }
