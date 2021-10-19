@@ -4,6 +4,7 @@ ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_ENV production
 
 COPY package.json /home/node/app/package.json
+COPY config.js /home/node/app/config.js 
 COPY app-dev.config.json /home/node/app/app-dev.config.json
 COPY index.js /home/node/app/index.js
 

@@ -10,5 +10,6 @@ app.use(bodyParser.json());
 
 (async () => {
   const config = await configReader.readConfig();
+  console.log(config);
   startServer(config, app);
 })();

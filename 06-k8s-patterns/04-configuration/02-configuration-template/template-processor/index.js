@@ -10,16 +10,21 @@ const processTemplate = () => {
 
 const resolvePath = () => (
   (process.env.NODE_ENV === 'production') ?
-    '/config/app-dev.config.json' :
+    '/config/app-dev.config.json' :  // app-dev.config.json
     `${__dirname}/tmp/app-dev.config.json`
 );
 
 const dumpConfig = () => {
+  console.log(resolvePath());
   fs.writeFile(
     resolvePath(),
     JSON.stringify(templateProcessed),
     function(err, r) {
       console.log(err || r);
+
+      fs.readFile(resolvePath(), (err, data) => {
+        console.log(err || data);
+      });
     }
   );
 };
