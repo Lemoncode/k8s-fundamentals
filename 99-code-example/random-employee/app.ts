@@ -31,6 +31,16 @@ app.get("/downward", (_, res) => {
   res.send(JSON.stringify({ podIp, memoryLimit }));
 });
 
+app.get('/downward/pod-info', async (_, res) => {
+  try {
+    const content = fs.readdir(`${__dirname}/pod-info`);
+    res.send(content);
+  } catch (exception) {
+    console.error(exception);
+    res.send('No directory found')
+  }
+});
+
 // TODO: Create file for readiness probe
 (async () => {
   await delay(+config.system.delayStartup);
