@@ -6,7 +6,7 @@ const startServer = (config, app) => {
   });
 
   app.listen(port, () => {
-    console.log(`App listening on ${3000}`);
+    console.log(`App listening on ${port}`);
   });
 };
 
