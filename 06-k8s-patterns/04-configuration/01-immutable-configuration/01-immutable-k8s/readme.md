@@ -105,4 +105,5 @@ app-dev.config.json
 ### Clean Up
 
 ```bash
+kubectl delete -f immutable-config-app.deployment.yml 
 ```
