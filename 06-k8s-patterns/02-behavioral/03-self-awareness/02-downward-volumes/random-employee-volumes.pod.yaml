@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-employee
+  labels:
+    app: foo
+spec:
+  volumes:
+    - name: pod-info
+      downwardAPI:
+        items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: annotations
+            fieldRef:
+              fieldPath: metadata.annotations
+  containers:
+    - image: jaimesalas/random-employee:0.0.1
+      imagePullPolicy: Always
+      name: random-employee-ctr
+      volumeMounts:
+        - name: pod-info
+          mountPath: /pod-info
+      resources: {}

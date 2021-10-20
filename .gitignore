@@ -14,6 +14,7 @@ todo
 private.readme.md
 .vagrant
 service-ready
+tmp
 
 # binaries
 minikube-linux-amd64
@@ -28,5 +29,10 @@ kubectl
 external-resources/
 private-resources/
 configs/
+exercise-solution/
 
+# configuration
 .env
+
+# logs
+logs

@@ -1,7 +1,6 @@
 
 ## Secrets Core Concepts
 
-
 A __Secret__ is an object that contains a small amount of sensitive data such as a password, a token, or a key.
 
 * Secrets:

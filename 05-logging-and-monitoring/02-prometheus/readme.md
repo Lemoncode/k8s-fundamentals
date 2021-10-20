@@ -167,3 +167,6 @@ The yaml files used here were originally created by Bibin Wilson (thanks for the
 - https://devopscube.com/setup-prometheus-monitoring-on-kubernetes
 - https://devopscube.com/setup-kube-state-metrics
 - https://devopscube.com/setup-grafana-kubernetes/
+
+[kube state metrics GitHub](https://github.com/kubernetes/kube-state-metrics)
+[kube state metrics image](https://quay.io/repository/coreos/kube-state-metrics?tag=latest&tab=tags)

@@ -145,7 +145,7 @@ spec: # 4
 
 ```bash
 # Perform a "trial" create and also validate the YAML
-kubetcl create -f file.pod.yml --dry-run --validate=true
+kubetcl create -f file.pod.yml --dry-run=client --validate=true
 
 # Create a Pod from YAML
 # Will error if Pod already exists

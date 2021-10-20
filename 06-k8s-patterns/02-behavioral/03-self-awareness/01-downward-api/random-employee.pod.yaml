@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-employee
+spec:
+  containers:
+    - image: jaimesalas/random-employee:0.0.1
+      imagePullPolicy: Always
+      name: random-employee-ctr
+      env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: random-employee-ctr
+              resource: limits.memory
+      resources: {}

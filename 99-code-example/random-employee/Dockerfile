@@ -2,19 +2,7 @@ FROM node:alpine3.12 AS builder
 
 WORKDIR /tmp/build  
 
-COPY app.ts .
-
-COPY config.ts .
-
-COPY employee-generator.service.ts .
-
-COPY routes.ts .
-
-COPY helpers.ts .
-
-COPY package*.json .
-
-COPY tsconfig.json .
+COPY . .
 
 RUN npm ci 
 
@@ -26,7 +14,9 @@ WORKDIR /opt/app
 
 COPY --from=builder /tmp/build/dist .
 
-COPY --from=builder /tmp/build/package*.json .
+COPY --from=builder /tmp/build/package.json .
+
+COPY --from=builder /tmp/build/package-lock.json .
 
 RUN npm ci --only-production
 
