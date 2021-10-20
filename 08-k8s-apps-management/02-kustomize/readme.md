@@ -9,6 +9,12 @@ Kustomize traverses a Kubernetes manifest to add, remove or update configuration
 * Every artifact that kustomize uses is plain YAML and can be validated and processed as such
 * Kustomize encourages a fork/modify/rebase workflow
 
+Kustomize was created as a response to template-heavy approaches like Helm to configure and customize Kubernetes clusters. It is designed around the principle of declarative application management. It takes a valid Kubernetes YAML manifest (base) and specializes it or extends it by overlaying additional YAML patches (overlays). Overlays depend on their bases. All files are valid YAML files. There are no placeholders.
+
+> A `kustomization.yaml` file controls the process. Any directory that contains a `kustomization.yaml` file is called a root.
+
+> One of the best use cases for kustomize is organizing your system into multiple namespaces such as staging and production.
+
 ## Installing Kustomize
 
 ### Using binaries
@@ -26,6 +32,11 @@ sudo mv kustomize /usr/local/bin
 ```
 
 > It does not work with ARM architectures
+
+### Kustomize commands
+
+```bash
+```
 
 ### Docker Images
 
