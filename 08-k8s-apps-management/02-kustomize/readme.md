@@ -17,6 +17,14 @@ Kustomize traverses a Kubernetes manifest to add, remove or update configuration
 curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 ```
 
+```bash
+chmod +x kustomize
+```
+
+```bash
+sudo mv kustomize /usr/local/bin
+```
+
 > It does not work with ARM architectures
 
 ### Docker Images
@@ -33,3 +41,5 @@ docker run k8s.gcr.io/kustomize/kustomize:v3.8.7 version
 ```
 
 ## Kustomize examples
+
+[Demo: Introduction](01-introduction/readme.md)
