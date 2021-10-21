@@ -35,12 +35,12 @@ sudo mv kustomize /usr/local/bin
 
 ### Kustomize commands
 
-* `kustomize build`
-* `kustomize cfg`
-* `kustomize completion`
-* `kustomize create`
-* `kustomize edit`
-* `ksutomize fn`
+* `kustomize build` - Build a kustomization target from a directory or URL. If everything goes fine, we get the related K8s manifests
+* `kustomize cfg` - Commands for reading and writing configuration
+* `kustomize completion` - Generate shell completion script
+* `kustomize create` - Create a new kustomization in the current directory
+* `kustomize edit` - Edits a kustomization file
+* `ksutomize fn` - Commands for running functions against configuration.
 
 If we want to deploy the manifests we can use `kubectl apply -k`
 
