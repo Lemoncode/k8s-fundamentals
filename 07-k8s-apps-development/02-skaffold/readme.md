@@ -128,7 +128,7 @@ skaffold run
 
 ## Demo: skaffold dev
 
-[Demo: skaffold dev](01-skaffold-init/readme.md)
+[Demo: skaffold dev](04-skaffold-dev/readme.md)
 
 
 ## References

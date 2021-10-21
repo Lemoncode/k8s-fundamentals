@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: --skaffold-init
+build:
+  artifacts:
+    - image: todo-app-backend
+      context: todo-app-api
+      docker:
+        dockerfile: Dockerfile
+    - image: todo-app-frontend
+      context: todo-app-frontend
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - .k8s/*.yaml
