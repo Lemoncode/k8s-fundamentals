@@ -1,0 +1,8 @@
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: jaimesalas/terminal-service:0.0.2
+- op: replace
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: PORT
+      value: "3000"

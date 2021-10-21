@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: staging
+commonLabels:
+  environment: staging
+bases:
+  - ../../base
+# patchesStrategicMerge:
+#   - terminal.patch.yaml
+patchesJson6902:
+  - target:
+      kind: Deployment
+      name: terminal-app
+      version: v1
+    path: terminal.deployment.6902-patch.yaml
+  - target:
+      kind: Service
+      name: terminal-service
+      version: v1
+    path: terminal.service.6902-patch.yaml
+resources:
+  - namespace.yaml

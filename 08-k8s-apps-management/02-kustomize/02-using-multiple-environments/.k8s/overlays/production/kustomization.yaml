@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: production
+commonLabels:
+  environment: production
+bases:
+  - ../../base
+patchesJson6902:
+  - target:
+      kind: Deployment
+      name: terminal-app
+      version: v1
+    path: terminal.deployment.yaml
+resources:
+  - namespace.yaml
