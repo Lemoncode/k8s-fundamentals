@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminal-app
+  labels:
+    tier: internal-app
+spec:
+  selector:
+    matchLabels: {}
+  template:
+    metadata:
+      labels: {}
+    spec:
+      containers:
+        - name: app
+          image: jaimesalas/terminal-service:0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "4000"
+          resources: {}

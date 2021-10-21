@@ -21,5 +21,3 @@ COPY --from=builder /tmp/build/package-lock.json .
 RUN npm ci --only-production
 
 CMD [ "node", "app.js" ]
-
-
