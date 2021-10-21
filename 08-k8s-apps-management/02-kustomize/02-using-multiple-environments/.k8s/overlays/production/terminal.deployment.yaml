@@ -1,0 +1,10 @@
+- op: add
+  path: "/spec/replicas"
+  value: 2
+
+- op: add
+  path: "/spec/template/spec/containers/0/resources"
+  value:
+    limits:
+      memory: "128Mi"
+      cpu: "500m"

@@ -35,8 +35,14 @@ sudo mv kustomize /usr/local/bin
 
 ### Kustomize commands
 
-```bash
-```
+* `kustomize build`
+* `kustomize cfg`
+* `kustomize completion`
+* `kustomize create`
+* `kustomize edit`
+* `ksutomize fn`
+
+If we want to deploy the manifests we can use `kubectl apply -k`
 
 ### Docker Images
 
@@ -54,3 +60,9 @@ docker run k8s.gcr.io/kustomize/kustomize:v3.8.7 version
 ## Kustomize examples
 
 [Demo: Introduction](01-introduction/readme.md)
+
+## References
+
+[Patche strategies](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md)
+
+[JsonPatches6902 Overview](https://skryvets.com/blog/2019/05/15/kubernetes-kustomize-json-patches-6902/)
