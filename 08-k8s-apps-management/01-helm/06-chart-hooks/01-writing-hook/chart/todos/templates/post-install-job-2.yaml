@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}"
+  name: "{{ .Release.Name }}-2"
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-weight": "0"
 spec:
   template:
     metadata:
-      name: "{{ .Release.Name }}"
+      name: "{{ .Release.Name }}-2"
     spec: 
       restartPolicy: Never
       containers:
@@ -17,5 +17,5 @@ spec:
         command: [
           /bin/sh,
           -c,
-          "echo 'I run after install, Am I first?'; date +%s"
+          "echo 'I run after install, Am I second'; date +%s"
         ]
