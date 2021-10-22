@@ -187,7 +187,9 @@ I run after install, Am I first?
 
 We can notice that the bigger weight the higher priority.
 
-Let's clean before running this
+A resource can also implement multiple hooks, for example on `post-install` and `post-upgrade`
+
+Let's clean before running this:
 
 ```bash
 helm uninstall dev
@@ -195,5 +197,64 @@ kubectl delete job dev
 kubectl delete job dev-2
 ```
 
-* TODO: Show that can be run on mutiple hooks
-* TODO: Show how can we delete them 
+Update `post-install-job.yaml`
+
+```diff
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+-   "helm.sh/hook": post-install
++   "helm.sh/hook": post-install, post-upgrade
+    "helm.sh/hook-weight": "-1"
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+    spec: 
+      restartPolicy: Never
+      containers:
+      - name: post-install-job
+        image: "alpine:3.3"
+        command: [
+          /bin/sh,
+          -c,
+          "echo 'I run after install, Am I first?'; date +%s"
+        ]
+```
+
+Now we are ready to run:
+
+```bash
+helm install dev todos
+```
+
+Ok, now if we run `kubectl get pods`, we can find two pods with status `Completed`. If we `upgrade`, we can see that the Job is executed gain.
+
+```bash
+helm upgrade dev todos
+```
+
+```bash
+kubectl get pods
+NAME                            READY   STATUS      RESTARTS   AGE
+dev-2-htk2x                     0/1     Completed   0          7m35s
+dev-backend-67896b79dc-l5tz8    1/1     Running     1          7m38s
+dev-database-64b9598967-wfh6k   1/1     Running     0          7m38s
+dev-frontend-5ccdd7b84f-kzv9n   1/1     Running     0          7m38s
+dev-mfxp7                       0/1     Completed   0          13s
+```
+
+For last we can set policies to run this Pods after the hook resources has finished:
+
+* `before-hook-creation` -	Delete the previous resource before a new hook is launched (default)
+* `hook-succeeded` -	Delete the resource after the hook is successfully executed
+* `hook-failed` -	Delete the resource if the hook failed during execution
+
+We only need to update `annotations`
+
+```yaml
+annotations:
+  "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+```
