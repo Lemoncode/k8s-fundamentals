@@ -28,9 +28,9 @@ ingress-nginx-controller-admission   ClusterIP   10.109.191.104   <none>        
 ```bash
 #Create a deployment, scale it to 2 replicas and expose it as a service
 #This service will be ClusterIP and we'll expose this service via the Ingress
-$ kubectl create deployment hello-world-service-single --image=gcr.io/google-samples/hello-app:1.0
-$ kubectl scale deployment hello-world-service-single --replicas=2
-$ kubectl expose deployment hello-world-service-single --port=80 --target-port=8080 --type=ClusterIP
+kubectl create deployment hello-world-service-single --image=gcr.io/google-samples/hello-app:1.0
+kubectl scale deployment hello-world-service-single --replicas=2
+kubectl expose deployment hello-world-service-single --port=80 --target-port=8080 --type=ClusterIP
 ```
 
 Now we can create a single Ingress routing to the one backend service port 80 listening on all hostnames, create `ingress-single.yaml`
