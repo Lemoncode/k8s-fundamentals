@@ -14,7 +14,7 @@ Let's start off by investigating the **cluster DNS service**.
 kubectl get service ‑‑namespace kube‑system
 ```
 
-This is going to give us a listing of all of the services that are available in kube‑system. The one that we're interested in, the service for `kube‑dns`. 
+This is going to give us a listing of all of the services that are available in `kube‑system`. The one that we're interested in, the service for `kube‑dns`. 
 
 ```
 NAME             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                  AGE
