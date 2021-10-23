@@ -87,9 +87,14 @@ Thus, container security is never a set-it-and-forget-it affair. You must contin
 
 ## Demo: Scanning Image Snyk
 
-## Demo: Scanning Images Snyk
+[Demo: Scanning Image Snyk](01-scanning-images-snyk/readme.md)
+
+## Demo: Looking for Poor Configurations trivy
+
+[Demo: Looking for Poor Configurations trivy](02-poor-configurations/readme.md)
 
 ## References
 
 [What Is Container Security](https://sysdig.com/learn-cloud-native/container-security/what-is-container-security/)
 [Searching for vulnerabilities: Snyk](https://www.returngis.net/2021/09/buscar-vulnerabilidades-en-imagenes-de-docker-con-snyk/)
+[Searching poor configurations on Dockerfile](https://www.returngis.net/2021/09/buscar-malas-configuraciones-en-tus-dockerfile-con-trivy/)
