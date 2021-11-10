@@ -398,7 +398,7 @@ ingress:
 * Create `charts/backend/templates/ingress.yaml`
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress
@@ -408,9 +408,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
-          servicePort: 80
+          service:
+            name: {{ .Release.Name }}-{{ .Chart.Name }}
+            port: 
+              number: 80
 ```
 
 * Update `charts/backend/templates`
@@ -428,18 +431,7 @@ volume:
 * Update `charts/database/templates`
 
 When this is done, we first check the templates with the command `helm template`, name of the chart. 
-
-```bash
-cd chart
-```
-
-```bash
-helm template todos | less
-```
-
-It prints the manifest built by the template engine. We see the Secret and the ConfigMaps. Notice that the name is the concatenation of the relase name and the chart name. `RELEASE‑NAME` is the default name used by helm template command, which, as a reminder, is a static template rendering not calling the Kubernetes API. 
-
-All resources are generated, the persistent volumes, the services, and notice that in the deployment, the image is based on the repository and tag coming from the values.yaml file. 
+extensions/v1beta1
 
 We can run a second check with `helm install [NAME] [CHART] ‑‑dry‑run ‑‑debug`. 
 

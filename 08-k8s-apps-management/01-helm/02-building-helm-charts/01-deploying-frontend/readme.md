@@ -59,7 +59,7 @@ spec:
 Create `frontend-service.yaml`
 
 ```yaml
-apiVersion: apps/v1
+apiVersion: v1
 kind: Service
 metadata:
   labels:

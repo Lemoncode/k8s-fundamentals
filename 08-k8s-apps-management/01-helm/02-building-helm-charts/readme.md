@@ -144,4 +144,4 @@ If you made some change in your application and want to install it, you don't ha
 
 ## Demo: Building an Umbrella Helm Chart
 
-[]()
+[Demmo: Building Umbrella Chart](./04-building-umbrella-chart/readme.md)
