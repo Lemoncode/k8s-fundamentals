@@ -12,7 +12,7 @@ Malware is malicious code that is deployed within a container. It can sneak into
 
 1. Attacker compromises CI/CD environment.
 2. Attacker gets access to container registry and replace our images.
-3. Users downloa malicious container images. 
+3. Users download malicious container images. 
 
 In all cases, malware that is not detected before a container is launched will enter your runtime environment, which could lead to any number of security issues, such as collecting sensitive data from an application or disrupting other containers.
 
