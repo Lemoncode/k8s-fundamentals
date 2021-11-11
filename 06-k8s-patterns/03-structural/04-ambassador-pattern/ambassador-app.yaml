@@ -5,9 +5,11 @@ metadata:
 spec:
   containers:
   - name: main-app
-    image: jaimesalas/curl
+    image: jaimesalas/nginx-curl
+    imagePullPolicy: Always
     resources: {}
-    command: ["sleep", "3600"]
+    # command: ["sleep", "3600"]
   - name: ambassador
     image: jaimesalas/nginx-ambassador
+    imagePullPolicy: Always
     resources: {}

@@ -1,12 +1,12 @@
 # Ambassador Pattern
 
-Before star create images from [nginx-outside](./nginx-outside/readme.md) and [nginx-ambassador]()
+Before star create images from [nginx-outside](./nginx-outside/readme.md), [nginx-ambassador](./nginx-ambassador/readme.md) and [nginx-curl](./nginx-curl/readme.md)
 
 ## Use case
 
 Imagine that our main container it's running the application, and it does not care about all the different external systems that it might have to connect to. 
 
-So to help with that, we can create an ambassador container that sits in between the main app on that outside world and brokers connections. 
+So to help with that, we can create an ambassador container that sits in between the main applications and the outside world and brokers connections. 
 
 For example, the main app consumes an external API, maybe the details of that API can change from time to time, the address, port or the certificates... 
 
@@ -29,6 +29,7 @@ spec:
   containers:
   - name: nginx-outside
     image: jaimesalas/nginx-outside
+    imagePullPolicy: Always
     resources: {}
     ports:
       - containerPort: 80
@@ -76,12 +77,15 @@ metadata:
 spec:
   containers:
   - name: main-app
-    image: jaimesalas/curl
+    image: jaimesalas/nginx-curl
+    imagePullPolicy: Always
     resources: {}
-    command: ["sleep", "3600"] # 1
+    # command: ["sleep", "3600"] # 1
   - name: ambassador
     image: jaimesalas/nginx-ambassador
+    imagePullPolicy: Always
     resources: {}
+
 ```
 
 1. this line here in the code is just to keep it running while we log on and imitate the main app by running curl commands.
@@ -120,7 +124,7 @@ $ kubectl apply -f ambassador-app.yaml
 And access the container app:
 
 ```bash
-$ kubectl exec -it ambassador-app -- /bin/bash
+$ kubectl exec -it ambassador-app -c main-app -- /bin/bash
 ```
 
 And access the external service by running:
