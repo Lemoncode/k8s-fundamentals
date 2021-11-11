@@ -1,14 +1,16 @@
 # The Adapter Pattern
 
+Before start create image from [nginx-exposed-metrics](./nginx-exposed-metrics/readme.md)
+
 ## Use case 
 
 We build our micro services on any language, with its own interfaces and APIs. The problem is that the tools that we're using don't expose the data on the right format that other tools and applications consume it.
 
-For example Prometheus, expects metrics in a certain format, that usually is not the format of our applications. 
+For example `Prometheus`, expects metrics in a certain format, that usually is not the format of our applications. 
 
 The recommended pattern to deal with this on Kubernetes is to use the `adapter sidecar pattern container`.
 
-In the case of Prometheus, the `adapter` runs side by side to the application container, it scrapes the metrics coming out of your appm and then transforms them into the format that Prometheus understands. 
+In the case of `Prometheus`, the `adapter` runs side by side to the application container, it scrapes the metrics coming out of your app and then transforms them into the format that `Prometheus` understands. 
 
 ## Steps
 
@@ -22,17 +24,18 @@ metadata:
 spec:
   containers:
   - name: web-ctr
-    image: jaimesalas/nginx-adapter
+    image: jaimesalas/nginx-exposed-metrics
+    imagePullPolicy: Always
     resources: {}
     ports:
       - containerPort: 80
-  - name: transformer
+  - name: adapter
     image: nginx/nginx-prometheus-exporter
+    imagePullPolicy: Always
     resources: {}
     args: ["-nginx.scrape-uri", "http://localhost/nginx_status"]
     ports:
     - containerPort: 9113
-
 
 ```
 
@@ -61,14 +64,14 @@ server {
 Notice that the route `/nginx_status` it's allowed to be accessed from `localhost` (127.0.0.1)
 
 
-The other container is the `transfomer`
+The other container is the `adpter` (we can use `transformer` - transforms NGINX metrics into Prometheus metrics)
 
 ```yaml
-- name: transformer
-    image: nginx/nginx-prometheus-exporter
-    args: ["-nginx.scrape-uri", "http://localhost/nginx_status"]
-    ports:
-    - containerPort: 9113
+- name: adapter
+  image: nginx/nginx-prometheus-exporter
+  args: ["-nginx.scrape-uri", "http://localhost/nginx_status"]
+  ports:
+  - containerPort: 9113
 ```
 
 This `transformer` is going to grab the `NGINX` metrics, in their native format, transform them and expose them on `/metrics` on port `9113`.

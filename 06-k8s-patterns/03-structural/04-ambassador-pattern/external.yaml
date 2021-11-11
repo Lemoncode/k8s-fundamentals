@@ -8,6 +8,7 @@ spec:
   containers:
   - name: nginx-outside
     image: jaimesalas/nginx-outside
+    imagePullPolicy: Always
     resources: {}
     ports:
       - containerPort: 80

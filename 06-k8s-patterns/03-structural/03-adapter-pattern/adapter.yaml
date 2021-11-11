@@ -5,12 +5,14 @@ metadata:
 spec:
   containers:
   - name: web-ctr
-    image: jaimesalas/nginx-adapter
+    image: jaimesalas/nginx-exposed-metrics
+    imagePullPolicy: Always
     resources: {}
     ports:
       - containerPort: 80
-  - name: transformer
+  - name: adapter
     image: nginx/nginx-prometheus-exporter
+    imagePullPolicy: Always
     resources: {}
     args: ["-nginx.scrape-uri", "http://localhost/nginx_status"]
     ports:
