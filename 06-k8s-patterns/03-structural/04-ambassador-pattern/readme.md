@@ -1,5 +1,7 @@
 # Ambassador Pattern
 
+Before star create images from [nginx-outside](./nginx-outside/readme.md) and [nginx-ambassador]()
+
 ## Use case
 
 Imagine that our main container it's running the application, and it does not care about all the different external systems that it might have to connect to. 
