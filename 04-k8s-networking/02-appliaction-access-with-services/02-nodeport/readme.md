@@ -35,7 +35,6 @@ hello-world-nodeport   NodePort    10.107.6.138   <none>        80:31075/TCP   3
 kubernetes             ClusterIP   10.96.0.1      <none>        443/TCP        5d
 ```
 
-
 We're going to grab the cluster IP. We're going to grab the cluster IP services port, and we're also going to grab that NodePort port and store those all as environment variables. Change to `master` terminal if you are running these commands from out of master node.
 
 ```bash

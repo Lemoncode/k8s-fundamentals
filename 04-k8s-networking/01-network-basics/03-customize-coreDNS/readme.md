@@ -26,8 +26,8 @@ data:
         reload
         loadbalance
     }
-    centinosystems.com {
-        forward . 9.9.9.9
+    google.com {
+        forward . 8.8.8.8
     }
 
 ```
@@ -115,7 +115,7 @@ linux/amd64, go1.15.3, 054c9ae
 [INFO] Reloading complete
 ```
 
-Now that we made a configuration change, the next thing that we want to do is to make sure that our DNS service still works. Now, if we did something wrong in our configuration, we would have saw in our kubectl logs that we were just looking at, but I want to make sure that we still have DNS resolution. Let's go ahead and grab our SERVICEIP for our kube‑dns service and use nslookup to do some domain queries. Inside the `master` run:
+Now that we made a configuration change, the next thing that we want to do is to make sure that our DNS service still works. Now, if we did something wrong in our configuration, we would have saw in our kubectl logs that we were just looking at, but we want to make sure that we still have DNS resolution. Let's go ahead and grab our SERVICEIP for our kube‑dns service and use nslookup to do some domain queries. Inside the `master` run:
 
 ```bash
 SERVICEIP=$(kubectl get service -n kube-system kube-dns -o jsonpath='{ .spec.clusterIP }')
@@ -154,7 +154,6 @@ kubectl apply -f CoreDNSConfigDefault.yml -n kube-system
 And so that still will follow that same process. It'll take a minute for the configmap to update the file that's exposed into the pod, and then we'll see our DNS configuration restart as it senses that there was a new file updated inside of the pod. 
 
 What we're going to do is **configuring a pod's DNS client information**, and so let's look at `DeploymentCustomDns.yml`. 
-
 
 ```yaml
 apiVersion: apps/v1
@@ -195,7 +194,7 @@ spec:
 
 ```
 
-Inside of here, we have a basic deployment that starts up a couple replicas. So we're going to drill down into the pod templates spec, and inside of there, you can see we have a dnsPolicy defined. The dnsPolicy is set the None. inside of that, we have, a dnsConfig where we're defining a specific nameserver, in this case, `8.8.8.8`. Let's apply `DeploymentCustomDns.yml`. 
+Inside of here, we have a basic deployment that starts up a couple replicas. So we're going to drill down into the pod templates spec, and inside of there, you can see we have a `dnsPolicy` defined. The `dnsPolicy` is set the None. inside of that, we have, a `dnsConfig` where we're defining a specific nameserver, in this case, `8.8.8.8`. Let's apply `DeploymentCustomDns.yml`. 
 
 ```bash
 kubectl apply -f DeploymentCustomDns.yml
@@ -220,7 +219,7 @@ Let's double check to make sure that we have one, so we'll do echo $PODNAME, and
 echo $PODNAME
 ```
 
-To verify the DNS configuration,let's read the configuration of `etc/resolv.conf` inside of the pod, and we can do that with kubectl exec ‑it, passing in the environment variable for the PODNAME, ‑‑cat, which is the program that we want to execute, and giving it the parameter `etc/resolv.conf`, and what we're going to get is the contents of that file written to standard out. 
+To verify the DNS configuration,let's read the configuration of `etc/resolv.conf` inside of the pod, and we can do that with `kubectl exec ‑it`, passing in the environment variable for the PODNAME, ‑‑cat, which is the program that we want to execute, and giving it the parameter `etc/resolv.conf`, and what we're going to get is the contents of that file written to standard out. 
 
 ```bash
 kubectl exec -it $PODNAME -- cat /etc/resolv.conf

@@ -21,10 +21,10 @@ deployment.apps/hello-world-clusterip created
 
 ```bash
 kubectl expose deployment hello-world-clusterip \
-  --port=80 --target-port=8080 type ClusterIP
+  --port=80 --target-port=8080 --type ClusterIP
 ```
 
-We want to be able to run DNS queries against our cluster DNS server. If we just ran DNS queries from `master`, we would actually use my node's local DNS servers as defined in `etc/resolv.conf`. 
+We want to be able to run DNS queries against our cluster DNS server. If we just ran DNS queries from `master`, we would actually use the node's local DNS servers as defined in `etc/resolv.conf`. 
 
 Let's go ahead and grab our cluster DNS, DNS ServiceIP, and use that so we could send queries directly to that service, and with kubectl get service kube‑dns from the namespace kube‑system:
 
@@ -38,7 +38,7 @@ NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
 kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   5d17h
 ```
 
-We can use nslookup to query our DNS server, ee are going to pass in a DNS record, hello‑world‑clusterip.default.svc.cluster.local, and let's walk through that DNS name together.
+We can use `nslookup` to query our DNS server, ee are going to pass in a DNS record, hello‑world‑clusterip.default.svc.cluster.local, and let's walk through that DNS name together.
 
 ```bash
 nslookup hello-world-clusterip.default.svc.cluster.local 10.96.0.10
@@ -89,7 +89,7 @@ Both last commands  ar being executed in the namespace, `ns1`, and so now we act
 nslookup hello-world-clusterip.ns1.svc.cluster.local 10.96.0.10
 ```
 
-So we have nslookup, and there we see hello‑world‑clusterip, but this time, rather than default, we have our namespace, ns1.svc.cluster.local, and we're going to initiate that query against 10.96.0.10, which is our cluster DNS service, 
+So we have `nslookup`, and there we see hello‑world‑clusterip, but this time, rather than default, we have our namespace, ns1.svc.cluster.local, and we're going to initiate that query against 10.96.0.10, which is our cluster DNS service, 
 
 ```
 Server:         10.96.0.10

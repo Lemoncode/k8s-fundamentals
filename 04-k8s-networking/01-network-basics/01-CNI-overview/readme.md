@@ -23,13 +23,13 @@ worker-node01   Ready    worker                 4d15h   v1.21.4   10.0.0.11     
 worker-node02   Ready    worker                 4d15h   v1.21.4   10.0.0.12     <none>        Ubuntu 18.04.5 LTS   4.15.0-151-generic   docker://20.10.8
 ```
 
-Let's deploy a basic workload, hello-world with 3 relicas to create some pods on the pod network. Open a new terminal anc `cd` into `01-network-basics/01-CNI-overview`
+Let's deploy a basic workload, hello-world with 3 replicas to create some pods on the pod network. Open a new terminal anc `cd` into `01-network-basics/01-CNI-overview`
 
 ```bash
 kubectl apply -f deployment.yml
 ```
 
-Get all pods, we can see each POd has a unique IP on the Pod Network. The Pod Network was defined with `192.168.0.0/16`. 
+Get all pods, we can see each Pod has a unique IP on the Pod Network. The Pod Network was defined with `192.168.0.0/16`. 
 
 ```bash
 kubectl get pods -o wide
@@ -54,7 +54,7 @@ ip addr
 exit
 ```
 
-We can see one ethernet interface (number 4), and we can see `inet 192.168.158.2/32 brd 192.168.158.2 scope global eth0`, this is the real POD IP inside of the POD, so this POD will be able to reach other POD using its real address instead any NAT.
+We can see one ethernet interface (number 4), and we can see `inet 192.168.158.2/32 brd 192.168.158.2 scope global eth0`, this is the real POD IP inside of the POD network, so this POD will be able to reach other POD using its real address instead any NAT.
 
 ```
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
@@ -95,7 +95,7 @@ Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: /var/run/dockershim.
                     projectcalico.org/IPv4IPIPTunnelAddr: 192.168.77.128
 ```
 
-The first one is the real IP address of this POD, the second one is the adddress of the tunel interface that is associated with this node. Calico network's going to use tunnels to exchange information between the nodes in a cluster so that the Pods running on the nodes in a cluster can use the real IPs independent of the underlying infrastructure. Pod traffic will go into the tunnel on one node and pop out of the tunnel on the destination node where that other Pod is living on that the Pod is trying to communicate to. 
+The first one is the real IP address of this NODE, the second one is the adddress of the tunel interface that is associated with this node. Calico network's going to use tunnels to exchange information between the nodes in a cluster so that the Pods running on the nodes in a cluster can use the real IPs independent of the underlying infrastructure. Pod traffic will go into the tunnel on one node and pop out of the tunnel on the destination node where that other Pod is living on that the Pod is trying to communicate to. 
 
 If we scroll down, we will find:
 
@@ -191,7 +191,7 @@ Open up an SSH session into `worker‑node01`, cd into `00-installing-k8s/04-aut
 vagrant ssh node01
 ```
 
-On this side let's look at the IP addresses that are available. If I do an ip addr on `worker‑node1`, there we see I have a tunl0 interface on this system as well.
+On this side let's look at the IP addresses that are available. If we do an `ip addr` on `worker‑node1`, there we see I have a tunl0 interface on this system as well.
 
 ```bash
 ip addr
