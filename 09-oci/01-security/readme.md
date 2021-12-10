@@ -76,6 +76,7 @@ Runtime security is one of the most complex aspects of container security becaus
 * **The container runtime**: This is the process on the server that actually executes containers. You should ensure that your runtime software is up-to-date and patched against known security vulnerabilities.
 
 * **The orchestrator**: The container orchestrator deploys and manages containers. Most orchestrators offer a variety of tools to help restrict containers’ privileges and minimize security risks, but you should also use third-party monitoring and analysis tools to help detect security issues at the orchestrator level.
+  * https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 
 * **Nodes**: Nodes are the servers that host containers. You need to secure the node operating system, user accounts, networking configurations, and other resources in order to ensure that a breach at the node level doesn’t allow attackers to impact your container environment.
 
