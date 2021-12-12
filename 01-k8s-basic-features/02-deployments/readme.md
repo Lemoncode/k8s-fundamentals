@@ -50,7 +50,7 @@ spec:
         image: nginx:alpine # 5
 ```
 
-1. Kubernetes API version and resource type (Deployement)
+1. Kubernetes API version and resource type (Deployment)
 2. Metadata about deployment
 3. Select Pod template label(s)
 4. Template used to create the Pods

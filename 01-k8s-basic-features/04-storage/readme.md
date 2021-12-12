@@ -37,24 +37,24 @@ apiVersion: v1
 kind: Pod
 spec:
   volumes: # 1.
-    - name: html
-      emptyDir: {}
-    containers:
-    - name: nginx
-      image: nginx:alpine
-      volumeMounts: # 2.
-        - name: html
-          mountPath: /usr/share/nginx/html
-          readOnly: true
-    - name: html-updated
-      image: alpine
-      command: ["/bin/sh", "-c"]
-      args:
-       - while true; do date >> /html/index.html;
-           sleep 10; done
-      volumeMounts: # 3.
-       - name: html
-         mountPath: /html
+  - name: html
+    emptyDir: {}
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts: # 2.
+      - name: html
+        mountPath: /usr/share/nginx/html
+        readOnly: true
+  - name: html-updated
+    image: alpine
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do date >> /html/index.html;
+          sleep 10; done
+    volumeMounts: # 3.
+      - name: html
+        mountPath: /html
 ```
 
 1. Define initial Volume named "html" that is an empty directory (lifetime of the Pod)
@@ -65,7 +65,7 @@ volumes:
       emptyDir: {}
 ```
 
-2. We mount it into the container `ngginx` as read only.
+1. We mount it into the container `nginx` as read only.
 
 ```yaml
 volumeMounts:
@@ -110,10 +110,10 @@ spec:
 
 ```yaml
 volumes:
-    - name: docker-socket
-      hostPath:
-        path: /var/run/docker.sock
-        type: Socket
+  - name: docker-socket
+    hostPath:
+      path: /var/run/docker.sock
+      type: Socket
 ```
 
 2. On `docker` container we reference "docker-socket" Volume and define mountPath:
