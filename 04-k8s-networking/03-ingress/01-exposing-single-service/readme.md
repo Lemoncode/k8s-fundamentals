@@ -43,29 +43,28 @@ metadata:
 spec:
   defaultBackend:
     service:
-        name: hello-world-service-single
-        port:
-          number: 80
+      name: hello-world-service-single
+      port:
+        number: 80
 ```
 
 ```bash
 #Create single Ingress routing to the one backend service on the service port 80 listening on all hostnames
-$ kubectl apply -f ingress-single.yaml
+kubectl apply -f ingress-single.yaml
 ```
 
 Now we can check that is working by running:
 
 ```bash
-$ kubectl get ingress --watch
+kubectl get ingress --watch
+```
+
+```bash
 NAME             CLASS    HOSTS   ADDRESS        PORTS   AGE
 ingress-single   <none>   *       192.168.64.6   80      40s
 ```
 
-```bash
-$ kubectl get ingress
-NAME             CLASS    HOSTS   ADDRESS        PORTS   AGE
-ingress-single   <none>   *       192.168.64.6   80      20m
-```
+> Depending on `minikube` version, the ADDRESS could point to `localhost`. If we want browse, we only need to grab the minikube internal IP, reachable from host, by running: `minikube ip`. Then we can `curl` against this IP. Follow this [link](https://stackoverflow.com/questions/70287043/run-ingress-in-minikube-and-its-address-shows-localhost) for further explanation.
 
 ```bash
 #Notice the backends are the Service's Endpoints...so the traffic is going straight from the Ingress Controller to the Pod cutting out the kube-proxy hop.
@@ -88,7 +87,9 @@ Events:
 ```
 
 ```bash
-$ curl 192.168.64.6
+curl 192.168.64.6
+```
+```
 Hello, world!
 Version: 1.0.0
 ```
