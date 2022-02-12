@@ -1,6 +1,6 @@
 # Init Pattern
 
-Inside a `Pod` we can define `initContainers` entry, this give us the cahnce to declare a set of containers that will run sequentally before the pod's containers start.
+Inside a `Pod` we can define `initContainers` entry, this give us the chance to declare a set of containers that will run sequentally before the pod's containers start.
 
 - Run before app containers
 - Complete before app containers start

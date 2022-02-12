@@ -203,7 +203,7 @@ config:
 replicaCount: 1
 +image:
 + repository: jaimesalas/todo-app-frontend
-+ tag: "0.1.0
++ tag: "0.1.0"
 
 ```
 
