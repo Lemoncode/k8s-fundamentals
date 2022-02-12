@@ -87,7 +87,9 @@ Events:
 ```
 
 ```bash
-curl 192.168.64.6
+# Use minikube ip or ingress address if is different from localhost
+MINIKUBE_IP=$(minikube ip)
+curl $MINIKUBE_IP
 ```
 ```
 Hello, world!
