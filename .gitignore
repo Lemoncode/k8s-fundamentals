@@ -36,3 +36,7 @@ exercise-solution/
 
 # logs
 logs
+
+# cloud environments
+.aws
+.digitalocean
