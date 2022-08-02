@@ -47,14 +47,14 @@ spec:
 We can start our pod
 
 ```bash
-$ kubectl apply -f nginx-readiness-probe.pod.yml 
+kubectl apply -f nginx-readiness-probe.pod.yml 
 pod/my-nginx created
 ```
 
 If we use _describe_ we can find out, that everything is working as we expect.
 
 ```bash
-$ kubectl describe pod my-nginx
+kubectl describe pod my-nginx
 ```
 
 ```yaml

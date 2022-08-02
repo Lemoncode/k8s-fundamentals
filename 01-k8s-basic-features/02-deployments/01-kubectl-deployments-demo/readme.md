@@ -43,14 +43,14 @@ spec:
 Now we can run this as
 
 ```bash
-$ kubectl create -f nginx.deployment.yml --save-config
+kubectl create -f nginx.deployment.yml --save-config
 deployment.apps/my-nginx created
 ```
 
 And if we get a look of the state now, we will find out
 
 ```bash
-$ kubectl get all
+kubectl get all
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-t8qf4   1/1     Running   0          37s
 
@@ -69,7 +69,7 @@ Notice _my-nginx-5fb9556b5c_, with this value we can associate the _deployment_ 
 If we describe the `ReplicaSet` we will find out, that is controlled by the `Deployment`:
 
 ```bash
-$ kubectl describe rs my-nginx
+kubectl describe rs my-nginx
 Name:           my-nginx-5bb9b897c8
 Namespace:      default
 Selector:       app=my-nginx,pod-template-hash=5bb9b897c8
