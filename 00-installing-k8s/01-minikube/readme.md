@@ -122,7 +122,6 @@ balanced     LoadBalancer   10.108.24.21   127.0.0.1     80:31266/TCP   94s
 kubernetes   ClusterIP      10.96.0.1      <none>        443/TCP        31m
 ```
 
-
 ## References
 
 [minikube get started](https://minikube.sigs.k8s.io/docs/start/)
