@@ -2,7 +2,7 @@
 
 ## Setup
 
-1. 4 VMs Ubuntu 18.04, 1 control plane, 3 nodes
+1. 4 VMs Ubuntu 20.04, 1 control plane, 3 nodes
 2. Static IPs on individual VMs
 3. /etc/hosts/ hosts file includes name to IP mappings for VMs
 4. Swap is disabled
@@ -14,7 +14,7 @@ Start the VMs `vagrant up`
 Connect to master node
 
 ```bash
-$ vagrant ssh c1-cp1
+vagrant ssh c1-cp1
 ```
 
 ### Disable swap
