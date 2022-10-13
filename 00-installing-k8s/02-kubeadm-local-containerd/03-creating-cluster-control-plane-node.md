@@ -52,16 +52,16 @@ localAPIEndpoint:
   bindPort: 6443
 ```
 
-This IP address `1.2.3.4` of the API server, so we're going to update that to our IP `172.16.94.10`. The next thing to notice is the node registration:
+This IP address `1.2.3.4` of the API server, so we're going to update that to our IP `172.16.94.10`. The next thing to notice is the node registration.
+In older kubeadm versions it `criSocket` pointed to `/var/run/dockershim.sock`. We need to be sure it points now to `containerd` socket.
 
 ```yaml
 nodeRegistration:
-  criSocket: /var/run/dockershim.sock
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
   name: node
   taints: null
 ```
-
-We have to update this to `containerd`
 
 ```bash
 # Inside default configuration file, we need to change four things.
@@ -75,14 +75,11 @@ We have to update this to `containerd`
 # Change the address of the localAPIEndpoint.advertiseAddress to the Control Plane Node's IP address
 sed -ri 's|^(\s*advertiseAddress:).*|\1 172.16.94.10|' ClusterConfiguration.yaml
 
-# Set the CRI Socket to point to containerd
-sed -ri 's|^(\s*criSocket:).*|\1 unix:///run/containerd/containerd.sock|' ClusterConfiguration.yaml
-
 # Set the node name to the Control Plane Node hostname
 sed -ri 's|^(\s*name:).*|\1 c1-cp1|' ClusterConfiguration.yaml
 
 # Update `kubernetesVersion` to match our version:
-sed -ri 's|^(\s*kubernetesVersion:).*|\1 1.21.4|' ClusterConfiguration.yaml
+sed -ri 's|^(\s*kubernetesVersion:).*|\1 1.25.2|' ClusterConfiguration.yaml
 
 # Append after `serviceSubnet` the pod subnet CIDR
 sed -ri 's|^(\s*)serviceSubnet:.*|&\n\1podSubnet: 192.168.0.0/16|' ClusterConfiguration.yaml
@@ -130,7 +127,7 @@ etcd:
     dataDir: /var/lib/etcd
 imageRepository: k8s.gcr.io
 kind: ClusterConfiguration
-kubernetesVersion: v1.21.4
+kubernetesVersion: v1.25.2
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.96.0.0/12
@@ -148,9 +145,7 @@ Now we can bootstrap the cluster
 # Need to add CRI socket since there's a check for docker in the kubeadm init process,
 # if you don't you'll get this error...
 #   error execution phase preflight: docker is required for container runtime: exec: "docker": executable file not found in $PATH
-sudo kubeadm init \
-    --config=ClusterConfiguration.yaml \
-    --cri-socket /run/containerd/containerd.sock
+sudo kubeadm init --config=ClusterConfiguration.yaml
 ```
 
 If the previous command has succeeded, we must see the following output:
@@ -205,7 +200,7 @@ The DNS pod won't start (pending) until the Pod network is deployed and Running.
 Look for the all the system pods and calico pods to change to Running.
 
 ```bash
-kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces --watch
 ```
 
 Let's review the output of above command
@@ -223,7 +218,7 @@ kube-system   kube-proxy-rtdmt                           1/1     Running        
 kube-system   kube-scheduler-c1-cp1                      1/1     Running             0          32m
 ```
 
-We can see our control plane pods `etcd`, `apiserver`, `controler-manager` and `scheduler`. We can see also `kube-proxy`, that's going to implement service networking on this individual node.
+We can see our control plane pods `etcd`, `apiserver`, `controller-manager` and `scheduler`. We can see also `kube-proxy`, that's going to implement service networking on this individual node.
 
 Then we see `coredns` pods on status creating, what that means is those pods are out pulling the container images to start those pods up. We also see the calico pods on state of initializing.
 
@@ -262,10 +257,10 @@ The output of above command
 
 ```bash
 NAME     STATUS   ROLES                  AGE   VERSION
-c1-cp1   Ready    control-plane,master   42m   v1.21.4
+c1-cp1   Ready    control-plane,master   42m   v1.25.2
 ```
 
-Check out the systemd unit...it's no longer crashlooping because it has static pods to start
+Check out the systemd unit...it's no longer crash-looping because it has static pods to start
 Remember the kubelet starts the static pods, and thus the control plane pods
 
 ```bash

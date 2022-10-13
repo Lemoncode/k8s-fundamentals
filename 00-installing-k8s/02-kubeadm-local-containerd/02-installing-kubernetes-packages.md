@@ -33,30 +33,30 @@ With this command `apt-cache policy kubelet | head -n 20` we can find out what i
 vagrant@c1-cp1:~$ apt-cache policy kubelet | head -n 20
 kubelet:
   Installed: (none)
-  Candidate: 1.22.1-00
+  Candidate: 1.25.2-00
   Version table:
-     1.22.1-00 500
+     1.25.2-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.22.0-00 500
+     1.25.1-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.21.4-00 500
+     1.25.0-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.21.3-00 500
+     1.24.6-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.21.2-00 500
+     1.24.5-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.21.1-00 500
+     1.24.4-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.21.0-00 500
+     1.24.3-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.20.10-00 500
+     1.24.2-00 500
         500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
 ```
 
 We're going to install a specific version
 
 ```bash
-VERSION=1.21.4-00
+VERSION=1.25.2-00
 sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
