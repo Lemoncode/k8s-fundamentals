@@ -23,11 +23,11 @@ This is something that we have to do on every node on our cluster.
 
 ```bash
 # Disable all active swap
-swapoff -a
+sudo swapoff -a
 
 # Edit your fstab removing any entry for swap partitions . This keeps the swap off during reboot
 # You can recover the space with fdisk. You may want to reboot to ensure your config is ok.
-sudo sed -i '/ swap / s/^/#/g' /etc/fstab
+sudo sed -i 's/^[^#].*none.*swap.*sw/#&/' /etc/fstab
 
 # Display the final configuration
 cat /etc/fstab
@@ -76,7 +76,7 @@ sudo apt-get update
 sudo apt-get install -y containerd
 ```
 
-With `containerd` install we have to add some configuration
+With `containerd` installed we have to add some configuration
 
 ```bash
 #Create a containerd configuration file

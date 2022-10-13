@@ -8,7 +8,7 @@
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install vagrant
-``` 
+```
 
 ### How to install Vagrant on Ubuntu 20.04
 
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   config.vm.define "c1-cp1" do |controlp|
-    controlp.vm.box = "bento/ubuntu-18.04"
+    controlp.vm.box = "bento/ubuntu-20.04"
     controlp.vm.hostname = "c1-cp1"
     controlp.vm.network "private_network", ip: "172.16.94.10"
     controlp.vm.provider "virtualbox" do |vb|
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
 
   (1..3).each do |i|
     config.vm.define "c1-node#{i}" do |node|
-      node.vm.box = "bento/ubuntu-18.04"
+      node.vm.box = "bento/ubuntu-20.04"
       node.vm.hostname = "c1-node#{i}"
       node.vm.network "private_network", ip: "172.16.94.1#{i}"
       node.vm.provider "virtualbox" do |vb|

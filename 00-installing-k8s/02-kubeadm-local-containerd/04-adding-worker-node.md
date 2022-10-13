@@ -8,11 +8,11 @@ vagrant ssh c1-node1
 
 ```bash
 # Disable all active swap
-swapoff -a
+sudo swapoff -a
 
 # Edit your fstab removing any entry for swap partitions . This keeps the swap off during reboot
 # You can recover the space with fdisk. You may want to reboot to ensure your config is ok.
-sudo sed -i '/ swap / s/^/#/g' /etc/fstab
+sudo sed -i 's/^[^#].*none.*swap.*sw/#&/' /etc/fstab
 
 # Display the final configuration
 cat /etc/fstab
@@ -147,9 +147,9 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 
 ```bash
 #Add the Kubernetes apt repository
-sudo bash -c 'cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF'
+EOF
 ```
 
 ```bash
@@ -161,7 +161,7 @@ apt-cache policy kubelet | head -n 20
 ```bash
 #Install the required packages, if needed we can request a specific version.
 #Pick the same version you used on the Control Plane Node in 0-PackageInstallation-containerd.sh
-VERSION=1.21.4-00
+VERSION=1.25.2-00
 sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
 sudo apt-mark hold kubelet kubeadm kubectl
 
