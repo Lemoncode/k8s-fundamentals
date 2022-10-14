@@ -1,5 +1,11 @@
 ## Using an isolated VM - M1
 
+Open `./.isolated-vm`, you will find a simple `Vagrantfile`, to spin up a the box, by running:
+
+```bash
+vagrant up
+```
+
 ## Prerequisites
 
 * Install [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
