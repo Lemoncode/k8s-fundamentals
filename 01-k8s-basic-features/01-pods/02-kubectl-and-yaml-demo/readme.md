@@ -29,9 +29,18 @@ spec:
 
 
 ```bash
-$ kubectl create -f nginx.pod.yml --save-config
+kubectl create -f nginx.pod.yml --save-config
+```
+
+```
 pod/my-nginx created
-$ kubectl describe pod my-nginx
+```
+
+```bash
+kubectl describe pod my-nginx
+```
+
+```
 Name:         my-nginx
 Namespace:    default
 Priority:     0
@@ -90,8 +99,9 @@ Events:
 _describe_ is great to get information about the pod and the image.
 
 ```bash
-$ kubectl get pod my-nginx -o yaml
+kubectl get pod my-nginx -o yaml
 ```
+
 The _--save-config_ added anotations, if we add modifications it knows the starting point.
 
 ```yaml
@@ -104,26 +114,40 @@ metadata:
 ```
 
 ```bash
-$ kubectl apply -f nginx.pod.yml 
+kubectl apply -f nginx.pod.yml 
+```
+
+**apply** we can use to create or update, for exmple changing the nginx image. You can't change the ports
+
+```
 pod/my-nginx unchanged
 ```
 
-_apply_ we can use to create or update, for exmple changing the nginx image. You can't change the ports
-
 ```bash
 kubectl exec my-nginx -it -- sh
+```
+
+Inside the running container  we can run any supported command, like `ls`:
+
+```
 / # ls
 bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
 ```
 
 ```bash
-$ kubectl edit -f nginx.pod.yml 
-Edit cancelled, no changes made.
+kubectl edit -f nginx.pod.yml 
 ```
 
 _edit_ pops up and editor (vim)
 
+```
+Edit cancelled, no changes made.
+```
+
 ```bash
-$ kubectl delete -f nginx.pod.yml 
+kubectl delete -f nginx.pod.yml 
+```
+
+```
 pod "my-nginx" deleted
 ```

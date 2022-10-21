@@ -141,7 +141,7 @@ spec: # 4
 5. Information about the containers that will run in the Pod
 
 * Creating a Pod using YAML
-    - To create a pod using YAML use the kubetcl create command along with the --filename or -f switch
+    - To create a pod using YAML use the **kubetcl create command** along with the `--filename` or `-f` switch
 
 ```bash
 # Perform a "trial" create and also validate the YAML
@@ -153,7 +153,7 @@ kubectl create -f file.pod.yml
 ```
 
 * Creating or Applying Changes to a Pod
-    - To create or apply changes to a pod using YAML use the kubectl apply command along with the  --filename or -f switch
+    - To create or apply changes to a pod using YAML use the **kubectl apply command** along with the  `--filename` or `-f` switch
 
 ```bash
 # Alternate way to create or apply to a 
@@ -188,7 +188,7 @@ metadata:
     }
 ```
 
-* --save-config causes the resource's configuration settings to be saved in the annotations
+* `--save-config` causes the resource's configuration settings to be saved in the annotations
 * Having this allows in-place changes to be made to a Pod in the future using __kubectl apply__
 
 In place/non-disructive changes can also be made to a Pod using _kubectl edit_ or _kubectl patch_.
@@ -215,7 +215,7 @@ kubectl delete -f file.pod.yml
 
 Kubernetes relies on Probes to determine the health of a Pod container.
 
-A Probe is a diagnostic periodically by the kubelet on a container.
+A Probe is a diagnostic periodically by the `kubelet` on a container.
 
 * Types of Probes
   - Liveness Probe
