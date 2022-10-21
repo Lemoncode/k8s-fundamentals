@@ -68,14 +68,14 @@ _8080_ is the extenal pod, _80_ internal port, that would be the port that the c
 This is kind of the most basic way that you can do this port fordwarding.
 
 * Deleting a Pod
-    - Running a Pod will cause a deployment to be created
-    - To delete a Pod use __kubectl delete pod__ or find the deployment and use kubectl delete deployment
+    - Running a Pod will cause a Pod creation
+    - To delete a Pod use __kubectl delete pod__ 
 
 ```bash
 kubectl delete pod [name-of-pod]
 ```
 
-Will cause pod to be recreated
+Later we will talk about `deplyments`, it's good to mention by now, that if a Pod is related with a deployment and we delete it, the Pod will be recreated. In such situation, we must delete the `deployment`, to make the Pod dissapear.
 
 ```bash
 kubectl delete deployment [name-of-deployment]
