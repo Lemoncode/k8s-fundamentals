@@ -47,14 +47,17 @@ spec:
 We can start our pod
 
 ```bash
-$ kubectl apply -f nginx-readiness-probe.pod.yml 
+kubectl apply -f nginx-readiness-probe.pod.yml 
+```
+
+```
 pod/my-nginx created
 ```
 
-If we use _describe_ we can find out, that everything is working as we expect.
+If we use *describe* we can find out, that everything is working as we expect.
 
 ```bash
-$ kubectl describe pod my-nginx
+kubectl describe pod my-nginx
 ```
 
 ```yaml
@@ -85,7 +88,7 @@ Containers:
 Now we can interact with the pod and remove _index.html_
 
 ```bash
-$ kubectl exec my-nginx -it -- sh
+kubectl exec my-nginx -it -- sh
 ```
 
 Inside the container we can move to
@@ -141,7 +144,7 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f busybox-liveness-probe.pod.yml
+kubectl apply -f busybox-liveness-probe.pod.yml
 ```
 
 If we wait for a while and run __kubectl describe pod liveness__ we will get 
