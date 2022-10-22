@@ -39,30 +39,30 @@ spec:
   volumes: # 1.
     - name: html
       emptyDir: {}
-    containers:
-    - name: nginx
-      image: nginx:alpine
-      volumeMounts: # 2.
-        - name: html
-          mountPath: /usr/share/nginx/html
-          readOnly: true
-    - name: html-updated
-      image: alpine
-      command: ["/bin/sh", "-c"]
-      args:
-       - while true; do date >> /html/index.html;
-           sleep 10; done
-      volumeMounts: # 3.
-       - name: html
-         mountPath: /html
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts: # 2.
+      - name: html
+        mountPath: /usr/share/nginx/html
+        readOnly: true
+  - name: html-updated
+    image: alpine
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do date >> /html/index.html;
+          sleep 10; done
+    volumeMounts: # 3.
+      - name: html
+        mountPath: /html
 ```
 
 1. Define initial Volume named "html" that is an empty directory (lifetime of the Pod)
 
 ```yaml
 volumes:
-    - name: html
-      emptyDir: {}
+  - name: html
+    emptyDir: {}
 ```
 
 2. We mount it into the container `ngginx` as read only.
@@ -82,8 +82,9 @@ volumeMounts:
     mountPath: /html
 ```
 
-Update file in Volume mount/html path with latest date every 10 seconds
-Reference "html" Volume (defined above) and define a mountPath
+* Update file in Volume mount/html path with latest date every 10 seconds
+
+* Reference "html" Volume (defined above) and define a mountPath
 
 ### Defining a hostPath Volume
 
@@ -110,10 +111,10 @@ spec:
 
 ```yaml
 volumes:
-    - name: docker-socket
-      hostPath:
-        path: /var/run/docker.sock
-        type: Socket
+  - name: docker-socket
+    hostPath:
+      path: /var/run/docker.sock
+      type: Socket
 ```
 
 2. On `docker` container we reference "docker-socket" Volume and define mountPath:
@@ -129,11 +130,11 @@ containers:
         mountPath: /var/run/docker.sock
 ```
 
-* Clud Volumes
-    - Cloud providers (Azure, AWS, GCP, etc.) support different types of Volumes:
-        * Azure - Azure Disk and Azure File
-        * AWS - Elastik Block Store
-        * GCP - GCE Persistent disk
+* Cloud Volumes
+  - Cloud providers (Azure, AWS, GCP, etc.) support different types of Volumes:
+      * Azure - Azure Disk and Azure File
+      * AWS - Elastik Block Store
+      * GCP - GCE Persistent disk
 
 ### Defining an Azure File Volume
 
@@ -172,8 +173,8 @@ volumes:
 
 ```yaml
 volumeMounts:
-    - name: data
-      mountPath: /data/storage
+  - name: data
+    mountPath: /data/storage
 ```
 
 ### Defining an AWS Volume
@@ -362,7 +363,7 @@ spec:
       claimName: pv-dd-account-hdd-5g
 ```
 
-```
+```yml
 volumes:
   - name: blobdisk01
     persistentVolumeClaim:
@@ -371,10 +372,10 @@ volumes:
 
 Create volume that binds to PersistentVolumeClaim
 
-```
+```yml
 volumeMounts:
-    - name: blobdis01
-      mountPath: /mnt/blobdisk
+  - name: blobdis01
+    mountPath: /mnt/blobdisk
 ```
 
 Mount to Volume
@@ -446,7 +447,7 @@ spec:
 2. Reference StorageClass
 3. Path where data is stored on Node
 
-```
+```yml
 nodeAffinity:
     required:
       nodeSelectorTerms:
