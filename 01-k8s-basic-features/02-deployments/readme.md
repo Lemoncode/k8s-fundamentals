@@ -1,12 +1,12 @@
 ## Deployments Core Concepts
 
-A ReplicaSet is a declarative way to manage Pods
+* A **ReplicaSet** is a declarative way to manage Pods
 
-A Deployment is a declarative way to manage Pods using a ReplicaSet
+* A **Deployment** is a declarative way to manage Pods using a ReplicaSet
 
-Deployments wrap ReplicaSet and simplified the overall functionality.
+* **Deployments** wrap ReplicaSet and simplified the overall functionality.
 
-Deployments are high order level wrapper around ReplicaSets
+* **Deployments** are high order level wrapper around ReplicaSets
 
 * Pods, Deployments and ReplicaSets
     - Pods represent the most basic resource in Kubernetes
@@ -35,7 +35,7 @@ Deployments are high order level wrapper around ReplicaSets
 
 ## Creating a Deployment
 
-To create a deployment we're going to write down a YAML file and use kubectl to create or apply. Let's see an overview:
+To create a deployment we're going to write down a YAML file and use `kubectl` to `create` or `apply`. Let's see an overview:
 
 ```yml
 apiVersion: apps/v1 # 1
@@ -50,7 +50,7 @@ spec:
         image: nginx:alpine # 5
 ```
 
-1. Kubernetes API version and resource type (Deployement)
+1. Kubernetes API version and resource type (Deployment)
 2. Metadata about deployment
 3. Select Pod template label(s)
 4. Template used to create the Pods
@@ -81,7 +81,7 @@ spec:
 ```
 
 1. Kubernetes API version and resource type (Deployment)
-2. Metedata about the Deployment. It contains name for deployment, but it also has _labels_. Labels can be used when you're querying multiple resources. Also can be used to tie things together.
+2. Metedata about the `Deployment`. It contains name for deployment, but it also has _labels_. Labels can be used when you're querying multiple resources. Also can be **used to tie things together**.
 3. The selector is used to "select" the template to use (based on labels). The selector property has a _matchLabels_. Only matched on one label, and the key or the name of that label is `tier` and the value `frontend`. If you look down a little bit lower, notice that in the metadata for the template we have _labels tier: frontend_. So the template and the template spec that you see right below it is now going to be hooked to the selector for this deployment. Any label out there of _tier: frontend_, in a Pod template even, would be hooked to this deployment. We can put the template in a separate file.
 4. Template to use to create the Pod/Containers (note that the selector matches the label)
 
@@ -117,9 +117,9 @@ template: # 4
 kubectl create -f file.deployment.yml
 ```
 
-Creating a Deployment: Use the _kubectl_ command along with the --filename or -f switch.
+* Creating a Deployment: Use the _kubectl_ command along with the `--filename` or `-f` switch.
 
-Creating or Applying Changes: Use the _kubectl apply_ command along with the --filename or -f switch
+* Creating or Applying Changes: Use the _kubectl apply_ command along with the `--filename` or `-f` switch.
 
 ```bash
 # Alternate way to create or apply changes to a Deployment from YAML
@@ -127,7 +127,7 @@ kubectl apply -f file.deployment.yml
 
 # Use --save-config when you want to use
 # kubectl apply in the future
-kubectl apply -f file.deployment.yml --save-config
+kubectl create -f file.deployment.yml --save-config
 ```
 
 * Getting Deployments

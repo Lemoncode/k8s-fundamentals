@@ -40,17 +40,23 @@ spec:
 2. This will __tie__ the _deployment_ to this _template_ 
 3. With this contraints what a particular container can consume.
 
-Now we can run this as
+Now we can run this as:
 
 ```bash
-$ kubectl create -f nginx.deployment.yml --save-config
+kubectl create -f nginx.deployment.yml --save-config
+```
+
+```
 deployment.apps/my-nginx created
 ```
 
 And if we get a look of the state now, we will find out
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-t8qf4   1/1     Running   0          37s
 
@@ -69,7 +75,10 @@ Notice _my-nginx-5fb9556b5c_, with this value we can associate the _deployment_ 
 If we describe the `ReplicaSet` we will find out, that is controlled by the `Deployment`:
 
 ```bash
-$ kubectl describe rs my-nginx
+kubectl describe rs my-nginx
+```
+
+```
 Name:           my-nginx-5bb9b897c8
 Namespace:      default
 Selector:       app=my-nginx,pod-template-hash=5bb9b897c8
@@ -84,7 +93,10 @@ Controlled By:  Deployment/my-nginx
 Now we can go ahead and describe the deployment:
 
 ```bash
-$ kubectl describe deployment my-nginx
+kubectl describe deployment my-nginx
+```
+
+```
 Name:                   my-nginx
 Namespace:              default
 CreationTimestamp:      Mon, 27 Apr 2020 18:34:05 +0200
@@ -124,10 +136,19 @@ Events:
 We can get our deployments by
 
 ```bash
-$ kubectl get deploy
+kubectl get deploy
+```
+
+```
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 my-nginx   1/1     1            1           7m23s
-$ kubectl get deployment
+```
+
+```bash
+kubectl get deployment
+```
+
+```
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 my-nginx   1/1     1            1           7m27s
 ```
@@ -135,7 +156,10 @@ my-nginx   1/1     1            1           7m27s
 We can get the labels as well
 
 ```bash
-$ kubectl get deployments --show-labels
+kubectl get deployments --show-labels
+```
+
+```
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE   LABELS
 my-nginx   1/1     1            1           11m   app=my-nginx
 ```
@@ -143,20 +167,30 @@ my-nginx   1/1     1            1           11m   app=my-nginx
 We can also filter by labels
 
 ```bash
-$ kubectl get deployments -l app=my-nginx
+kubectl get deployments -l app=my-nginx
+```
+
+```
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 my-nginx   1/1     1            1           13m
 ```
 
 Now we can scale up the deployment by doing
 
+
 ```bash
-$ kubectl scale -f nginx.deployment.yml --replicas=4
+kubectl scale -f nginx.deployment.yml --replicas=4
+```
+
+```
 deployment.apps/my-nginx scaled
 ```
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-p7smw   1/1     Running   0          47s
 pod/my-nginx-5fb9556b5c-t8qf4   1/1     Running   0          17m
@@ -176,7 +210,10 @@ replicaset.apps/my-nginx-5fb9556b5c   4         4         4       17m
 Now we can delete this deployment 
 
 ```bash
-$ kubectl delete -f nginx.deployment.yml
+kubectl delete -f nginx.deployment.yml
+```
+
+```
 deployment.apps "my-nginx" deleted
 ```
 
@@ -198,12 +235,18 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f nginx.deployment.yml 
+kubectl apply -f nginx.deployment.yml 
+```
+
+```
 deployment.apps/my-nginx created
 ```
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-dqpvw   1/1     Running   0          30s
 pod/my-nginx-5fb9556b5c-h5bq8   1/1     Running   0          30s
