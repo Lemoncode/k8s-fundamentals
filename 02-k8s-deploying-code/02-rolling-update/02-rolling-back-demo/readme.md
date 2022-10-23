@@ -3,14 +3,20 @@
 Check the status of the previous deployment, from root folder:
 
 ```bash
-$ kubectl rollout status -f nginx.deployment.yml
+kubectl rollout status -f nginx.deployment.yml
+```
+
+```
 deployment "my-nginx" successfully rolled out
 ```
 
 Because we used `--record` we can see now the history
 
 ```bash
-$ kubectl rollout history deployment my-nginx 
+kubectl rollout history deployment my-nginx 
+```
+
+```
 deployment.apps/my-nginx 
 REVISION  CHANGE-CAUSE
 1         kubectl create --filename=./ --save-config=true --record=true
@@ -20,7 +26,10 @@ REVISION  CHANGE-CAUSE
 If we want to get information of the second one, we can do it by:
 
 ```bash
-$ kubectl rollout history deployment my-nginx --revision=2
+kubectl rollout history deployment my-nginx --revision=2
+```
+
+```
 deployment.apps/my-nginx with revision #2
 Pod Template:
   Labels:       app=my-nginx
@@ -42,14 +51,20 @@ Pod Template:
 Now if we want to rollback to the previous one, we can make that easily by
 
 ```bash
-$ kubectl rollout undo deployment my-nginx --to-revision=1
+kubectl rollout undo deployment my-nginx --to-revision=1
+```
+
+```
 deployment.apps/my-nginx rolled back
 ```
 
 Now we can have a look into the `history` again
 
 ```bash
-$ kubectl rollout history deployment my-nginx
+kubectl rollout history deployment my-nginx
+```
+
+```
 deployment.apps/my-nginx 
 REVISION  CHANGE-CAUSE
 2         kubectl apply --filename=nginx.deployment.yml --record=true
@@ -59,7 +74,10 @@ REVISION  CHANGE-CAUSE
 Let's check that we have change the nginx version
 
 ```bash
-$ kubectl describe deployment my-nginx
+kubectl describe deployment my-nginx
+```
+
+```
 Name:                   my-nginx
 Namespace:              default
 CreationTimestamp:      Sat, 15 Aug 2020 19:05:22 +0200
@@ -113,5 +131,5 @@ We can check that the image is different to the previous one `Image: nginx:1.17.
 `cd` into 02-rolling-update/01-rolling-update-demo
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```

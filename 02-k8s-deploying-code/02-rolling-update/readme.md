@@ -2,7 +2,7 @@
 
 [Kubernetes Deployments Official Docs](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
-Rolling Update deployments are the default strategy that K8s uses to move pods into a cluster. So wether you're adding new pods or we're gonna take existing pods and then replace those, really, an update strategy would be used behind the scenes. Now, the power of this is that we don't have to deploy the V2 of the app all at once.
+Rolling Update deployments are the default strategy that K8s uses to move pods into a cluster. So wether you're adding new pods or we're going to take existing pods and then replace them, an update strategy would be used behind the scenes. Now, the power of this is that we don't have to deploy the V2 of the app all at once.
 
 ## Understanding Rolling Updates Deployments
 
@@ -120,10 +120,10 @@ The `kubectl rollout history` command can be used to view history of a Deploymen
 
 ```bash
 # Get information about the a Deplyment
-$ kubectl rollout history deployment [deployment-name]
+kubectl rollout history deployment [deployment-name]
 
 # Get information about the a Deplyment
-$ kubectl rollout history deployment [deployment-name] --revision=2
+kubectl rollout history deployment [deployment-name] --revision=2
 ```
 
 ### Rolling Back a Deployment
@@ -132,13 +132,13 @@ Use the `kubectl rollout undo` command to rollback to a specific Deployment revi
 
 ```bash
 # Check status
-$ kubectl rollout status -f file.deployment.yml
+kubectl rollout status -f file.deployment.yml
 
 # Rollback a Deployment
-$ kubectl rollout undo -f file.deployment.yml
+kubectl rollout undo -f file.deployment.yml
 
 # Rollback a Deployment
-$ kubectl rollout undo deploymeny [deployment-name] --to-revision=2
+kubectl rollout undo deploymeny [deployment-name] --to-revision=2
 ```
 
 ## Rolling Back Deployments Demo
@@ -152,3 +152,12 @@ $ kubectl rollout undo deploymeny [deployment-name] --to-revision=2
 * Maximum and minimum Pods available during a Deployment can be defined
 * Deployments can be recorded and stored in history using `--record`
 * Deployments can be rolled back to a specific revision
+
+## Open dscussion
+
+Using record leads to following **warning**:
+
+> Flag --record has been deprecated, --record will be removed in the future
+
+* [how update a deployment with rollback support](https://stackoverflow.com/questions/70521359/how-do-i-update-a-deployment-via-yaml-with-rollback-support)
+* [Deprecated and remove --rcord flag from kubectl](https://github.com/kubernetes/kubernetes/issues/40422)
