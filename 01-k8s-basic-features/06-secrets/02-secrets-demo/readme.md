@@ -35,7 +35,7 @@ kubectl get secret <SECRET_NAME> -o jsonpath="{.data.<DATA>}" | base64 --decode
 To find out all the values we can run:
 
 ```bash
-kubectl get secrets
+kubectl describe secrets db-passwords
 ```
 
 We get:
