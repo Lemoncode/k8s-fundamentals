@@ -75,7 +75,7 @@ This is kind of the most basic way that you can do this port fordwarding.
 kubectl delete pod [name-of-pod]
 ```
 
-Later we will talk about `deplyments`, it's good to mention by now, that if a Pod is related with a deployment and we delete it, the Pod will be recreated. In such situation, we must delete the `deployment`, to make the Pod dissapear.
+Later we will talk about `deployments`, it's good to mention by now, that if a Pod is related with a deployment and we delete it, the Pod will be recreated. In such situation, we must delete the `deployment`, to make the Pod dissapear.
 
 ```bash
 kubectl delete deployment [name-of-deployment]
@@ -209,7 +209,6 @@ kubectl delete -f file.pod.yml
 ## kubectl and YAML
 
 [kubectl and YAML - DEMO](02-kubectl-and-yaml-demo/readme.md)
-
 
 ## Pod Health
 

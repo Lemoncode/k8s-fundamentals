@@ -13,7 +13,10 @@ kubectl get all
 We get the following output:
 
 ```
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   20h
 ```
