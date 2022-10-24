@@ -142,20 +142,20 @@ Delete kubernetes resources
 
 ```bash
 #remove app-deploy
-$ kubectl delete -f ./app-deploy/sample-service.yml
+kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove kibana
-$ kubectl delete -f ./app-deploy/sample-service.yml
+kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove fluentd
-$ kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
+kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
 
 #remove elasticsearch
-$ kubectl delete -f ./fluentd-elasticsearch/create-logging-namespace.yaml
+kubectl delete -f ./fluentd-elasticsearch/create-logging-namespace.yaml
 ```
 
 Delete cluster
 
 ```bash
-$ eksctl delete cluster --name lc-cluster --region eu-west-3
+eksctl delete cluster --name lc-cluster --region eu-west-3
 ```
