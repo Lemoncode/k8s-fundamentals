@@ -279,5 +279,5 @@ kubectl scale -f nginx.deployment.yml --replicas=4
 ### Cleanup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```
