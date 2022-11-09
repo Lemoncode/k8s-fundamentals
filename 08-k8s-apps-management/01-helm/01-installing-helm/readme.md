@@ -1,28 +1,32 @@
-# Installing on local cluster with Helm
+## Installing Helm
+
+To install Helm on your OS read the instructions on following [link](https://helm.sh/docs/intro/install/) 
+
+## Installing on local cluster with Helm
 
 Helm 3 is not configured by default to use any repository. So if you want to install existing packages you have to add at least one repository containing some charts.
 
 
 ```bash
-$ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ```
 
 The above repo is no longer available, use this one instead:
 
 ```bash
-$ helm repo add stable https://charts.helm.sh/stable
+helm repo add stable https://charts.helm.sh/stable
 ```
 
 To install a package
 
 ```bash
-$ helm install demo-mysql stable/mysql
+helm install demo-mysql stable/mysql
 ```
 
 We can check that is running by
 
 ```bash
-$ kubectl get all | grep mysql
+kubectl get all | grep mysql
 ```
 
 We get an output similar to this

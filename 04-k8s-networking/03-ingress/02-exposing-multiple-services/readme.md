@@ -80,7 +80,7 @@ Events:
 
 ```bash
 #Our ingress on all hosts is still routing to service single, since we're accessing the URL with an IP and not a domain name or host header.
-$ curl 192.168.64.6/red
+curl 192.168.64.6/red
 Hello, world!
 Version: 1.0.0
 Hostname: hello-world-service-single-6c58c555f8-k2whh
