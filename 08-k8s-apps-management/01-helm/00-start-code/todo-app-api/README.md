@@ -34,6 +34,18 @@ With this database configuration, create `.env` and set the following content
 MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin
 ```
 
+To check the results inside `mongo` we can run:
+
+```bash
+docker exec -it mongo sh
+```
+
+Now from the new terminal. we can run the Mongo Shell
+
+```bash
+mongosh --username admin --password password
+```
+
 ## How to use as running container
 
 Build your image tagging with any value that you disare:

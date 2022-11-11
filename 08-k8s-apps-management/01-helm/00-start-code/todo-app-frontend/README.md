@@ -28,7 +28,7 @@ Build your image tagging with any value that you disare:
 ./dockerize.sh "todo-app-frontend:0.0.2"
 ```
 
-Now fater build we can run as follows:
+Now after build we can run as follows:
 
 ```bash
 docker run -d -p 8080:8080 \
