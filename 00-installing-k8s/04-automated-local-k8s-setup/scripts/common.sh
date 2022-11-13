@@ -1,14 +1,14 @@
-#! /bin/bash
+#!/bin/bash
 
 # Variable Declaration
 
-KUBERNETES_VERSION="1.21.4-00"
+KUBERNETES_VERSION=1.25.4-00
 
 # disable swap
 sudo swapoff -a
 
 # keeps the swaf off during reboot
-sudo sed -i '/ swap / s/^/#/g' /etc/fstab
+sudo sed -i 's/^[^#].*none.*swap.*sw/#&/' /etc/fstab
 
 sudo apt-get update -y
 sudo apt-get install -y \
@@ -25,7 +25,7 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt-get update -y
-sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # Following configurations are recomended in the kubenetes documentation for Docker runtime. Please refer https://kubernetes.io/docs/setup/production-environment/container-runtimes/#docker
 
@@ -46,7 +46,22 @@ sudo systemctl restart docker
 
 sudo gpasswd -a vagrant docker
 
-echo "Docker Runtime Configured Successfully"
+echo "Docker Engine Configured Successfully"
+
+CRI_DOCKERD_VERSION=$(curl -s https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest| grep tag_name | cut -d '"' -f 4 | sed 's/v//g')
+curl -fsSLO https://github.com/Mirantis/cri-dockerd/releases/download/v${CRI_DOCKERD_VERSION}/cri-dockerd-${CRI_DOCKERD_VERSION}.amd64.tgz
+tar xvf cri-dockerd-${CRI_DOCKERD_VERSION}.amd64.tgz
+sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
+
+curl -fsSLO https://raw.githubusercontent.com/Mirantis/cri-dockerd/v${CRI_DOCKERD_VERSION}/packaging/systemd/cri-docker.service
+curl -fsSLO https://raw.githubusercontent.com/Mirantis/cri-dockerd/v${CRI_DOCKERD_VERSION}/packaging/systemd/cri-docker.socket
+sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
+sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+sudo systemctl daemon-reload
+sudo systemctl enable cri-docker.service
+sudo systemctl enable --now cri-docker.socket
+
+echo "Docker Container Runtime Interface installed: $(cri-dockerd --version)"
 
 
 sudo apt-get update

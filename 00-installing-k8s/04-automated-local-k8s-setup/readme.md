@@ -26,9 +26,9 @@ kubectl get nodes
 ```
 
 ```
-master-node     Ready    control-plane,master   15m    v1.21.4
-worker-node01   Ready    worker                 12m    v1.21.4
-worker-node02   Ready    worker                 9m4s   v1.21.4
+master-node     Ready    control-plane,master   15m    v1.25.4
+worker-node01   Ready    worker                 12m    v1.25.4
+worker-node02   Ready    worker                 9m4s   v1.25.4
 ```
 
 We can find out the pods running in our system by
