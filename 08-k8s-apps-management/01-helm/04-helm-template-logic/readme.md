@@ -46,7 +46,6 @@ It generates a default value if the value, `.Values.service.name`, does not exis
 
 > You cannot build your own custom template function. This is a limitation of Helm.
 
-
 * [Go text/template package](http://golang.org/pkg/text/template/)
 
 * [Sprig functions project](http://masterminds.github.io/sprig/)
@@ -532,9 +531,9 @@ Comes to:
 
 We don't want to copy‑paste that big piece of code over and over again in your templates. The way you can reuse code in Helm templates is by using `sub‑templates`, also named `helper functions`.
 
-We place the code into`_helpers.tpl` file and wrapped with a define function. The define function takes the name of the sub‑template as argument. 
+We place the code into`_helpers.tpl` file and wrapped with a defined function. The defined function takes the name of the sub‑template as argument. 
 
-> The sub‑template names are global, so to guarantee that the name is unique, it's recommended to prefix that name with the name of the chart. 
+> The sub‑template names are global, so to guarantee that the name is unique, it's recommended to prefix that name with the name of the chart.
 
 When that sub‑template is defined, you can reuse it anywhere in your chart with an `include` function.
 

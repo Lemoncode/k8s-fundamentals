@@ -193,7 +193,7 @@ Also, we would like to change the image easily if a new version of the applicati
 
 So let's create an image object in the `values.yaml` file with two poverties, the Docker Hub repository, `jaimesalas/todo-app-frontend`, and the tag, `0.1.0`. 
 
->Note that the tag must be a string. If it's a number, the .0 will be removed by the template engine. 
+> Note that the tag must be a string. If it's a number, the .0 will be removed by the template engine. 
 
 ```diff
 #update ./chart/todos/charts/frontend/values.yaml
@@ -398,19 +398,22 @@ ingress:
 * Create `charts/backend/templates/ingress.yaml`
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress
 spec:
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
-          servicePort: 80
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}
+                port:
+                  number: 80
 ```
 
 * Update `charts/backend/templates`
@@ -463,7 +466,7 @@ There is an error with the back end. Let's look at the Minikube dashboard to ana
 minikube dashboard
 ```
 
-The back end is fading. Let's check the logs. MongoDB not found. Ah, yes, we get it. Now the database service name is dynamically generated based on the release name, so it's not MongoDB anymore as hard coded in the mongodb_uri in the back‑end secret. We'll solve that issue in the next demo.
+The back end is failing. Let's check the logs. MongoDB not found. Ah, yes, we get it. Now the database service name is dynamically generated based on the release name, so it's not MongoDB anymore as hard coded in the mongodb_uri in the back‑end secret. We'll solve that issue in the next demo.
 
 ```
 MongoNetworkError: failed to connect to server [mongodb:27017] on first connect [MongoNetworkError: getaddrinfo ENOTFOUND mongodb mongodb:27017]
