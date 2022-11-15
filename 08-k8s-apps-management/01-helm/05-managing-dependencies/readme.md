@@ -290,3 +290,5 @@ helm install demo foo --set tags.api=false
 [Demo: Managing Dependencies](05-managing-dependencies/02-managing-dependencies/readme.md)
 
 ## Demo: Controlling Dependencies with Conditions and Tags
+
+[Demo: Controlling Dependencies with Conditions and Tags](./03-controlling-dependencies/readme.md)
