@@ -46,7 +46,7 @@ helm install --verify
 
 How can the Helm client use those charts?
 
-1. Define the repolsitory in the Helm configuration.
+1. Define the repository in the Helm configuration.
 2. Define the dependencies.
 
 ### Managing a Repository List
