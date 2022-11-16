@@ -31,7 +31,7 @@ chmod +x kustomize
 sudo mv kustomize /usr/local/bin
 ```
 
-> It does not work with ARM architectures
+> The script does not work with ARM architectures, to install it on ARM architectures we need to download the desireable package follow this [link](https://github.com/kubernetes-sigs/kustomize/releases)
 
 ### Kustomize commands
 

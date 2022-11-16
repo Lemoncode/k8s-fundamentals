@@ -49,5 +49,5 @@ Inspecting the running container
 docker run -it --entrypoint /bin/sh k8s.gcr.io/kustomize/kustomize:v3.8.7
 ```
 
-> We will find that the working directory is `/app` so if we map something to this directory inside the conatiner, the `kustomize` binary will not be found.
+> We will find that the working directory is `/app` so if we map something to this directory inside the container, the `kustomize` binary will not be found.
 
