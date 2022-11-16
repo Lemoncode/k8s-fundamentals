@@ -82,7 +82,7 @@ helm repo add stable https://charts.helm.sh/stable
 
 [Demo: Packaging and Publishing Charts](05-managing-dependencies/../01-packaging-and-publishing-charts/readme.md)
 
-## Defining Depndencies
+## Defining Dependencies
 
 How can we define dependencies between charts? The todos umbrella chart that we built in the demo depends on three subcharts. 
 
@@ -272,8 +272,8 @@ tags:
 ### Conditions & Tags
 
 * All charts are downloaded with `helm dependency update`
-* Partiall installation with `helm install`
-* `--set` overrides value.yaml
+* Partial installation with `helm install`
+* `--set` overrides `value.yaml`
 * Conditions override tags
 
 ```bash

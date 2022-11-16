@@ -136,7 +136,7 @@ database        ~0.1.0  http://localhost:8080   ok
 
 A detailed view of the dependencies with the version range, and the repository URL is displayed, and their status is ok. 
 
-Finally, we are ready to install a new development release of the guestbook application, but this time with a number of charts which uses Helm dependencies rather than subfolders. 
+Finally, we are ready to install a new development release of the todos application, but this time with a number of charts which uses Helm dependencies rather than subfolders. 
 
 > Uninstall current dependencies
 

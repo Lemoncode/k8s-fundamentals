@@ -63,6 +63,6 @@ docker run k8s.gcr.io/kustomize/kustomize:v3.8.7 version
 
 ## References
 
-[Patche strategies](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md)
+[Patch strategies](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md)
 
 [JsonPatches6902 Overview](https://skryvets.com/blog/2019/05/15/kubernetes-kustomize-json-patches-6902/)
