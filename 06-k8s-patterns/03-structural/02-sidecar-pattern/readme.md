@@ -263,13 +263,13 @@ spec:
 Let's run this
 
 ```bash
-$ kubectl apply -f sidecar.yml
+kubectl apply -f sidecar.yml
 ```
 
 Two containers on both of running. 
 
 ```bash
-$ kubectl get pods --watch
+kubectl get pods --watch
 ```
 
 If we check the service, grab this public IP here. And let's have a look at what we've got. 
@@ -277,11 +277,11 @@ If we check the service, grab this public IP here. And let's have a look at what
 > NOTE: Run `minikube tunnel`
 
 ```bash
-$ kubectl get svc
+kubectl get svc
 ```
 
 ### Cleanup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```

@@ -61,7 +61,7 @@ Remember you can define as many init containers as we want. They will run sequen
 Let's start up the pod and se what happen
 
 ```bash
-$ kubectl apply -f init-pod.yaml
+kubectl apply -f init-pod.yaml
 ```
 
 Now if we have a look into `pods` resource, we will find out:
@@ -75,7 +75,7 @@ lc-init   0/1     Init:0/1   0          15s
 Remember that `init-ctr` is writing to `stdout`, we can have a look on that, open a new terminal and run:
 
 ```bash
-$ kubectl logs lc-init -c init-ctr
+kubectl logs lc-init -c init-ctr
 ```
 
 `lc-init` reference to the pod that we want to access to its logs, `-c` flag references to the exact container that we want to access.
@@ -113,20 +113,23 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-
-
 ```
 
 Let's deploy the service
 
 ```bash
-$ kubectl apply -f init-svc.yaml
+kubectl apply -f init-svc.yaml
 ```
 
 After a while, if we have a look into our pods resource we will find out:
 
 ```bash
-$ kubectl get pods --watch
+kubectl get pods --watch
+```
+
+We get the following output:
+
+```
 NAME      READY   STATUS     RESTARTS   AGE
 lc-init   0/1     Init:0/1   0          87s
 lc-init   0/1     PodInitializing   0          2m44s
@@ -136,7 +139,10 @@ lc-init   1/1     Running           0          2m47s
 We can use `describe` to see all the phases:
 
 ```bash
-$ kubectl describe pods lc-init
+kubectl describe pods lc-init
+```
+
+```
 # ....
 Events:
   Type    Reason     Age    From               Message
@@ -155,7 +161,7 @@ Events:
 If we want to see our app running in a local browser we can run:
 
 ```bash
-$ minikube tunnel
+minikube tunnel
 ```
 
 ## Summary
@@ -165,6 +171,6 @@ In this example, we used a single init container to prevent the main app contain
 ## Clenaup
 
 ```bash
-$ kubectl delete service lemoncode-svc
-$ kubectl delete pod lc-init
+kubectl delete service lemoncode-svc
+kubectl delete pod lc-init
 ```

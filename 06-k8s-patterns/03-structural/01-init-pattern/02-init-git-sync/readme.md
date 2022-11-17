@@ -89,7 +89,7 @@ The `init container` will clone a Git repository pulling the content on `main` b
 So `init-sync-ctr`, is going to pull content from `GitHub` to the shared volume, and the main app will serve this content using `nginx`.
 
 ```bash
-$ kubectl apply -f init-git-sync.yaml
+kubectl apply -f init-git-sync.yaml
 ```
 
 If we're running this on `minkube` remember, that we will need a tunnel in order to access the `LoadBalancer` service. 
@@ -97,7 +97,7 @@ If we're running this on `minkube` remember, that we will need a tunnel in order
 Open a new terminal and run:
 
 ```bash
-$ minikube tunnel
+minikube tunnel
 ```
 
 Now we can grab the public IP:
@@ -113,5 +113,5 @@ And visit in our local browser `10.101.202.72` to see our page.
 ### Clenaup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```
