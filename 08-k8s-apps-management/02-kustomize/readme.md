@@ -20,7 +20,7 @@ Kustomize was created as a response to template-heavy approaches like Helm to co
 ### Using binaries
 
 ```bash
-curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 ```
 
 ```bash

@@ -29,7 +29,7 @@ Kubernetes cluster needs to have nodes with enough resource capacity to run new 
 Allocatable = Node Capacity - Kube-reserved - System-Reserved
 ```
 
-1. **Allocatble** - capacity for application pods
+1. **Allocatable** - capacity for application pods
 2. **Node Cpacity** - available capacity on a node
 3. **Kube-Reserved** - Kubernetes daemons like kubelet, container runtime
 4. **System-Reserved** - [OS system daemons like sshd, udev
@@ -66,7 +66,6 @@ The `scheduler` has a default set of predicate and priority policies configured 
 2. Priorities are rules that sort available nodes according to preferences.
 
 In addition to configuring the policies of the default scheduler, it is also possible to run multiple schedulers and allow Pods to specify which scheduler to place them. 
-
 
 ## Scheduling Process
 

@@ -47,7 +47,7 @@ The *requests* amount (but not *limits*) is used by the scheduler when placicing
 Depending on wether you specify the `requests` the `limits`, or both, the platform offers a different kind of Quality of Service
 
 * **Best efforft** - No `requests`, no `limits`. **Pod is considered lowest priority** and is killed first when the node runs out of **incompressible** resources.
-* **Burstble** - `requests` and `limits` defined **but they are not equal**. When node is running out fo **incompressible** resources, **these pods are likely to be killed if no Best-Effort remains**. 
+* **Burstble** - `requests` and `limits` defined **but they are not equal**. When node is running out of **incompressible** resources, **these pods are likely to be killed if no Best-Effort remains**. 
 * **Guaranteed** - `requests` and `limits` are equal. **These are the highest priority and guranteed not to be killed before the others**  
 
 > The resource characteristics you define or omit for the containers have a direct impact on its QoS
