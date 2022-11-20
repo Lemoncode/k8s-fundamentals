@@ -5,7 +5,7 @@ Some applications need to be self-aware and require information about themselves
 ## Self Aweraness Use cases
 
 * Modify the application on runtime depending on assigned resources
-  * Application threead-pool
+  * Application thread-pool
   * Change the GC algorithm
   * Use pod name for loggin information
   * Discover other pods with the same label and the same namespace 
@@ -43,6 +43,4 @@ The Downward API allows passing metadata about the Pod to the containers and the
 | limits.memory   | A container's memory request |
 | requests.memory | A container's memory limit   |
 
-We can change labels and annotations while a Pod is running. Unless the pod is restarted, environment variables will not reflect that change.
-
-`downwardAPI` volumes can do it.
+We can change labels and annotations while a Pod is running. Unless the pod is restarted, environment variables will not reflect that change, `downwardAPI` volumes can do it.

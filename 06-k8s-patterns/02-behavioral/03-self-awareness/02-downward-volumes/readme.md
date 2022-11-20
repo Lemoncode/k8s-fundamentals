@@ -136,7 +136,7 @@ kubectl exec -it random-employee -- sh
 Inside the container run:
 
 ```bash
-cd pod-info
+cd /pod-info
 ```
 
 And check contents

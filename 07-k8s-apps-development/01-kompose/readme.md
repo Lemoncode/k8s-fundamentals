@@ -21,14 +21,14 @@ Also the default configuration, if it sees a volume on Docker Compose, it will c
 
 ## Installing Kompose
 
-[kompose installation page](https://kompose.io/installation/)
+[kompose installation page](https://github.com/kubernetes/kompose/blob/master/docs/installation.md/)
 
 ```bash
 # Linux
-curl -L https://github.com/kubernetes/kompose/releases/download/v1.24.0/kompose-linux-amd64 -o kompose
+curl -L https://github.com/kubernetes/kompose/releases/download/v1.27.0/kompose-linux-amd64 -o kompose
 
 # macOS
-curl -L https://github.com/kubernetes/kompose/releases/download/v1.24.0/kompose-darwin-amd64 -o kompose
+curl -L https://github.com/kubernetes/kompose/releases/download/v1.27.0/kompose-darwin-amd64 -o kompose
 
 chmod +x kompose
 sudo mv ./kompose /usr/local/bin/kompose
@@ -39,6 +39,9 @@ We can check the installation by just running `kompose`
 
 ```bash
  kompose
+```
+
+```bash
 Kompose is a tool to help users who are familiar with docker-compose move to Kubernetes.
 
 Usage:
