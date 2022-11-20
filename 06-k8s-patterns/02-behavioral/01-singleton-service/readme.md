@@ -10,7 +10,7 @@ The Singleton Service pattern ensures only one instance of an application is act
 
 ## Solution
 
-* On instance is active and the other ones are passive
+* One instance is active and the other ones are passive
 
 This can be achived on two different ways.
 

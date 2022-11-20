@@ -94,7 +94,7 @@ With Grafana open on host, on a browser:
 
 2. On the `Welcome to Grafana`, on left aside `menu`, select `Dashboards icon`
 
-![welcome grafan](./resources/welcome-grafana.png)
+![welcome grafana](./resources/welcome-grafana.png)
 
 3. From here, select `Dashboard` -> `Manage`.
 
