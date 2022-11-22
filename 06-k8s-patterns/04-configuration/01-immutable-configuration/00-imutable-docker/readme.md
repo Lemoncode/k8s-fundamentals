@@ -2,6 +2,8 @@
 
 ## Creating a Config Image
 
+* Create `Dockerfile`
+
 ```Dockerfile
 FROM scratch  
 

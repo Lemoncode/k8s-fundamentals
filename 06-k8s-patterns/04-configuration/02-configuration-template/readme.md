@@ -8,3 +8,4 @@ The Configuration Template pattern enables creating and processing large and com
 
 ## Demo: Using Configuration Template
 
+* [Demo: Using Configuration Template](./01-using-configuration-template/readme.md)
