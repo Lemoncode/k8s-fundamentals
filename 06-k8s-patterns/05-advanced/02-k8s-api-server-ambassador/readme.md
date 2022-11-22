@@ -17,7 +17,7 @@ Here we're creating a script that will use `downward API` to get the certificate
 ```Dockerfile
 FROM alpine
 
-ARG ARCH="amr64"
+ARG ARCH="arm64"
 
 RUN apk update && \
     apk add curl && \
@@ -73,4 +73,10 @@ No we can get into the `main` container and check that we can access API server 
 
 ```bash
 kubectl exec -it curl-ambassador -c main -- sh
+```
+
+From inside the main container we can run now:
+
+```bash
+curl localhost:8001/api/v1/namespaces/default/services
 ```

@@ -1,6 +1,6 @@
 FROM alpine
 
-ARG ARCH="amr64"
+ARG ARCH="arm64"
 
 RUN apk update && \
     apk add curl && \
