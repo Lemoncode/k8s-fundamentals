@@ -14,11 +14,11 @@ We need `v1.21.0`, follow the [link](https://docs.aws.amazon.com/eks/latest/user
 **[To install or upgrade eksctl on Linux using curl]**
 
 ```bash
-$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 ```
 
 ```bash
-$ sudo mv /tmp/eksctl /usr/local/bin
+sudo mv /tmp/eksctl /usr/local/bin
 ```
 
 ## Creating a cluster
@@ -28,19 +28,24 @@ To create a cluster with `eksctl`, we have two options, `Fargate` and `Managed n
 ### Create a key pair
 
 ```bash
-$ aws ec2 create-key-pair --key-name eks-node-key --query 'EksNodeKey' > eks-node-key.pem
+aws ec2 create-key-pair \
+    --key-name eks-node-key \
+    --key-type rsa \
+    --key-format pem \
+    --query "KeyMaterial" \
+    --output text > eks-node-key.pem
 ```
 
 We have to grant permissions to the key:
 
 ```bash
-$ chmod 400 eks-node-key.pem
+chmod 400 eks-node-key.pem
 ```
 
 We can display our key pair by running
 
 ```bash
-$ aws ec2 describe-key-pairs --key-name eks-node-key
+aws ec2 describe-key-pairs --key-name eks-node-key
 ```
 
 ### Create the cluster
@@ -48,7 +53,7 @@ $ aws ec2 describe-key-pairs --key-name eks-node-key
 ```bash
 eksctl create cluster \
 --name lc-cluster \
---version 1.21 \
+--version 1.23 \
 --region eu-west-3 \
 --nodegroup-name lc-nodes \
 --node-type t2.small \
@@ -76,11 +81,11 @@ ip-192-168-83-71.eu-west-3.compute.internal    Ready    <none>   5m56s   v1.21.2
 ### Connecting to EC2 node
 
 ```bash
-$ ssh -i ./eks-node-key.pem root@ec2-35-180-29-45.eu-west-3.compute.amazonaws.com
+ssh -i ./eks-node-key.pem root@ec2-35-180-29-45.eu-west-3.compute.amazonaws.com
 ```
 
 ## Cleanup
 
 ```bash
-$ eksctl delete cluster --name lc-cluster --region eu-west-3
+eksctl delete cluster --name lc-cluster --region eu-west-3
 ```

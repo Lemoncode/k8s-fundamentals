@@ -134,11 +134,11 @@ As with a job, we can use the kubectl create or apply commands to actually take 
 We now have a job scheduler that's going to be scheduling this throw a controller, and then it will make sure that this particular Job runs if a node or nodes is down and it can't schedule them, then you can even set up a max number of times that's allowed to try to run a Job before it just errors. 
 
 ```bash
-$ kubectl create -f file.cronjob.yml --save-config
+kubectl create -f file.cronjob.yml --save-config
 ```
 
 ```bash
-$ kubectl apply -f file.cronjob.yml
+kubectl apply -f file.cronjob.yml
 ```
 
 ## CronJobs Demo
@@ -149,5 +149,5 @@ $ kubectl apply -f file.cronjob.yml
 ### Cleanup
 
 ```bash
-$ kubectl delete -f pi-counter.cronjob.yml
+kubectl delete -f pi-counter.cronjob.yml
 ```
