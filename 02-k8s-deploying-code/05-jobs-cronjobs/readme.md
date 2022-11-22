@@ -8,7 +8,7 @@ Basically a `job` runs a task that has a termination. Now this is very different
 
 The kubernetes documentation defines it this way. 
 
-> A job creates one of more pods and insurers that a specified number of them successfully terminated. 
+> A job creates one of more pods and ensurers that a specified number of them successfully terminated. 
 
 A Job creates a pod or pods that can perform a task or some type of a batch process. A job does not run forever, it's a one time thing, and then it's done. It may only run once ever. It just depends on the type of job you're doing. 
 
@@ -102,15 +102,14 @@ spec:
 
 2. We can say I would like to run two pods together at one time and then before that job is marked as complete, I need four total to finished successfully. Imagine we were doing database queries with large amounts of data, we could actually divide up that work. So the pods, in the containers, would have to know how to do their individual unit of work. But we could divide that up, starting both up and then start to more up after that. But we'd only allow to it in time to run. And then we want four to be completed successfully, so this would be useful in those cases where I have a bunch of servers, I need to go aggregate logs because it's some custom process, or I need to go in a database and clean up old records. I need to look at message queues, different queues. We could divide that work up if we'd like into this. 
 
-
 Now, in order to take that yaml and actually create a Job. We do the standard `kubectl commands`:
 
 ```bash
 # Create a new Job
-$ kubectl create -f file.job.yaml --save-config
+kubectl create -f file.job.yaml --save-config
 
 # Create or modifying a Job
-$ kubectl apply -f file.job.yaml
+kubectl apply -f file.job.yaml
 ```
 
 The only thing you have to worry about is just getting the Job yaml right.

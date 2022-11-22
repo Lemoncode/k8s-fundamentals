@@ -50,13 +50,15 @@ How you start your job really depends if your container code automatically kicks
 To get this going we can, do our normal kubectl create or apply command.
 
 ```bash
-$ kubectl create -f pi-counter.job.yml --save-config 
+kubectl create -f pi-counter.job.yml --save-config 
 ```
 
 Now we can get jobs 
 
 ```bash
-$ kubectl get jobs
+kubectl get jobs
+```
+```
 NAME          COMPLETIONS   DURATION   AGE
 pi-counter   4/4           20s        35s
 ```
@@ -67,6 +69,9 @@ We can also describe a job:
 
 ```bash
 kubectl describe jobs pi-counter
+```
+
+```
 # .....
 Events:
   Type    Reason            Age   From            Message
@@ -81,8 +86,10 @@ Events:
 We can actually go into the pods and there's they're still there. 
 
 ```bash
-$ kubectl get pods
+kubectl get pods
+```
 
+```
 NAME                READY   STATUS      RESTARTS   AGE
 pi-counter-c9hm4   0/1     Completed   0          3m20s
 pi-counter-shvgw   0/1     Completed   0          3m31s
@@ -93,7 +100,10 @@ pi-counter-v7kf9   0/1     Completed   0          3m31s
 They're done, though. And let's go ahead and view the logs: 
 
 ```bash
-$ kubectl logs pi-counter-c9hm4
+kubectl logs pi-counter-c9hm4
+```
+
+```
 3.141592653589793238462643383279502884197169399375105820974944592307\
 81640628620899862803482534211706798214808651328230664709384460955058\
 22317253594081284811174502841027019385211055596446229489549303819644\
@@ -111,13 +121,15 @@ $ kubectl logs pi-counter-c9hm4
 18577805321712268066130019278766111959092164201988
 ```
 
-
 Notice that pods didn't go away. And they do that because when we kick this off, if something did happen, we might want to jump back and look at the logs to figure out what happened. 
 
 We can describe the job, like we do with deployments, services...
 
 ```bash
-$ kubectl get job pi-counter -o yaml
+kubectl get job pi-counter -o yaml
+```
+
+```
 apiVersion: batch/v1
 kind: Job
 metadata:
