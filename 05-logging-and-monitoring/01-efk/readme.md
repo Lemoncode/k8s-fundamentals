@@ -157,7 +157,7 @@ Delete kubernetes resources
 kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove kibana
-kubectl delete -f ./app-deploy/sample-service.yml
+kubectl delete -f ./fluentd-elasticsearch/kibana-deploy.yaml
 
 #remove fluentd
 kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
