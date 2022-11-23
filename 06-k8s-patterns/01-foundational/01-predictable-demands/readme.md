@@ -111,7 +111,7 @@ Start Time:           Tue, 07 Sep 2021 14:53:04 +0200
 Labels:               name=random-employee
 ```
 
-When **Priority feature is enabled**, it affects the order in which the `scheduler` **places Pods on nodes**. The **priority admission controller** uses `priorityClassName` field to populate the priority value for new Pods. When multiple Pods are waiting to be placed, the `scheduler` **sorts the queue of pending Pods by highest priority first**. Any pending Pod is picked before any other pending Pod with lower priority in the scheduling queue, and if there are no constraints preventing it from scheduling, the Pod gets scheduled.
+When **priority feature is enabled**, it affects the order in which the `scheduler` **places Pods on nodes**. The **priority admission controller** uses `priorityClassName` field to populate the priority value for new Pods. When multiple Pods are waiting to be placed, the `scheduler` **sorts the queue of pending Pods by highest priority first**. Any pending Pod is picked before any other pending Pod with lower priority in the scheduling queue, and if there are no constraints preventing it from scheduling, the Pod gets scheduled.
 
 > IMPORTANT: **If there are no nodes with enough capacity to place a Pod**, the **scheduler can preempt (remove) lower-priority Pods from nodes to free up resources and place Pods with higher priority**. As a result, the higher-priority Pod might be scheduled sooner than Pods with a lower priority if all other scheduling requirements are met.
 
