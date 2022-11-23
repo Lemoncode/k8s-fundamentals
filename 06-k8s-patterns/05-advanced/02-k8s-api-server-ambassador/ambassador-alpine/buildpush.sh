@@ -9,5 +9,4 @@ else
     docker build -t ${TAG} .    
 fi 
 
-
 docker push ${TAG}
