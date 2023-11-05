@@ -1,6 +1,3 @@
-// https://www.stefanjudis.com/snippets/how-to-import-json-files-in-es-modules-node-js/
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";

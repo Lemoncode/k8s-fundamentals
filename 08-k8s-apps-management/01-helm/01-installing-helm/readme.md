@@ -1,7 +1,8 @@
 # Installing on local cluster with Helm
 
-Helm 3 is not configured by default to use any repository. So if you want to install existing packages you have to add at least one repository containing some charts.
+> You need a Kubernetes cluster and Helm install on your system, you can use `.playground`
 
+Helm 3 is not configured by default to use any repository. So if you want to install existing packages you have to add at least one repository containing some charts.
 
 ```bash
 $ helm repo add stable https://kubernetes-charts.storage.googleapis.com/

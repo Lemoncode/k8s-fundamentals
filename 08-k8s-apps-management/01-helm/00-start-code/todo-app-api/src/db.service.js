@@ -8,11 +8,10 @@ export const collectionAsync = async () => {
   if (MONGODB_URI !== "") {
     const client = new MongoClient(MONGODB_URI);
     await client.connect(MONGODB_URI);
+    console.log("Connected to database");
     return client.db("tododb").collection("todos");
   } else {
-    mongoClient = null;
     console.log("db.service mock invoke");
-    resolve(mockCollection);
     return mockCollection;
   }
 };

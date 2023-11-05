@@ -46,14 +46,24 @@ class Collection {
       };
 
       this.data = [...this.data, newTodo];
+      if (!cb) {
+        return Promise.resolve(newTodo);
+      }
       cb(null, newTodo);
     } catch (error) {
+      if (!cb) {
+        return Promise.reject(error);
+      }
       cb(error, null);
     }
   }
 
-  insertOne(todo, cb) {
-    this.insert(todo, cb);
+  async insertOne(todo, cb) {
+    if (!cb) {
+      await this.insert(todo);
+    } else {
+      this.insert(todo, cb);
+    }
   }
 
   find() {
@@ -71,7 +81,11 @@ class Collection {
   }
 
   toArray(cb) {
-    cb(null, [...this.data]);
+    if (!cb) {
+      return Promise.resolve([...this.data]);
+    } else {
+      cb(null, [...this.data]);
+    }
   }
 }
 

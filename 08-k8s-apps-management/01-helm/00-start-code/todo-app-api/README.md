@@ -33,6 +33,8 @@ With this database configuration, create `.env` and set the following content
 MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin
 ```
 
+Now use `curl` to hit the different endpoints and check that is working as expected.
+
 ## How to use as running container
 
 Build your image tagging with any value that you disare:
