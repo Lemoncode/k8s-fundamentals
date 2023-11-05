@@ -1,5 +1,16 @@
 ## Using an isolated VM - M1
 
+Open `./.isolated-vm`, you will find a simple `Vagrantfile`, to spin up a the box, by running:
+
+```bash
+vagrant up
+```
+
+> TODO: Add instructions to install Docker
+
+* https://docs.docker.com/engine/install/ubuntu/
+* https://docs.docker.com/engine/install/linux-postinstall/
+
 ## Prerequisites
 
 * Install [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
