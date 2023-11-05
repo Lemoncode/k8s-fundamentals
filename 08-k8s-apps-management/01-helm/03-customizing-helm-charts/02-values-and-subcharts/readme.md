@@ -11,7 +11,7 @@ Create `./chart/todos/charts/backend/values.yaml`
 ```yaml
 #Child Chart values.yaml
 secret:
-  mogodb_uri:
+  mongodb_uri:
     username: your_user
     password: your_password
 service:
@@ -27,7 +27,7 @@ Create `./chart/todos/values.yaml`
 Todos:
   title: "Super"
 backend:
-  mogodb_uri:
+  mongodb_uri:
     username: admin
     password: password
 ```

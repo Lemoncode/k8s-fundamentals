@@ -20,7 +20,7 @@ Kustomize was created as a response to template-heavy approaches like Helm to co
 ### Using binaries
 
 ```bash
-curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 ```
 
 ```bash
@@ -31,7 +31,7 @@ chmod +x kustomize
 sudo mv kustomize /usr/local/bin
 ```
 
-> It does not work with ARM architectures
+> The script does not work with ARM architectures, to install it on ARM architectures we need to download the desireable package follow this [link](https://github.com/kubernetes-sigs/kustomize/releases)
 
 ### Kustomize commands
 
@@ -63,6 +63,6 @@ docker run k8s.gcr.io/kustomize/kustomize:v3.8.7 version
 
 ## References
 
-[Patche strategies](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md)
+[Patch strategies](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md)
 
 [JsonPatches6902 Overview](https://skryvets.com/blog/2019/05/15/kubernetes-kustomize-json-patches-6902/)

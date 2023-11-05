@@ -24,7 +24,7 @@ done
 ```
 
 ```bash
-$ chmod +x curl-loop.sh
+chmod +x curl-loop.sh
 ```
 
 Create `nginx.service.yml`
@@ -88,13 +88,13 @@ spec:
 1. Deploy the Deployment and Service by running the following command:
 
 ```bash
-$ kubectl create -f ./ --save-config --record
+kubectl create -f ./ --save-config --record
 ```
 
 Locate the public IP on load balancer
 
 ```bash
-$ kubectl get svc
+kubectl get svc
 ```
 
 Now we can try on browser by using
@@ -108,7 +108,7 @@ http://REPLACE_WITH_EXTERNAL_IP
 3. Open a separate command window and run the following script:
 
 ```bash
-$ sh curl-loop.sh EXTERNAL_IP
+sh curl-loop.sh EXTERNAL_IP
 ```
 
 4. Change the image version in `nginx.deployment.yml` to the one shown in the comment right next to it. Save the file.
@@ -116,7 +116,7 @@ $ sh curl-loop.sh EXTERNAL_IP
 5. Run the following command to apply the new Deployment:
 
 ```bash
-$ kubectl apply -f nginx.deployment.yml --record
+kubectl apply -f nginx.deployment.yml --record
 ```
 
 6. Go back and check the curl commands being made by the script and you should see the interruption in the service. This demonstrates a Rolling Deployment in action.
@@ -124,7 +124,7 @@ $ kubectl apply -f nginx.deployment.yml --record
 7. Check the Deployment status by running the following:
 
 ```bash
-$ kubectl rollout status deployment my-nginx
+kubectl rollout status deployment my-nginx
 ```
 
 We will get something like this:

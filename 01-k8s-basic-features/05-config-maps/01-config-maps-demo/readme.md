@@ -60,13 +60,16 @@ data:
 We can go a head and create this by running:
 
 ```bash
-$ kubectl create -f settings.configmap.yml
+kubectl create -f settings.configmap.yml
 ```
 
 Now we can have a look
 
 ```bash
-$ kubectl get cm
+kubectl get cm
+```
+
+```
 NAME               DATA   AGE
 app-settings       4      67s
 ```
@@ -107,7 +110,10 @@ docker push jaimesalas/node-configmap
 We can check that the image has been created by running:
 
 ```bash
-$ docker image ls
+docker image ls
+```
+
+```
 REPOSITORY                                TAG        IMAGE ID       CREATED          SIZE
 node-configmap                            latest     4eb04892586b   10 seconds ago   113MB
 # ....
@@ -198,6 +204,9 @@ Check that Deployment has been successfuly deployed:
 
 ```bash
 kubectl get all
+```
+
+```
 NAME                                  READY   STATUS    RESTARTS   AGE
 pod/node-configmap-5b474b7595-672qp   1/1     Running   0          6s
 
@@ -266,7 +275,10 @@ spec:
 Run `kubectl apply -f ./node.deployment.yml ` and let's have a look to get the pod that we want to forward.
 
 ```bash
-$  kubectl get all
+kubectl get all
+```
+
+```
 NAME                                  READY   STATUS    RESTARTS   AGE
 pod/node-configmap-85b8d85f8c-cn45b   1/1     Running   0          43s
 
@@ -278,7 +290,7 @@ deployment.apps/node-configmap   1/1     1            1           32m
 ```
 
 ```bash
-$ kubectl port-forward node-configmap-85b8d85f8c-cn45b 9000
+kubectl port-forward node-configmap-85b8d85f8c-cn45b 9000
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
@@ -360,13 +372,16 @@ spec:
 Update Deployment as follows:
 
 ```bash
-$ kubectl apply -f ./node.deployment.yml
+kubectl apply -f ./node.deployment.yml
 ```
 
 Now we can inspect this on a browser
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                                  READY   STATUS    RESTARTS   AGE
 pod/busybox                           1/1     Running   1          68m
 pod/node-configmap-6f77855478-dvpj2   1/1     Running   0          81s
@@ -383,7 +398,7 @@ replicaset.apps/node-configmap-6f77855478   1         1         1       81s
 ```
 
 ```bash
-$ kubectl port-forward node-configmap-6f77855478-dvpj2 9000
+kubectl port-forward node-configmap-6f77855478-dvpj2 9000
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
@@ -434,8 +449,8 @@ Build and push a new image
 
 ```bash
 # To rely on Docker Hub
-$ docker build -t jaimesalas/node-configmap .
-$ docker push jaimesalas/node-configmap
+docker build -t jaimesalas/node-configmap .
+docker push jaimesalas/node-configmap
 ```
 
 Update `K8s/node.deployment.yml`
@@ -482,11 +497,14 @@ spec:
 Update the deployment
 
 ```bash
-$ kubectl apply -f ./node.deployment.yml
+kubectl apply -f ./node.deployment.yml
 ```
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                                  READY   STATUS        RESTARTS   AGE
 pod/busybox                           1/1     Running       1          100m
 pod/node-configmap-5bf6576cb9-wkqcn   1/1     Running       0          23s
@@ -505,7 +523,7 @@ replicaset.apps/node-configmap-6f77855478   0         0         0       12m
 
 
 ```bash
-$ kubectl port-forward node-configmap-5bf6576cb9-wkqcn 9000
+kubectl port-forward node-configmap-5bf6576cb9-wkqcn 9000
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
@@ -522,5 +540,5 @@ ls /etc/config
 `cd` into `K8s` and run 
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```

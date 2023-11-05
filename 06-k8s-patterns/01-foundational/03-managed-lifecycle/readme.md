@@ -22,7 +22,6 @@ Using only the process model to run and stop a process is not good enough. Real-
 
 Whenever Kubernetes decides to shut down a container, whether that is because the Pod it belongs to is shutting down or simply a failed liveness probe causes the container to be restarted, the container receives SIGTERM. SIGTERM is a gentle way for the container to shut down cleanly before Kubernetes sends a more abrupt SIGKILL signal. Once a SIGTERM signal has been received, the application should shut down as quickly as possible. For some applications, this might be a quick termination, and some other applications may have to complete their in-flight requests, release open connections, and clean up temp files, which can take a slightly longer time. In all cases, reacting to SIGTERM is the right moment to shut down a container in a clean way.
 
-
 ## SIGKILL Signal
 
 If a container process has not shut down after a SIGTERM signal, it is shut down forcefully by the following SIGKILL signal. Kubernetes waits 30 seconds to send SIGKILL. The grace period can be de defined per Pod, using `.spec.terminationGracePeriodSeconds`
@@ -50,7 +49,8 @@ spec:
           command: # 1
             - sh
             - -c
-            - sleep 15 echo "Start Up" > /tmp/postStart_done
+            - sleep 15 
+            - echo "Start Up" > /tmp/postStart_done
 
 ```
 

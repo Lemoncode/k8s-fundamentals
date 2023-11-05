@@ -3,7 +3,9 @@
 > Start from: `04-helm-template-logic/01-adding-template-logic`
 
 
-For now, the hosts mapped in the ingress are defined in the chart's values files. And if we want to install two releases of the same chart, one for the dev and one for the test, we have to change the host in the` values.yaml` file. 
+For now, the hosts mapped in the ingress are defined in the chart's values files. And if we want to install two releases of the same chart, one for the *dev* and one for the *test*, we have to change the host in the` values.yaml` file. 
+
+> NOTE: Using the sama namespace, on separate namespaces this would be already possible
 
 We would like something more flexible where the host name is also dynamically generated from the release name. 
 
@@ -11,7 +13,7 @@ Let's do this.
 
 ### Todos Application: React + API
 
-The frontend is an application built with React. When the user connects, the page and its JavaScript are downloaded. Then, the page itself calls the backend API with HTTP requests launched by the JavaScript code. 
+The frontend is an application built with React. When the user connects, the page and its JavaScript is downloaded. Then, the page itself calls the backend API with HTTP requests launched by the JavaScript code. 
 
 Those requests also come from the external world, so they also have to be done through the ingress. That's why we have two ingresses, one for the frontend and one for the backend API. 
 
@@ -181,7 +183,7 @@ Now, let's build the ingress manifest from that ingress object.
 Update `chart/todos/templates/ingress.yaml`
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-ingress

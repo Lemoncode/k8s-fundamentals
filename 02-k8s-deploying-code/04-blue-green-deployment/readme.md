@@ -192,7 +192,7 @@ spec:
 
 ```
 
-Now we had our labels earlier, our `role` and `app` labels, and you're gonna notice we're gonna use those here. So first of, looking towards the top, we have our standards suspects our `apiVersion` and `kind` and some `metadata` about the name.  
+Now we had our labels earlier, our `role` and `app` labels, and you're going to notice we're going to use those here. So first of, looking towards the top, we have our standards suspects our `apiVersion` and `kind` and some `metadata` about the name.  
 
 But looking down the selector, you'll notice this is `role: blue` again, and then if we jump on down a little bit further to where the labels are inside of our template, you'll notice its `role: blue`. So we're gonna be selecting `app: nginx`, `role: blue`. Our test service and our public service are also selecting those labels, therefore, they will route the traffic to these pods. 
 
@@ -229,8 +229,8 @@ kubectl set selector svc [service-name] 'role=green'
 ### Cleanup
 
 ```bash
-$ kubectl delete svc nginx-blue-test nginx-green-test nginx-service
-$ kubectl delete deployment nginx-deployment-blue nginx-deployment-green
+kubectl delete svc nginx-blue-test nginx-green-test nginx-service
+kubectl delete deployment nginx-deployment-blue nginx-deployment-green
 ```
 
 ## Summary

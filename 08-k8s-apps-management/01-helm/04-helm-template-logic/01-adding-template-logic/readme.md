@@ -48,7 +48,7 @@ Create `chart/todos/charts/backend/templates/_helpers.tpl`
 {{- end -}}
 ```
 
-Keep in mind that this name is global to the parent chart and all sub‑charts, so, to avoid any conflict, we prefix the name with the name of the chart (`backend`). 
+Keep in mind that this name ("backend.fullname") is global to the parent chart and all sub‑charts, so, to avoid any conflict, we prefix the name with the name of the chart (`backend`). 
 
 Then, that code snippet can be included in the templates by substituting it with the include directive, which takes two arguments, the function name and the scope. 
 
@@ -157,7 +157,7 @@ spec:
             backend:
               service:
 -               name: {{ .Release.Name }}-{{ .Chart.Name }}
-+               name: {{ include "backend.fullname" . }}-{{ .Chart.Name }}
++               name: {{ include "backend.fullname" . }}
                 port:
                   number: 80
 

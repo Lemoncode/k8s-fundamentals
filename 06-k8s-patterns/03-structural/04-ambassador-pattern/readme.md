@@ -113,7 +113,7 @@ http {
 
 Notice that the `ambassador` is listening on port `9000`. Notice also that the `upstream` is pointing to `lc-ambassador`, by this service we reach the outer world. 
 
-Recall that behinc the scenes the `external-app` is listening on port `80`. Our main app is ignoring that, and access via `ambassador` on `localhost:9000`.
+Recall that behind the scenes the `external-app` is listening on port `80`. Our main app is ignoring that, and access via `ambassador` on `localhost:9000`.
 
 Let's deploy `ambassador-app`
 

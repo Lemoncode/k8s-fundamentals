@@ -24,7 +24,7 @@ How does Helm work? Instead of using `kubectl` for each K8s object, we embed the
 
 Then **Helm connects** to the `K8s API` to create the K8s objects.
 
-The Helm library uses the `K8s client` to communicate with the K8s API, it uses `REST K8S API` and its scurity layer as any other client.
+The Helm library uses the `K8s client` to communicate with the K8s API, it uses `REST K8S API` and its security layer as any other client.
 
 With Helm, you install your application as an entity defined by your chart and not as a set of independent Kubernetes objects. The chart is the definition of your application, and the release is an instance of that chart.
 

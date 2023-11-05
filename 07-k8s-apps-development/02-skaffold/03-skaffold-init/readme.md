@@ -10,7 +10,7 @@ skaffold init -k '.k8s/*.yml' \
  -a '{"builder": "Docker","payload": {"path": "./todo-app-frontend/Dockerfile"},"image": "todo-app-frontend"}'
 ```
 
-If instead we wna to use `docker-compose.yml`
+If instead we want to use `docker-compose.yml`
 
 ```bash
 skaffold init --compose-file docker-compose.yml -f skaffoldtest.yml \

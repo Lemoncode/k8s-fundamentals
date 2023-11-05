@@ -29,6 +29,6 @@ spec:
      type: Directory
 
 # If we run `kubectl delete pod life-hooks` when `lifecycle-demo-container` is terminated
-# prePost hook never happen, becuase is Kubelet who must terminate the container
+# preStop hook never happen, becuase is Kubelet who must terminate the container
 
 # Since we're running this on minikube we can access the data by running `minikube ssh` and cd `data`

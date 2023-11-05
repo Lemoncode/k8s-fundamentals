@@ -15,9 +15,11 @@ We need `v1.21.0`, follow the [link](https://docs.aws.amazon.com/eks/latest/user
 
 ```bash
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 ```
 
 ```bash
+sudo mv /tmp/eksctl /usr/local/bin
 sudo mv /tmp/eksctl /usr/local/bin
 ```
 
@@ -48,7 +50,7 @@ aws ec2 describe-key-pairs --key-name eks-node-key
 ```bash
 eksctl create cluster \
 --name lc-cluster \
---version 1.21 \
+--version 1.23 \
 --region eu-west-3 \
 --nodegroup-name lc-nodes \
 --node-type t2.small \

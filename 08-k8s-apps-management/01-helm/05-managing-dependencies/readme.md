@@ -46,7 +46,7 @@ helm install --verify
 
 How can the Helm client use those charts?
 
-1. Define the repolsitory in the Helm configuration.
+1. Define the repository in the Helm configuration.
 2. Define the dependencies.
 
 ### Managing a Repository List
@@ -82,7 +82,7 @@ helm repo add stable https://charts.helm.sh/stable
 
 [Demo: Packaging and Publishing Charts](05-managing-dependencies/../01-packaging-and-publishing-charts/readme.md)
 
-## Defining Depndencies
+## Defining Dependencies
 
 How can we define dependencies between charts? The todos umbrella chart that we built in the demo depends on three subcharts. 
 
@@ -272,8 +272,8 @@ tags:
 ### Conditions & Tags
 
 * All charts are downloaded with `helm dependency update`
-* Partiall installation with `helm install`
-* `--set` overrides value.yaml
+* Partial installation with `helm install`
+* `--set` overrides `value.yaml`
 * Conditions override tags
 
 ```bash
@@ -290,3 +290,5 @@ helm install demo foo --set tags.api=false
 [Demo: Managing Dependencies](05-managing-dependencies/02-managing-dependencies/readme.md)
 
 ## Demo: Controlling Dependencies with Conditions and Tags
+
+[Demo: Controlling Dependencies with Conditions and Tags](./03-controlling-dependencies/readme.md)

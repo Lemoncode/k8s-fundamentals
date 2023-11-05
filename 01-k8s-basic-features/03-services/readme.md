@@ -175,28 +175,28 @@ spec:
 ## kubectl and Services
 
 * Creating a Service 
-    - Use the __kubectl create__ command along with the --filename or -f switch
+    - Use the __kubectl create__ command along with the `--filename` or `-f` switch
 
 ```bash
-# Create a Service
-$ kubectl create -f file.service.yml
+# Create a Service 
+kubectl create -f file.service.yml
 ```
 
 * Updating or Creating a Service
-    - Use the __kubectl apply__ command along with the --filename or -f switch
+    - Use the __kubectl apply__ command along with the `--filename` or `-f` switch
 
 ```bash
 # Update a Service
 # Assumes --save-config was used with create
-$ kubectl apply -f file.service.yml
+kubectl apply -f file.service.yml
 ```
 
 * Deleting a Service
-    - Use the __kubectl delete__ command along with the --filename or -f switch.
+    - Use the __kubectl delete__ command along with the `--filename` or `-f` switch.
 
 ```bash
 # Delete a Service
-$ kubectl delete -f file.service.yml
+kubectl delete -f file.service.yml
 ```
 
 * Testing a Service and Pod with curl
@@ -206,12 +206,12 @@ $ kubectl delete -f file.service.yml
 ```bash
 # Shell into a Pod and test URL. Add -c [containerID]
 # in cases where multiple containers are running in the POd
-$ kubectl exec [pod-name] -- curl -s http://podIP
+kubectl exec [pod-name] -- curl -s http://podIP
 ```
 
 ```bash
 # Install and use curl (example shown is for Alpine Linux)
-$ kubectl exec [pod-name] -it -- sh
+kubectl exec [pod-name] -it -- sh
 > apk add curl
 > curl -s http://podIP
 ```

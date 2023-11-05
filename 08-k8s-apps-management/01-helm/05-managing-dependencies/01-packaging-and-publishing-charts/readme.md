@@ -95,7 +95,7 @@ If we look at it, we can see some entries describing the packed charts. Now they
 
 They decide to install ChartMuseum Server. ChartMuseum is an HTTP server that is a dedicated Helm repository with a nice API. First, they download ChartMuseum binary. 
 
-You can find the link in the [GitHub ChartMuseum project](). Make it executable and save it to the local bin folder. ChartMuseum needs a storage location for the repository. 
+You can find the link in the [GitHub ChartMuseum project](https://github.com/chartmuseum). Make it executable and save it to the local bin folder. ChartMuseum needs a storage location for the repository. 
 
 Create on root `./helm/repo` and `cd ./`, after run:
 
@@ -191,8 +191,11 @@ We can see that the charts have been published.
 }
 ```
 
-In your own projects, you'll set up and use a cloned Helm repository or use an existing one. But in this demo, you have learned how to do it yourself locally with ChartMuseum. It's a good way to understand how the process works. Great. Globomantics DevOps have packed and published their charts to a local repository. Now they can build the umbrella chart, as well as any other charts with dependencies to the charts available in the repository. If you want to run this lab, all the files are in my GitHub repository. Start with the lab_10 begin folder, and the solution is in the lab_10 final folder.
+In your own projects, you'll set up and use a cloned Helm repository or use an existing one. But in this demo, you have learned how to do it yourself locally with ChartMuseum. It's a good way to understand how the process works.  
 
+We have packed and published our charts to a local repository. Now we can build the umbrella chart, as well as any other charts with dependencies to the charts available in the repository. 
+
+```
   database:
   - apiVersion: v2
     appVersion: "3.6"
@@ -219,106 +222,4 @@ generated: "2021-10-10T11:10:13.694707+02:00"
 
 ```
 
-If we look at it, we can see some entries describing the packed charts. Now we are ready to upload the archives and the index file to an HTTP server. 
-
-We've decided to install ChartMuseum Server. ChartMuseum is an HTTP server that is a dedicated Helm repository with a nice API. 
-
-First, we download ChartMuseum binary. 
-
-You can find the link in the [GitHub ChartMuseum project](https://github.com/helm/chartmuseum). Make it executable and save it to the local bin folder. ChartMuseum needs a storage location for the repository. 
-
-Create on a new diretory `./helm/repo` and `cd ./`, after run:
-
-```bash
-docker run --rm -it \
-  -p 8080:8080 \
-  -e DEBUG=1 \
-  -e STORAGE=local \
-  -e STORAGE_LOCAL_ROOTDIR=/charts \
-  -v $(pwd)/helm/repo:/charts \
-  ghcr.io/helm/chartmuseum:v0.13.1
-```
-
-For this demo, it will be stored locally in the home directory, `helm/repo`. Then, ChartMuseum can be started with the following parameters to use the local storage. It runs and listens on port 8080. For the demo, we'll leave this window open. 
-
-```
-Unable to find image 'ghcr.io/helm/chartmuseum:v0.13.1' locally
-v0.13.1: Pulling from helm/chartmuseum
-ba3557a56b15: Pull complete 
-efcac14f1459: Pull complete 
-ad11a65c05ef: Pull complete 
-Digest: sha256:79350ffbf8b0c205cf8b45988de899db594618b24fefd17cdbcdbbc8eb795d72
-Status: Downloaded newer image for ghcr.io/helm/chartmuseum:v0.13.1
-2021-10-10T09:38:24.143Z        DEBUG   Fetching chart list from storage        {"repo": ""}
-2021-10-10T09:38:24.145Z        DEBUG   No change detected between cache and storage    {"repo": ""}
-2021-10-10T09:38:24.145Z        INFO    Starting ChartMuseum    {"host": "0.0.0.0", "port": 8080}
-2021-10-10T09:38:24.145Z        DEBUG   Starting internal event listener
-```
-
-Finally, in another window, the repository can be populated by just copying the chart archives to the local storage. You could also upload them with HTTP upload request to the ChartMuseum API. 
-
-* Copy `./chart/dist` to `./helm/repo`. `cd` into `./chart/dist` and run:
-
-```bash
-cp *.tgz ../../../helm/repo
-```
-
-And now, let's make an HTTP request to ChartMuseum to get the list of charts. 
-
-```bash
-curl http://localhost:8080/api/charts | jq .
-```
-
-We can see that the charts have been published. 
-
-```json
-{
-  "backend": [
-    {
-      "name": "backend",
-      "version": "0.1.0",
-      "description": "A Helm chart for Todos backend 1.0",
-      "apiVersion": "v2",
-      "appVersion": "1.0",
-      "type": "application",
-      "urls": [
-        "charts/backend-0.1.0.tgz"
-      ],
-      "created": "2021-10-17T09:24:11.435831451Z",
-      "digest": "68433892715fbc59c1934b595223983176449e172ca5156a332815977fe0da9c"
-    }
-  ],
-  "database": [
-    {
-      "name": "database",
-      "version": "0.1.0",
-      "description": "A Helm chart Todos Database Mongodb 4.4.7",
-      "apiVersion": "v2",
-      "appVersion": "4.4.7",
-      "type": "application",
-      "urls": [
-        "charts/database-0.1.0.tgz"
-      ],
-      "created": "2021-10-17T09:24:11.47183084Z",
-      "digest": "e315ed01753699d30f4e906d0a8f53aabcd3a17f77eb78ab4eef161adbc7c5c7"
-    }
-  ],
-  "frontend": [
-    {
-      "name": "frontend",
-      "version": "1.1.0",
-      "description": "A Helm chart for Todos Frontend 2.0",
-      "apiVersion": "v2",
-      "appVersion": "2.0",
-      "type": "application",
-      "urls": [
-        "charts/frontend-1.1.0.tgz"
-      ],
-      "created": "2021-10-17T09:24:11.499830365Z",
-      "digest": "f187916aed0c0a4f956f67d550202159283b8abb65bba09d5eb666a8af610ab3"
-    }
-  ]
-}
-```
-
-In our own projects, we'll set up and use a cloned Helm repository or use an existing one. But here, we have learned how to do it ourselves locally with ChartMuseum. 
+Notice `index-cache.yaml` at `./helm/repo`, if we look at it, we can see some entries describing the packed charts. Now we are ready to upload the archives and the index file to an HTTP server. 

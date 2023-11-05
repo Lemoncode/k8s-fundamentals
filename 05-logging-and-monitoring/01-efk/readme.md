@@ -7,7 +7,7 @@
 ```bash
 eksctl create cluster \
 --name lc-cluster \
---version 1.21 \
+--version 1.23 \
 --region eu-west-3 \
 --nodegroup-name lc-nodes \
 --node-type t2.large \
@@ -23,13 +23,19 @@ eksctl create cluster \
 ## Deploy sample app
 
 ```bash
-$ kubectl apply -f ./app-deploy/sample-service.yml
+kubectl apply -f ./app-deploy/sample-service.yml
+```
+
+```
 service/my-service created
 deployment.apps/my-deployment created
 ```
 
 ```bash
-$ kubectl get service my-service
+kubectl get service my-service
+```
+
+```
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP                                                              PORT(S)        AGE
 my-service   LoadBalancer   10.100.33.153   a5f026397c8624c71be8be7ad6f7b3a5-583470460.eu-west-3.elb.amazonaws.com   80:31509/TCP   87s
 ```
@@ -37,7 +43,7 @@ my-service   LoadBalancer   10.100.33.153   a5f026397c8624c71be8be7ad6f7b3a5-583
 Grab the `EXTERNAL-IP`, and run:
 
 ```bash
-$ curl a5f026397c8624c71be8be7ad6f7b3a5-583470460.eu-west-3.elb.amazonaws.com
+curl a5f026397c8624c71be8be7ad6f7b3a5-583470460.eu-west-3.elb.amazonaws.com
 ```
 
 We must have a response as follows:
@@ -75,11 +81,14 @@ We must have a response as follows:
 1. Create namespace
 
 ```bash
-$ kubectl apply -f ./fluentd-elasticsearch/create-logging-namespace.yaml
+kubectl apply -f ./fluentd-elasticsearch/create-logging-namespace.yaml
 ```
 
 ```bash
-$ kubectl get ns
+kubectl get ns
+```
+
+```
 NAME              STATUS   AGE
 default           Active   62m
 kube-node-lease   Active   62m
@@ -91,31 +100,34 @@ logging           Active   13s
 2. Create elasticsearch
 
 ```bash
-$ kubectl apply -f ./fluentd-elasticsearch/elasticsearch-deploy.yaml
+kubectl apply -f ./fluentd-elasticsearch/elasticsearch-deploy.yaml
 ```
 
 ```bash
-$ kubectl get all -n kube-system
+kubectl get all -n kube-system
 ```
 
 3. Deploy fluentd
 
 ```bash
-$ kubectl apply -f ./fluentd-elasticsearch/fluentd-deploy.yaml
+kubectl apply -f ./fluentd-elasticsearch/fluentd-deploy.yaml
 ```
 
 ```bash
-$ kubectl get all -n kube-system
+kubectl get all -n kube-system
 ```
 
 4. Deploy Kibana
 
 ```bash
-$ kubectl apply -f ./fluentd-elasticsearch/kibana-deploy.yaml
+kubectl apply -f ./fluentd-elasticsearch/kibana-deploy.yaml
 ```
 
 ```bash
-$ kubectl get service -n kube-system
+kubectl get service -n kube-system
+```
+
+```
 NAME                    TYPE           CLUSTER-IP      EXTERNAL-IP                                                              PORT(S)             AGE
 elasticsearch-logging   ClusterIP      None            <none>                                                                   9200/TCP,9300/TCP   110m
 kibana-logging          LoadBalancer   10.100.47.135   a02ea42f7f34b4ff8a11f567e790c6ce-602092504.eu-west-3.elb.amazonaws.com   5601:31469/TCP      77m
@@ -142,20 +154,20 @@ Delete kubernetes resources
 
 ```bash
 #remove app-deploy
-$ kubectl delete -f ./app-deploy/sample-service.yml
+kubectl delete -f ./app-deploy/sample-service.yml
 
 #remove kibana
-$ kubectl delete -f ./app-deploy/sample-service.yml
+kubectl delete -f ./fluentd-elasticsearch/kibana-deploy.yaml
 
 #remove fluentd
-$ kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
+kubectl delete -f ./fluentd-elasticsearch/fluentd-deploy.yaml
 
 #remove elasticsearch
-$ kubectl delete -f ./fluentd-elasticsearch/create-logging-namespace.yaml
+kubectl delete -f ./fluentd-elasticsearch/create-logging-namespace.yaml
 ```
 
 Delete cluster
 
 ```bash
-$ eksctl delete cluster --name lc-cluster --region eu-west-3
+eksctl delete cluster --name lc-cluster --region eu-west-3
 ```

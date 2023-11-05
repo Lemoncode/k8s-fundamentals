@@ -42,6 +42,8 @@ replicaset.apps/frontend-74d9b9ddcd   1         1         1       2m1s
 
 To check out that ingress is working, we can use:
 
+* [jq manual](https://stedolan.github.io/jq/manual/)
+
 ```bash
 INGRESSIP=$(kubectl get ingress -o json | jq -r '.items[0].status.loadBalancer.ingress[0].ip') 
 ```
@@ -198,7 +200,8 @@ To check that the new image is used we can run:
 ```bash
 kubectl describe pod -l app=frontend
 ```
- We cand find the new image version:
+ 
+We cand find the new image version:
 
 ```
 # .....

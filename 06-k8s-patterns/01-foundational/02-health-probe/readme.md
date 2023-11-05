@@ -22,10 +22,9 @@ Offers more flexibility regarding what methods to use for application health:
 
 * HTTP - 200 - 399
 * TCP - successful TCP connection
-* exec - exeit code 0
+* exec - exit code 0
 
 > NOTE: If the liveness probe fails `Kubelet` will restart the container.
-
 
 ```yaml
 apiVersion: v1

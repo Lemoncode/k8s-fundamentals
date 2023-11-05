@@ -14,7 +14,7 @@ In previous demos we have changed manually the manifests. This is not the way...
 
 This is what the `Helm templates` do for us.
 
-Another reason, is that we should be able to install two release of the same chart on different clusters, on the same cluster, or in the same namespace (the name of all K8s resource must be unique). If we want to install two releases of the same application, we need a way to generate unique names.
+Another reason, is that we should be able to install two releases of the same chart on different clusters, on the same cluster, or in the same namespace (the name of all K8s resource must be unique). If we want to install two releases of the same application, we need a way to generate unique names.
 
 > Solution: Generate the names of K8s objects based on Helm `release` name.
 
@@ -59,7 +59,7 @@ Helm templates are processed by Helm template engine.
 
 The principle is always the same. You insert directives in your code. The directives are distinguished from the rest of the code with some characters by convention. 
 
-Those directives are replaced by values or execute some code when they are processed by the temperate engine. 
+Those directives are replaced by values or execute some code when they are processed by the template engine. 
 
 ### Go Template Engine
 
@@ -158,7 +158,7 @@ Except for those add‑ons, the Helm template engine works the same as the Go te
 
 ### Helm Template Execution
 
-But where and when does the Helm template engine run? It runs on the client side. When you lunch the `helm install` or `helm upgrade` command, before sending the file definition to the Kubernetes API, Helm first processes your temperate with the template engine, which executes the directives or replace them with values to create a manifest. 
+But where and when does the Helm template engine run? It runs on the client side. When you lunch the `helm install` or `helm upgrade` command, before sending the file definition to the Kubernetes API, Helm first processes your template with the template engine, which executes the directives or replace them with values to create a manifest. 
 
 Then Helm sends the result to the Kubernetes API. 
 

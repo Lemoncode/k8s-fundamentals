@@ -18,7 +18,7 @@ chart/
 mkdir -p chart/todos
 ```
 
-Create `charts/todo/Chart.yaml`
+Create `charts/todos/Chart.yaml`
 
 ```yaml
 apiVersion: v2

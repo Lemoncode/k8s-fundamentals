@@ -3,18 +3,21 @@
 Once we have [published our image](./green/readme.md)
 
 ```bash
-$ export TARGET_ROLE=green
-$ export IMAGE_VERSION=jaimesalas/nginx-green
+export TARGET_ROLE=green
+export IMAGE_VERSION=jaimesalas/nginx-green
 ```
 
 Now we're ready to do the green deployment
 
 ```bash
-$ cat nginx.deployment.yml | sh config.sh | kubectl create --save-config -f -
+cat nginx.deployment.yml | sh config.sh | kubectl create --save-config -f -
 ```
 
 ```bash
-$ kubectl get deployments
+kubectl get deployments
+```
+
+```
 NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment-blue    2/2     2            2           15m
 nginx-deployment-green   2/2     2            2           15s
@@ -44,13 +47,16 @@ spec:
 Recall that our public service is pointing to the blue deployment. Now if we run:
 
 ```bash
-$ kubectl create -f nginx-green-test.service.yml
+kubectl create -f nginx-green-test.service.yml
 ```
 
 And we inspect the services, we will find out:
 
 ```bash
-$ kubectl get svc
+kubectl get svc
+```
+
+```
 NAME               TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
 kubernetes         ClusterIP      10.96.0.1       <none>          443/TCP          4d13h
 nginx-blue-test    LoadBalancer   10.96.248.49    10.96.248.49    9000:31902/TCP   16m
@@ -63,7 +69,7 @@ We can reach green the service via `10.102.49.12:9001`, to get to the blue, we c
 Now when we're happy with tests over green environment, we're ready to switch version, recall, that we change the env variables on current terminal. So we can run:
 
 ```bash
-$ cat nginx.service.yml | sh config.sh | kubectl apply -f -
+cat nginx.service.yml | sh config.sh | kubectl apply -f -
 ```
 
 Now if we refresh `http://10.108.65.197/` we will find out that is pointing to green deployment.

@@ -6,7 +6,6 @@ Packages configuration data into an immutable container image and links the conf
 
 * We want that is not possible change the configuration after the application has started. 
 
-
 This way we ensure always have a well-defined state for our configuration data.
 
 ## Demo: Immutable Docker

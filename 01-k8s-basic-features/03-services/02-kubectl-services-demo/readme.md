@@ -65,6 +65,9 @@ kubectl create -f nginx.pod.yml
 
 ```bash
 kubectl get pods
+```
+
+```
 NAME                        READY   STATUS    RESTARTS   AGE
 my-nginx-6ff7745b59-926jt   1/1     Running   0          41s
 my-nginx-6ff7745b59-pwzxz   1/1     Running   0          41s
@@ -75,7 +78,11 @@ nginx-standalone            1/1     Running   0          34s
 
 ```bash
 kubectl exec nginx-standalone -it -- sh
+```
 
+Now we can install `curl` using `apk`, the package manager for Alpine
+
+```bash
 / # apk add curl
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/community/x86_64/APKINDEX.tar.gz
@@ -88,7 +95,7 @@ Executing ca-certificates-20191127-r2.trigger
 OK: 24 MiB in 41 packages
 ```
 
-3. Now we're going to grab the IP of one of the deployment's pod
+3. Now we're going to grab the IP of one of the deployment's pod, open a new terminal and run:
 
 ```bash
 kubectl get pod my-nginx-6ff7745b59-926jt -o yaml
@@ -147,6 +154,9 @@ kubectl apply -f clusterIP.service.yml
 
 ```bash
 kubectl get services
+```
+
+```
 NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
 kubernetes        ClusterIP   10.96.0.1      <none>        443/TCP    63d
 nginx-clusterip   ClusterIP   10.98.249.39   <none>        8080/TCP   60s
@@ -184,7 +194,7 @@ Commercial support is available at
 </html>
 ```
 
-Because we're using a service, we have load balancing and DNS so we can do as follows:
+Because we're using a service, we have load balancing by default and DNS so we can do as follows:
 
 ```bash
 / # curl http://nginx-clusterip:8080
@@ -220,6 +230,9 @@ kubectl apply -f nodeport.service.yml
 
 ```bash
 kubectl get services
+```
+
+```
 NAME             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 kubernetes       ClusterIP   10.96.0.1      <none>        443/TCP        63d
 nginx-nodeport   NodePort    10.99.89.234   <none>        80:31000/TCP   37s

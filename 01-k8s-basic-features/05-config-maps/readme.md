@@ -247,6 +247,10 @@ kubectl create cm app-settings --from-env-file=settings.config
 ```
 
 ```
+kubectl create cm app-settings --from-env-file=settings.config
+```
+
+```
 configmap/app-settings created
 ```
 
@@ -266,6 +270,6 @@ data:
 If we make an `exec` into the running pod we can check the created files
 
 ```bash
-$ kubectl exec node-configmap-<random-hash>
+kubectl exec node-configmap-<random-hash>
 / # cd /etc/config
 ```

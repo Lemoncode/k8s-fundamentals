@@ -121,5 +121,5 @@ helm get manifest demo | less
 To clean the resources we can go ahead and run: 
 
 ```bash 
-$ helm uninstall demo
+helm uninstall demo
 ```

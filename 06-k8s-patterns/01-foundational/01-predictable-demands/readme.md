@@ -47,7 +47,7 @@ The *requests* amount (but not *limits*) is used by the scheduler when placicing
 Depending on wether you specify the `requests` the `limits`, or both, the platform offers a different kind of Quality of Service
 
 * **Best efforft** - No `requests`, no `limits`. **Pod is considered lowest priority** and is killed first when the node runs out of **incompressible** resources.
-* **Burstble** - `requests` and `limits` defined **but they are not equal**. When node is running out fo **incompressible** resources, **these pods are likely to be killed if no Best-Effort remains**. 
+* **Burstble** - `requests` and `limits` defined **but they are not equal**. When node is running out of **incompressible** resources, **these pods are likely to be killed if no Best-Effort remains**. 
 * **Guaranteed** - `requests` and `limits` are equal. **These are the highest priority and guranteed not to be killed before the others**  
 
 > The resource characteristics you define or omit for the containers have a direct impact on its QoS
@@ -111,7 +111,7 @@ Start Time:           Tue, 07 Sep 2021 14:53:04 +0200
 Labels:               name=random-employee
 ```
 
-When **Priority feature is enabled**, it affects the order in which the `scheduler` **places Pods on nodes**. The **priority admission controller** uses `priorityClassName` field to populate the priority value for new Pods. When multiple Pods are waiting to be placed, the `scheduler` **sorts the queue of pending Pods by highest priority first**. Any pending Pod is picked before any other pending Pod with lower priority in the scheduling queue, and if there are no constraints preventing it from scheduling, the Pod gets scheduled.
+When **priority feature is enabled**, it affects the order in which the `scheduler` **places Pods on nodes**. The **priority admission controller** uses `priorityClassName` field to populate the priority value for new Pods. When multiple Pods are waiting to be placed, the `scheduler` **sorts the queue of pending Pods by highest priority first**. Any pending Pod is picked before any other pending Pod with lower priority in the scheduling queue, and if there are no constraints preventing it from scheduling, the Pod gets scheduled.
 
 > IMPORTANT: **If there are no nodes with enough capacity to place a Pod**, the **scheduler can preempt (remove) lower-priority Pods from nodes to free up resources and place Pods with higher priority**. As a result, the higher-priority Pod might be scheduled sooner than Pods with a lower priority if all other scheduling requirements are met.
 

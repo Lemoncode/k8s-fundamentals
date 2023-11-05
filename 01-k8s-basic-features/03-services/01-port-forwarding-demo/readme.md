@@ -35,11 +35,14 @@ spec:
 ```
 
 ```bash
-$ kubectl apply -f nginx.deployment.yml
+kubectl apply -f nginx.deployment.yml
 ```
 
 ```bash
-$ kubectl get all
+kubectl get all
+```
+
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-77db6d9ff9-gnk5t   1/1     Running   0          32s
 pod/my-nginx-77db6d9ff9-w9h59   1/1     Running   0          32s
@@ -52,25 +55,30 @@ deployment.apps/my-nginx   2/2     2            2           32s
 
 NAME                                  DESIRED   CURRENT   READY   AGE
 replicaset.apps/my-nginx-77db6d9ff9   2         2         2       32s
-Jaimes-MacBook-Pro:03_creating_services jaimesalaszancada$ 
 ```
 
 Now let's do port forwarding to one of this pods
 
 ```bash
-$ kubectl port-forward pod/my-nginx-77db6d9ff9-gnk5t 8080:80
+kubectl port-forward pod/my-nginx-77db6d9ff9-gnk5t 8080:80
 ```
 
 We can also use port forwarding with the deployment
 
 ```bash
-$ kubectl get deployments
+kubectl get deployments
+```
+
+```
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 my-nginx   2/2     2            2           5m43s
 ```
 
 ```bash
-$ kubectl port-forward deployment/my-nginx 8080:80
+kubectl port-forward deployment/my-nginx 8080:80
+```
+
+```
 Forwarding from 127.0.0.1:8080 -> 80
 Forwarding from [::1]:8080 -> 80
 ```

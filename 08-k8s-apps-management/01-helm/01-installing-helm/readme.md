@@ -1,4 +1,8 @@
-# Installing on local cluster with Helm
+## Installing Helm
+
+To install Helm on your OS read the instructions on following [link](https://helm.sh/docs/intro/install/) 
+
+## Installing on local cluster with Helm
 
 > You need a Kubernetes cluster and Helm install on your system, you can use `.playground` and VSCode dev containers to obtain the desired environment.
 

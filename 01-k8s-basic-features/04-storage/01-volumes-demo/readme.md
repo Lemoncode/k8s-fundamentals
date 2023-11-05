@@ -41,11 +41,11 @@ spec:
 3. The volume that we're decalring here is lifecycle tied to Pod, because is using empty directory.
 
 ```bash
-$ kubectl apply -f nginx-alpine-emptyDir.pod.yml
+kubectl apply -f nginx-alpine-emptyDir.pod.yml
 ```
 
 ```bash
-$ kubectl port-forward nginx-alpine-volume 8080:80
+kubectl port-forward nginx-alpine-volume 8080:80
 ```
 
 If we `google localhost:8080`, we must see every 10 seconds a new date entry.
@@ -72,10 +72,8 @@ spec:
   volumes:
   - name: docker-socket
     hostPath: # 1.
-        path: /var/run/docker.sock
-        type: Socket  
-
-
+      path: /var/run/docker.sock
+      type: Socket  
 ```
 
 1. When we use `hostPath`, we're creating a volume associated to a node, where the POD is currrently scheduled. In a real world scenario, pods can be re scheduled to different machines / nodes. And we can loose the volume that we're looking for, we can use affinity to try to solve this, but there is a big chance that we can find that volume.
@@ -91,13 +89,13 @@ Notice that we have _type_ attribute here. The valid types are:
 * BlockDevice
 
 ```bash
-$ kubectl apply -f docker-hostPath.pod.yaml
+kubectl apply -f docker-hostPath.pod.yaml
 ```
 
 Now if we describe the pod, we must see the new volume defined.
 
 ```bash
-$ kubectl describe pod/docker-volume
+kubectl describe pod/docker-volume
 # ...
 Volumes:
   docker-socket:
@@ -115,7 +113,7 @@ Volumes:
 Once Pod is created you can shell into it to run Docker commands:
 
 ```bash
-$ kubectl exec docker-volume -it -- sh
+kubectl exec docker-volume -it -- sh
 ```
 
 Now inside the container, we have access to node docker daemon!! If we simply run `docker`, we will find that we can use the command, also run `docker ps`, did you expect that :).
@@ -124,5 +122,5 @@ Now inside the container, we have access to node docker daemon!! If we simply ru
 ### Cleanup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```

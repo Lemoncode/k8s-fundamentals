@@ -53,7 +53,7 @@ COPY --from=builder /app .
 
 ### 3. Create Skaffold manifest
 
-Create `skaffold.yaml` and pace it on root directory solution
+* Create `skaffold.yaml` and place it on root directory solution
 
 ```yaml
 apiVersion: skaffold/v2beta24
@@ -69,6 +69,8 @@ deploy:
 
 
 ### 4. Create deployment manifest
+
+* Create `k8s-pod.yaml` and place it on root directory solution
 
 ```yaml
 apiVersion: v1
@@ -92,7 +94,6 @@ skaffold dev
 We get something similar to this:
 
 ![skaffold dev output](../resources/skaffold-dev-output.png)
-
 
 Another important file to mention is `skaffold.yaml`, this manifest provides specifications on the workflow, in this case the pipeline will be as follows:
 

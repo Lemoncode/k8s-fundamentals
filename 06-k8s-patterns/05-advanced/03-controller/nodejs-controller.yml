@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-ambassador
+spec: 
+  serviceAccountName: service-reader
+  containers:
+  - name: main
+    image: jaimesalas/nodejs-controller
+  - name: ambassador
+    image: jaimesalas/ambassador-alpine
