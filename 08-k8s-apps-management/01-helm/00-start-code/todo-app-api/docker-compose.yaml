@@ -1,0 +1,18 @@
+services:
+  mongoservice:
+    image: mongo:7
+    environment:
+      - MONGO_INITDB_DATABASE=tododb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+  todoservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - MONGODB_URI=mongodb://admin:password@mongoservice:27017/tododb?authSource=admin
+    depends_on:
+      - mongoservice

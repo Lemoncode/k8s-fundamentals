@@ -1,59 +1,41 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+// https://www.stefanjudis.com/snippets/how-to-import-json-files-in-es-modules-node-js/
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
 const app = express();
-
-try {
-  const dotenv = require('dotenv');
-  if (dotenv) {
-    dotenv.config();
-  }
-} catch (err) {
-  console.warn(err);
-  console.log(`NODE ENV ${process.env.NODE_ENV}, dotenv not init`);
-}
-
-
-
-const { collectionAsync } = require('./db.service');
+import { collectionAsync } from "./db.service.js";
 
 app.use(cors());
 app.use(bodyParser.json());
 
-(async () => {
-  const collection = await collectionAsync;
-  app.get('/todos', (req, res) => {
-    console.log('Todos API GET');
-    collection.find().sort({ _id: -1 }).toArray((err, todos) => {
-      res.send(todos);
-    });
-  });
+const collection = await collectionAsync();
 
-  const mapResult = (result) => {
-    if (result['ops'] && result['ops'].length > 0) {
-      return result['ops'][0];
-    }
-    return result;
-  };
+app.get("/todos", async (req, res) => {
+  console.log("Todos API GET");
+  const todos = await collection.find().sort({ _id: -1 }).toArray();
+  res.send(todos);
+});
 
-  app.post('/todos', (req, res) => {
-    console.log(req.body);
-    if (!req.body) {
-      res.statusCode(400);
-      return res.send('Post syntax incorrect');
-    }
+const mapResult = (result) => {
+  if (result["ops"] && result["ops"].length > 0) {
+    return result["ops"][0];
+  }
+  return result;
+};
 
-    const todo = req.body;
-    collection.insertOne(todo, (err, todo) => {
-      if (err) {
-        console.log(err);
-      }
+app.post("/todos", async (req, res) => {
+  console.log("Todos API POST", req.body);
+  if (!req.body) {
+    res.statusCode(400);
+    return res.send("Post syntax incorrect");
+  }
+  const todo = req.body;
+  await collection.insertOne(todo);
+  res.send(mapResult(todo));
+});
 
-      res.send(mapResult(todo));
-    });
-  });
-
-  app.listen(3000, () => {
-    console.log('Todos API lsiten on port 3000');
-  });
-})();
+app.listen(3000, "0.0.0.0", () => {
+  console.log("Todos API lsiten on port 3000");
+});

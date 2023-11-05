@@ -1,30 +1,18 @@
-const mongodb = require('mongodb');
+import { MongoClient } from "mongodb";
+import { collection as mockCollection } from "./mock-db.service.js";
+import config from "./config.js";
 
-const MONGODB_URI = process.env.MONGODB_URI || '';
+const MONGODB_URI = config.connectionString;
 
-let collection;
-let mongoClient = mongodb.MongoClient;
-
-module.exports.collectionAsync = new Promise((resolve, reject) => {
-  if (MONGODB_URI !== '') {
-    mongoClient.connect(MONGODB_URI, {
-      autoReconnect: true,
-      reconnectInterval: 10000,
-      reconnectTries: Number.MAX_VALUE,
-      useNewUrlParser: true
-    }, function(err, db) {
-      if (err) {
-        console.log(err);
-        reject(err);
-        return;
-      }
-      console.log('connected to mongoDB');
-      collection = db.db('tododb').collection('todos');
-      resolve(collection);
-    });
+export const collectionAsync = async () => {
+  if (MONGODB_URI !== "") {
+    const client = new MongoClient(MONGODB_URI);
+    await client.connect(MONGODB_URI);
+    return client.db("tododb").collection("todos");
   } else {
     mongoClient = null;
-    collection = require('./mock-db.service');
-    resolve(collection);
+    console.log("db.service mock invoke");
+    resolve(mockCollection);
+    return mockCollection;
   }
-});
+};

@@ -1,4 +1,4 @@
-FROM node:carbon-alpine
+FROM node:18-alpine
 
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_ENV production
@@ -14,7 +14,7 @@ RUN chown -R node:node /home/node/app
 
 USER node
 WORKDIR /home/node/app
-RUN npm ci
+RUN npm ci --only-production
 
 EXPOSE 3000
 
