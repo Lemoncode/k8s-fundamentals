@@ -117,7 +117,7 @@ itemsMap: # 4
 1. YAML maps define a key and a value
 2. More complicated map structures can be defined using a key that references another map
 3. YAML lists can be used to define a sequence of items
-4. YAML lists can define a sequence maps
+4. YAML lists can define a sequence of maps
 
 > Note: Identation matters, use spaces not tabs
 

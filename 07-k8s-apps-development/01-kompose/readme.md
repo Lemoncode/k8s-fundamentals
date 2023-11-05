@@ -100,7 +100,7 @@ kompose convert --help
 
 ### Key *comopose convert* Flags
 
-* `--file` - DEfine alternative compose file
+* `--file` - Define alternative compose file
 * `--chart` - Create a Helm chart for converted objects
 * `--json` - Generate JSON resource files
 * `--out` - File name or directory where reosurces will be saved

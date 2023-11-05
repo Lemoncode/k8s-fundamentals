@@ -1,6 +1,3 @@
-# vscode editor
-.devcontainer/
-
 # dotnet
 bin
 obj
@@ -36,3 +33,7 @@ exercise-solution/
 
 # logs
 logs
+
+# cloud environments
+.aws
+.digitalocean

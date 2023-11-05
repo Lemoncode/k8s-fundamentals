@@ -229,7 +229,7 @@ digest: sha256:32118490d3fcee3fd93853ce2d9fe0ca0a10c9ed2a35598567f526ea62e73bf7
 generated: "2021-10-17T12:40:40.608405606+02:00"
 ```
 
-Well, it's the same as the `Chart.yaml` file, except that it contains fixed version numbers instead of ranges of versions. Now let's imagine that the Dev team has released a new version of the front end, and a patch chart is packed and published in the local repository. But we might not want to run `helm dependency update` because it could break the guestbook application if the new subchart is not compatible. 
+Well, it's the same as the `Chart.yaml` file, except that it contains fixed version numbers instead of ranges of versions. Now let's imagine that the Dev team has released a new version of the front end, and a patch chart is packed and published in the local repository. But we might not want to run `helm dependency update` because it could break the todos application if the new subchart is not compatible. 
 
 ```bash
 helm dependency build todos

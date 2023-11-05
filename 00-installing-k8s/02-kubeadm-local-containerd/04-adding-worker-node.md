@@ -279,3 +279,4 @@ kubectl get nodes
 vagrant ssh c1-node2
 # You can skip the token re-creation if you have one that's still valid.
 ```
+

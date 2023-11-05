@@ -40,3 +40,7 @@ kubectl logs [metrics-server-pod-name] -n kube-system
 ```bash
 minikube addons enable metrics-server
 ```
+
+## References
+
+[metrics server GitHub](https://github.com/kubernetes-sigs/metrics-server)

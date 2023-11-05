@@ -18,43 +18,39 @@ metadata:
     rel: stable
 spec:
   containers:
-  - name: my-nginx
-    image: nginx:alpine
-    ports:
-      - containerPort: 80
-    livenessProbe:
-      httpGet:
-        path: /index.html
-        port: 80
-      initialDelaySeconds: 15
-      timeoutSeconds: 2
-      periodSeconds: 5
-      failureThreshold: 1
-    readinessProbe:
-      httpGet:
-        path: /index.html
-        port: 80
-      initialDelaySeconds: 3
-      periodSeconds: 5
-      failureThreshold: 1
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-
+    - name: my-nginx
+      image: nginx:alpine
+      ports:
+        - containerPort: 80
+      livenessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 15
+        timeoutSeconds: 2
+        periodSeconds: 5
+        failureThreshold: 1
+      readinessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        failureThreshold: 1
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
 ```
 
 We can start our pod
 
 ```bash
-kubectl apply -f nginx-readiness-probe.pod.yml 
-```
-
-```
+kubectl apply -f nginx-readiness-probe.pod.yml
 pod/my-nginx created
 ```
 
-If we use *describe* we can find out, that everything is working as we expect.
+If we use _describe_ we can find out, that everything is working as we expect.
 
 ```bash
 kubectl describe pod my-nginx
@@ -99,7 +95,7 @@ Inside the container we can move to
 /usr/share/nginx/html # rm index.html
 ```
 
-If we run __kubectl describe pod my-nginx__
+If we run **kubectl describe pod my-nginx**
 
 ```
 Events:
@@ -124,30 +120,30 @@ metadata:
     name: liveness
 spec:
   containers:
-  - name: liveness
-    image: k8s.gcr.io/busybox
-    resources:
-      limits:
-        memory: "64Mi"
-        cpu: "50m"
-    args:
-    - /bin/sh
-    - -c
-    - touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600
-    livenessProbe:
-      exec:
-        command:
-        - cat
-        - /tmp/healthy;
-      initialDelaySeconds: 5
-      periodSeconds: 5
+    - name: liveness
+      image: k8s.gcr.io/busybox
+      resources:
+        limits:
+          memory: "64Mi"
+          cpu: "50m"
+      args:
+        - /bin/sh
+        - -c
+        - touch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 600
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/healthy;
+        initialDelaySeconds: 5
+        periodSeconds: 5
 ```
 
 ```bash
 kubectl apply -f busybox-liveness-probe.pod.yml
 ```
 
-If we wait for a while and run __kubectl describe pod liveness__ we will get 
+If we wait for a while and run **kubectl describe pod liveness** we will get
 
 ```bash
 Events:

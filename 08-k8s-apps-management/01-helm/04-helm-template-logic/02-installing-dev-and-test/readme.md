@@ -11,7 +11,7 @@ We would like something more flexible where the host name is also dynamically ge
 
 Let's do this. 
 
-### Todos Application: React  + API
+### Todos Application: React + API
 
 The frontend is an application built with React. When the user connects, the page and its JavaScript is downloaded. Then, the page itself calls the backend API with HTTP requests launched by the JavaScript code. 
 

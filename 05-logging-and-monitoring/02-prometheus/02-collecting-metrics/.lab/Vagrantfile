@@ -1,0 +1,75 @@
+# Reference: https://devopscube.com/monitor-linux-servers-prometheus-node-exporter/
+$exporter_script = <<-SCRIPT
+cd /tmp
+curl -LO https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+tar -xvf node_exporter-1.3.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.3.1.linux-amd64/node_exporter /usr/local/bin
+sudo useradd -rs /bin/false node_exporter
+cat <<EOF | sudo tee /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+sudo systemctl enable node_exporter
+
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update -y
+    echo "10.0.0.10  c1-cp1" >> /etc/hosts
+    echo "10.0.0.11  c1-node1" >> /etc/hosts
+    echo "10.0.0.12  c1-node2" >> /etc/hosts
+    echo "10.0.0.13  loadbalancer" >> /etc/hosts
+  SHELL
+
+  config.vm.define "c1-cp1" do |controlp|
+    controlp.vm.box = "bento/ubuntu-18.04"
+    controlp.vm.hostname = "c1-cp1"
+    controlp.vm.network "private_network", ip: "10.0.0.10"
+    controlp.vm.provider "virtualbox" do |vb|
+      vb.memory = 4096
+      vb.cpus = 2
+    end
+    controlp.vm.provision "file", source: "~//Documents/paths/prometheus-path/02-congiguring-prometheus-collect-metrics/.lab/prometheus", destination: "$HOME/prometheus"
+    controlp.vm.provision "shell", path: "scripts/common.sh"
+    controlp.vm.provision "shell", path: "scripts/master.sh"
+  end
+
+  (1..2).each do |i|
+    config.vm.define "c1-node#{i}" do |node|
+      node.vm.box = "bento/ubuntu-18.04"
+      node.vm.hostname = "c1-node#{i}"
+      node.vm.network "private_network", ip: "10.0.0.1#{i}"
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = 2048
+        vb.cpus = 2
+      end
+      node.vm.provision "shell", path: "scripts/common.sh"
+      node.vm.provision "shell", path: "scripts/node.sh"
+    end
+  end
+
+  config.vm.define "loadbalancer" do |loadbalancer|
+    loadbalancer.vm.box = "bento/ubuntu-18.04"
+    loadbalancer.vm.hostname = "loadbalancer"
+    loadbalancer.vm.network "private_network", ip: "10.0.0.13"
+    loadbalancer.vm.provision "shell", inline: $exporter_script
+    loadbalancer.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
+      vb.cpus = 1
+    end
+  end
+end

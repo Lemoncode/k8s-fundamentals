@@ -25,28 +25,24 @@ spec:
         app: my-nginx # 2
     spec:
       containers:
-      - name: my-nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
-        resources: # 3
-          limits:
-            memory: "128Mi" #128 MB
-            cpu: "200m" #200 millicpu (.2 cpu or 20% of the cpu)
-      
+        - name: my-nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources: # 3
+            limits:
+              memory: "128Mi" #128 MB
+              cpu: "200m" #200 millicpu (.2 cpu or 20% of the cpu)
 ```
 
-1. Notice that this _selector_ is matching labels __app: my-nginx__
-2. This will __tie__ the _deployment_ to this _template_ 
+1. Notice that this _selector_ is matching labels **app: my-nginx**
+2. This will **tie** the _deployment_ to this _template_
 3. With this contraints what a particular container can consume.
 
 Now we can run this as:
 
 ```bash
 kubectl create -f nginx.deployment.yml --save-config
-```
-
-```
 deployment.apps/my-nginx created
 ```
 
@@ -54,9 +50,6 @@ And if we get a look of the state now, we will find out
 
 ```bash
 kubectl get all
-```
-
-```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-t8qf4   1/1     Running   0          37s
 
@@ -76,9 +69,6 @@ If we describe the `ReplicaSet` we will find out, that is controlled by the `Dep
 
 ```bash
 kubectl describe rs my-nginx
-```
-
-```
 Name:           my-nginx-5bb9b897c8
 Namespace:      default
 Selector:       app=my-nginx,pod-template-hash=5bb9b897c8
@@ -177,7 +167,6 @@ my-nginx   1/1     1            1           13m
 
 Now we can scale up the deployment by doing
 
-
 ```bash
 kubectl scale -f nginx.deployment.yml --replicas=4
 ```
@@ -207,7 +196,7 @@ NAME                                  DESIRED   CURRENT   READY   AGE
 replicaset.apps/my-nginx-5fb9556b5c   4         4         4       17m
 ```
 
-Now we can delete this deployment 
+Now we can delete this deployment
 
 ```bash
 kubectl delete -f nginx.deployment.yml
@@ -219,7 +208,7 @@ deployment.apps "my-nginx" deleted
 
 Another way to do this is from _yaml_
 
-* Modify __02_creating_deployments/nginx.deployment.yml__
+- Modify **02_creating_deployments/nginx.deployment.yml**
 
 ```diff
 apiVersion: apps/v1
@@ -235,7 +224,7 @@ spec:
 ```
 
 ```bash
-kubectl apply -f nginx.deployment.yml 
+kubectl apply -f nginx.deployment.yml
 ```
 
 ```
@@ -263,7 +252,7 @@ NAME                                  DESIRED   CURRENT   READY   AGE
 replicaset.apps/my-nginx-5fb9556b5c   4         4         4       30s
 ```
 
-* __kubectl__ Deployments Commands
+- **kubectl** Deployments Commands
 
 Several different kubectl commands can be used to create and work with Deployments
 

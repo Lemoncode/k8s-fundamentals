@@ -82,7 +82,7 @@ ingress:
 
 ```
 
-All conditions and tags are true by default, the back end enabled condition, the database enabled condition, and the api tag. 
+All conditions and tags are true by default, the backend enabled condition, the database enabled condition, and the api tag. 
 
 So using helm install guestbook would install the full application with the three subcharts. 
 

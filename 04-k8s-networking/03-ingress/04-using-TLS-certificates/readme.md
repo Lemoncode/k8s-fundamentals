@@ -110,6 +110,8 @@ Hostname: hello-world-service-single-6c58c555f8-k2whh
 * Closing connection 0
 ```
 
+curl -L http://tls.example.com:80 --resolve tls.example.com:80:$IP --resolve tls.example.com:443:$IP   --insecure --verbose
+
 ### Cleanup
 
 ```bash

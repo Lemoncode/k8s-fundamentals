@@ -4,8 +4,9 @@ To install Helm on your OS read the instructions on following [link](https://hel
 
 ## Installing on local cluster with Helm
 
-Helm 3 is not configured by default to use any repository. So if you want to install existing packages you have to add at least one repository containing some charts.
+> You need a Kubernetes cluster and Helm install on your system, you can use `.playground` and VSCode dev containers to obtain the desired environment.
 
+Helm 3 is not configured by default to use any repository. So if you want to install existing packages you have to add at least one repository containing some charts.
 
 ```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -16,6 +17,8 @@ The above repo is no longer available, use this one instead:
 ```bash
 helm repo add stable https://charts.helm.sh/stable
 ```
+
+With the previous command we're adding locally a new repository `stable` remotely located at `https://charts.helm.sh/stable`
 
 To install a package
 

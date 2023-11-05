@@ -23,6 +23,18 @@
 ### ConfigMaps
 
 1. Create a `ConfigMap` that allows change the the port on `random-employee` application container. 
+2. Given the code on `100-exercises/config-map-exercise-02/server.js` load the following entries from a single file called `app.config.json`
+
+  ```
+    {
+      "enemies": {
+        "description": "aliens",
+        "cheat": "true"
+        "level": "bad"
+      }
+      "lives": "3"
+    }
+  ```
 
 ## Deploying Code
 

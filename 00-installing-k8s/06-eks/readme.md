@@ -15,9 +15,11 @@ We need `v1.21.0`, follow the [link](https://docs.aws.amazon.com/eks/latest/user
 
 ```bash
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 ```
 
 ```bash
+sudo mv /tmp/eksctl /usr/local/bin
 sudo mv /tmp/eksctl /usr/local/bin
 ```
 
@@ -28,12 +30,7 @@ To create a cluster with `eksctl`, we have two options, `Fargate` and `Managed n
 ### Create a key pair
 
 ```bash
-aws ec2 create-key-pair \
-    --key-name eks-node-key \
-    --key-type rsa \
-    --key-format pem \
-    --query "KeyMaterial" \
-    --output text > eks-node-key.pem
+aws ec2 create-key-pair --key-name eks-node-key --query 'EksNodeKey' > eks-node-key.pem
 ```
 
 We have to grant permissions to the key:

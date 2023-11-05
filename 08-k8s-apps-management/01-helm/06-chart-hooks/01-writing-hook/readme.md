@@ -140,7 +140,7 @@ spec:
           /bin/sh,
           -c,
 -         "echo 'I run after install'; date +%s"
-+         "echo 'I run after install, Am I second'; date +%s"
++         "echo 'I run after install, Am I second?'; date +%s"
         ]
 ```
 
@@ -246,7 +246,7 @@ dev-frontend-5ccdd7b84f-kzv9n   1/1     Running     0          7m38s
 dev-mfxp7                       0/1     Completed   0          13s
 ```
 
-For last we can set policies to run this Pods after the hook resources has finished:
+For last we can set policies to run these Pods after the hook resources has finished:
 
 * `before-hook-creation` -	Delete the previous resource before a new hook is launched (default)
 * `hook-succeeded` -	Delete the resource after the hook is successfully executed

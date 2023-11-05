@@ -2,7 +2,7 @@
 
 ## Helm Charts Structure
 
-The `chart` **is a directory that can also be compressed as an archive**. By convention, the folder name has the name of the **chart**. The **chart properties are stored** in a `Chart.yaml` file. **In it you can find the chart name, chart version, and other metadata**. 
+The `chart` **is a directory that can also be compressed as an archive**. By convention, the folder name has the name of the **chart**. The **chart properties are stored** in a `Chart.yaml` file. **In it you can find the chart name, chart version, and other metadata**.
 
 ```
 chart-demo/
@@ -31,11 +31,11 @@ chart-demo/
 ├─ values.yaml
 ```
 
-The chart can be documented in a `README.md` file. The `LICENSE` file, is optional, contains the license of the chart. 
+The chart can be documented in a `README.md` file. The `LICENSE` file, is optional, contains the license of the chart.
 
-To display some information to the user after your chart is installed or updated, for example, some useful information such as what to do next, the URL and port numbers of your services, or a quick howto, this can be added in `NOTES.txt`. 
+To display some information to the user after your chart is installed or updated, for example, some useful information such as what to do next, the URL and port numbers of your services, or a quick howto, this can be added in `NOTES.txt`.
 
-Another component that could be considered part of the documentation is the `values.schema.json` file, which defines the structure of the `values.yaml` file.  
+Another component that could be considered part of the documentation is the `values.schema.json` file, which defines the structure of the `values.yaml` file.
 
 ```
 chart-demo/
@@ -64,8 +64,7 @@ keywords: # 3.
 type: application # 4.
 appVersion: 1.16.0 # 6.
 version: 0.1.0 # 7.
-dependencies:
-    ...
+dependencies: ...
 ```
 
 1. Name of the Chart
@@ -76,10 +75,10 @@ dependencies:
 6. Version of the application you plan to install with Helm. It can be any version number or string.
 7. The version of the `Chart`. It has to follow semantic version 2.0 specifications with a patch, minor, and major number.
 
-> Note that the appVersion and chart version are not related. 
- 
-* You could **have a new appVersion if your app changes** but **keep the same chart version because the chart structure and templates remain the same**. 
-* Or you could have the opposite, the **same application version** but a **new chart version because the chart files changed**. 
+> Note that the appVersion and chart version are not related.
+
+- You could **have a new appVersion if your app changes** but **keep the same chart version because the chart structure and templates remain the same**.
+- Or you could have the opposite, the **same application version** but a **new chart version because the chart files changed**.
 
 The `Chart.yaml` file also contains the dependencies configuration.
 
@@ -93,13 +92,13 @@ The `Chart.yaml` file also contains the dependencies configuration.
 
 ## Defining Helm Concepts
 
-The chart is the definition of our application. When the chart is installed in the Kubernetes cluster by hand, we say that a release is running, so the **chart is the definition of the application and the release is an instance of the chart running in the Kubernetes cluster**. 
+The chart is the definition of our application. When the chart is installed in the Kubernetes cluster by hand, we say that a release is running, so the **chart is the definition of the application and the release is an instance of the chart running in the Kubernetes cluster**.
 
-If you made some change in your application and want to install it, you don't have to install a new release. **Instead, you can update an existing release and make a new revision of that release. This is another important concept in Helm, release revision. This is not considered as a new release, it's a new revision of the same release.** 
+If you made some change in your application and want to install it, you don't have to install a new release. **Instead, you can update an existing release and make a new revision of that release. This is another important concept in Helm, release revision. This is not considered as a new release, it's a new revision of the same release.**
 
-> Don't confuse `release revision` with the `chart version` that we saw previously in the `Chart.yaml` file. The chart version refers to a change in the chart's file structure, meaning a change in the application definition. For example, if there are new Kubernetes objects like a service account and a persistent volume, the chart structure changes so the chart version should also change. 
+> Don't confuse `release revision` with the `chart version` that we saw previously in the `Chart.yaml` file. The chart version refers to a change in the chart's file structure, meaning a change in the application definition. For example, if there are new Kubernetes objects like a service account and a persistent volume, the chart structure changes so the chart version should also change.
 
-`release revision` refers to a change in the running instance of that chart, either because the chart itself changed and the release was updated or simply because the chart did not change, but the same chart version is installed with different values. 
+`release revision` refers to a change in the running instance of that chart, either because the chart itself changed and the release was updated or simply because the chart did not change, but the same chart version is installed with different values.
 
 ## Main Commands
 
@@ -114,21 +113,21 @@ If you made some change in your application and want to install it, you don't ha
 |      Uninstall a Release       |     helm uninstall [release]      |
 |         List Releases          |             helm list             |
 
-* `helm install` - installs a chart as a release. 
+- `helm install` - installs a chart as a release.
 
-* `helm upgrade` - upgrades a release to a new revision. 
+- `helm upgrade` - upgrades a release to a new revision.
 
-* `helm rollback` - rolls backs a release to a previous revision. For example, if you find a bug and want to go back to the previous revision. 
+- `helm rollback` - rolls backs a release to a previous revision. For example, if you find a bug and want to go back to the previous revision.
 
-* `helm history` - lists the revision history of a release. 
+- `helm history` - lists the revision history of a release.
 
-* `helm status` - displays the status of a release, which objects are installed, and their running status. 
+- `helm status` - displays the status of a release, which objects are installed, and their running status.
 
-* `helm get` - shows the details of a release manifest and current values. 
+- `helm get` - shows the details of a release manifest and current values.
 
-* `helm uninstall` - uninstalls a release from the Kubernetes cluster. Note that in Helm 2 we use helm delete instead of helm install. 
+- `helm uninstall` - uninstalls a release from the Kubernetes cluster. Note that in Helm 2 we use helm delete instead of helm install.
 
-* `helm list` - lists all release names with some basic information.
+- `helm list` - lists all release names with some basic information.
 
 ## Demo: Installing a Helm Chart
 
@@ -145,3 +144,4 @@ If you made some change in your application and want to install it, you don't ha
 ## Demo: Building an Umbrella Helm Chart
 
 [Demo: Building an Umbrella Helm Chart](./04-building-umbrella-chart/readme.md)
+[Demmo: Building Umbrella Chart](./04-building-umbrella-chart/readme.md)

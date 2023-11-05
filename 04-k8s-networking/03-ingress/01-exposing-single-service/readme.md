@@ -1,6 +1,6 @@
 ## Environment
 
-Using local K8s via minikube 
+Using local K8s via minikube
 
 If you are running K8s locally using `Docker Desktop`, you can install the ingress using the following link[https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop]
 
@@ -17,7 +17,7 @@ ingress-nginx-admission-patch-4j767         0/1     Completed   1          55d
 ingress-nginx-controller-59b45fb494-h664t   1/1     Running     17         55d
 ```
 
-## Now let's check to see if the service is online. This of type NodePort and no EXTERNAL IP is provided yet 
+## Now let's check to see if the service is online. This of type NodePort and no EXTERNAL IP is provided yet
 
 ```bash
 kubectl get services --namespace ingress-nginx
@@ -43,19 +43,20 @@ Now we can create a single Ingress routing to the one backend service port 80 li
 
 ```yml
 apiVersion: networking.k8s.io/v1
-kind: Ingress 
+kind: Ingress
 metadata:
   name: ingress-single
 spec:
   defaultBackend:
     service:
-        name: hello-world-service-single
-        port:
-          number: 80
+      name: hello-world-service-single
+      port:
+        number: 80
 ```
 
 ```bash
 #Create single Ingress routing to the one backend service on the service port 80 listening on all hostnames
+kubectl apply -f ingress-single.yaml
 kubectl apply -f ingress-single.yaml
 ```
 
@@ -66,6 +67,8 @@ kubectl get ingress --watch
 NAME             CLASS    HOSTS   ADDRESS        PORTS   AGE
 ingress-single   <none>   *       192.168.64.6   80      40s
 ```
+
+> Depending on `minikube` version, the ADDRESS could point to `localhost`. If we want browse, we only need to grab the minikube internal IP, reachable from host, by running: `minikube ip`. Then we can `curl` against this IP. Follow this [link](https://stackoverflow.com/questions/70287043/run-ingress-in-minikube-and-its-address-shows-localhost) for further explanation.
 
 ```bash
 #Notice the backends are the Service's Endpoints...so the traffic is going straight from the Ingress Controller to the Pod cutting out the kube-proxy hop.
@@ -88,7 +91,12 @@ Events:
 ```
 
 ```bash
-curl 192.168.64.6
+# Use minikube ip or ingress address if is different from localhost
+MINIKUBE_IP=$(minikube ip)
+curl $MINIKUBE_IP
+```
+
+```
 Hello, world!
 Version: 1.0.0
 ```

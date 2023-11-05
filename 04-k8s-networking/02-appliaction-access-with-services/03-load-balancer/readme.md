@@ -16,7 +16,7 @@ eksctl create cluster \
 Once is up and ready ensure that kubectl is pointing to the new cluster
 
 ```bash
-kubectl config  get-contexts
+kubectl config get-contexts
 ```
 
 The expected output

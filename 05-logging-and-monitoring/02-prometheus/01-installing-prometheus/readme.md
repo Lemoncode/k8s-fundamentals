@@ -11,7 +11,7 @@ kubectl create namespace monitoring
 ### 2. Create the monitoring resources
 
 ```bash
-cd ./prometheus/monitoring-resources
+cd ./02-prometheus/monitoring-resources
 ```
 
 ```bash
@@ -170,3 +170,5 @@ The yaml files used here were originally created by Bibin Wilson (thanks for the
 
 [kube state metrics GitHub](https://github.com/kubernetes/kube-state-metrics)
 [kube state metrics image](https://quay.io/repository/coreos/kube-state-metrics?tag=latest&tab=tags)
+[setup prometheus in k8s cluster](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/)
+[metrics server vs kube-state-metrics](https://yuhuixa.com/2021/01/25/metrics-server-vs-kube-state-metrics/)
