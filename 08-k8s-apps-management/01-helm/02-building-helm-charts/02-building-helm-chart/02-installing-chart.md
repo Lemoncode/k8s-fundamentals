@@ -40,12 +40,10 @@ NAME                                  DESIRED   CURRENT   READY   AGE
 replicaset.apps/frontend-74d9b9ddcd   1         1         1       2m1s
 ```
 
-To check out that ingress is working, we can use:
-
-* [jq manual](https://stedolan.github.io/jq/manual/)
+To check out that ingress is working, we can use: [jq manual](https://stedolan.github.io/jq/manual/)
 
 ```bash
-INGRESSIP=$(kubectl get ingress -o json | jq -r '.items[0].status.loadBalancer.ingress[0].ip') 
+INGRESSIP=$(kubectl get ingress -o json | jq -r '.items[0].status.loadBalancer.ingress[0].ip')
 ```
 
 ```bash
@@ -73,11 +71,21 @@ We can also use Helm to check what's going on:
 
 ```bash
 helm list --short
+```
+
+We get the following output:
+
+```
 demo
 ```
 
+We can inspect the chart's manifest:
+
 ```bash
 helm get manifest demo
+```
+
+```yaml
 ---
 # Source: todos/templates/frontend-service.yaml
 apiVersion: v1
@@ -121,7 +129,7 @@ spec:
 # ....
 ```
 
-Now imagine that a minor change happen on our application and DevOps team is going to release a new version. 
+Now imagine that a minor change happen on our application and DevOps team is going to release a new version.
 
 Build and push a new frontend application version, `cd` into `./app/frontend`
 
@@ -200,7 +208,7 @@ To check that the new image is used we can run:
 ```bash
 kubectl describe pod -l app=frontend
 ```
- 
+
 We cand find the new image version:
 
 ```
@@ -218,7 +226,7 @@ We can check that is the second revision:
 helm status demo
 ```
 
-We get 
+We get
 
 ```
 NAME: demo
@@ -226,7 +234,7 @@ LAST DEPLOYED: Fri Oct 15 10:45:59 2021
 NAMESPACE: default
 STATUS: deployed
 REVISION: 2
-TEST SUITE: None 
+TEST SUITE: None
 ```
 
 Now imagine there is a bug on the release and we have to rollback, we can do this by:
@@ -235,8 +243,8 @@ Now imagine there is a bug on the release and we have to rollback, we can do thi
 helm rollback demo 1
 ```
 
-* **demo** - the name of the release
-* **1** - the version number to rollback
+- **demo** - the name of the release
+- **1** - the version number to rollback
 
 To see all the history changes
 
@@ -244,13 +252,13 @@ To see all the history changes
 helm history demo
 ```
 
-We get 
+We get
 
 ```
-REVISION        UPDATED                         STATUS          CHART           APP VERSION     DESCRIPTION     
+REVISION        UPDATED                         STATUS          CHART           APP VERSION     DESCRIPTION
 1               Thu Oct 14 20:44:16 2021        superseded      todos-0.1.0     1.0             Install complete
 2               Fri Oct 15 10:45:59 2021        superseded      todos-0.1.0     1.1             Upgrade complete
-3               Fri Oct 15 11:01:43 2021        deployed        todos-0.1.0     1.0             Rollback to 
+3               Fri Oct 15 11:01:43 2021        deployed        todos-0.1.0     1.0             Rollback to
 ```
 
 We can check that the rollback drives to previous version by running:
