@@ -80,7 +80,6 @@ spec:
         - name: mongodb-volume
           persistentVolumeClaim:
             claimName: mongodb-pvc
-
 ```
 
 Create `yaml/mongodb-service.yaml`
@@ -100,19 +99,26 @@ spec:
       port: 27017
       targetPort: 27017
   type: NodePort
-
 ```
 
 Create `yaml/mongodb-secret.yaml`
 
+```bash
+kubectl create secret generic mongodb-secret \
+  --from-literal=mongodb-username=admin \
+  --from-literal=mongodb-password=password \
+  --dry-run=client -o yaml > yaml/mongo-secret.yaml
+```
+
 ```yaml
 apiVersion: v1
+data:
+  mongodb-password: cGFzc3dvcmQ=
+  mongodb-username: YWRtaW4=
 kind: Secret
 metadata:
+  creationTimestamp: null
   name: mongodb-secret
-data:
-  mongodb-username: YWRtaW4=
-  mongodb-password: cGFzc3dvcmQ=
 ```
 
 Notice that the feeded values are on `base64`
@@ -167,7 +173,7 @@ Before we can create backend infrastructure, we have to deploy a new backend ima
 Change directory to `app/backend`, and run:
 
 ```bash
-./dockerize.sh "jaimesalas/todo-app-api:0.1.0" 
+./dockerize.sh "jaimesalas/todo-app-api:0.1.0"
 ```
 
 And push to the remote repository
@@ -207,7 +213,6 @@ spec:
                   name: backend-secret
                   key: mongodb-uri
           resources: {}
-
 ```
 
 Create `backend-service.yaml`
@@ -223,35 +228,28 @@ spec:
   selector:
     app: backend
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
-
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
 ```
 
 Create `backend-secret.yaml`
 
-To encode the `uri` with `base64`
-
 ```bash
-echo "mongodb://admin:password@mongodb:27017/tododb?authSource=admin" | base64
+kubectl create secret generic backend-secret \
+  --from-literal=mongodb-uri='mongodb://admin:password@mongodb:27017/tododb?authSource=admin' \
+  --dry-run=client -o yaml > yaml/backend-secret.yaml
 ```
 
-We get 
-
-```
-bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4K
-```
-Now with this value we can create the secret:
+We get:
 
 ```yaml
 apiVersion: v1
+data:
+  mongodb-uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4=
 kind: Secret
 metadata:
   name: backend-secret
-data:
-  mongodb-uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4K
-
 ```
 
 ### 3. Updating manifests
@@ -288,7 +286,6 @@ spec:
                 name: backend
                 port:
                   number: 80
-
 ```
 
 Create `yaml/frontend-configmap.yaml`
@@ -305,7 +302,6 @@ data:
 ```
 
 Update `frontend.yaml`
-
 
 ```diff
 apiVersion: apps/v1
@@ -355,12 +351,12 @@ Change directory to `./yaml` and run
 
 ```bash
 kubectl apply -f backend-secret.yaml
-kubectl apply -f backend-service.yaml 
-kubectl apply -f backend.yaml 
-kubectl apply -f frontend-configmap.yaml 
-kubectl apply -f frontend-service.yaml 
-kubectl apply -f frontend.yaml 
-kubectl apply -f ingress.yaml 
+kubectl apply -f backend-service.yaml
+kubectl apply -f backend.yaml
+kubectl apply -f frontend-configmap.yaml
+kubectl apply -f frontend-service.yaml
+kubectl apply -f frontend.yaml
+kubectl apply -f ingress.yaml
 kubectl apply -f mongodb-persistent-volume.yaml
 kubectl apply -f mongodb-persistent-volume-claim.yaml
 kubectl apply -f mongodb-secret.yaml
@@ -413,7 +409,6 @@ todo-ingress   <none>   frontend.minikube.local,backend.minikube.local   192.168
 ```
 
 Now we can update `/etc/hosts`
-
 
 ### 5. Clean up
 

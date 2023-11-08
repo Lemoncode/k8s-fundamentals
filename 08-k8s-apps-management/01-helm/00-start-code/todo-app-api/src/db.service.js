@@ -6,10 +6,15 @@ const MONGODB_URI = config.connectionString;
 
 export const collectionAsync = async () => {
   if (MONGODB_URI !== "") {
-    const client = new MongoClient(MONGODB_URI);
-    await client.connect(MONGODB_URI);
-    console.log("Connected to database");
-    return client.db("tododb").collection("todos");
+    console.log("MONGODB_URI", MONGODB_URI);
+    try {
+      const client = new MongoClient(MONGODB_URI);
+      await client.connect(MONGODB_URI);
+      console.log("Connected to database");
+      return client.db("tododb").collection("todos");
+    } catch (e) {
+      console.log(e);
+    }
   } else {
     console.log("db.service mock invoke");
     return mockCollection;
