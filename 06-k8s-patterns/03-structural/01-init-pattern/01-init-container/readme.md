@@ -67,7 +67,10 @@ kubectl apply -f init-pod.yaml
 Now if we have a look into `pods` resource, we will find out:
 
 ```bash
-$ kubectl get pods --watch
+kubectl get pods --watch
+```
+
+```
 NAME      READY   STATUS     RESTARTS   AGE
 lc-init   0/1     Init:0/1   0          15s
 ```
