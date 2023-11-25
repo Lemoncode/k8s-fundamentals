@@ -232,7 +232,7 @@ metadata:
 data:
   # mongodb-uri: {{ .Values.secret.mongodb_uri }} # Remove!!
   mongodb-uri: {{ with .Values.secret.mongodb_uri -}}
-  {{- list "mongodb://" .username ":" .password "@" $.Release.Name "-" .dbchart ":" .port "/" .dbconn | join "" | b64enc | quote }}
+  {{- list "mongodb://" .username ":" .password "@" $.Release.Name "-" .dbchart ":" .dbport "/" .dbconn | join "" | b64enc | quote }}
                {{- end}}
 
 ```

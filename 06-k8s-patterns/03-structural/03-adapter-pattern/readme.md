@@ -79,7 +79,7 @@ This `transformer` is going to grab the `NGINX` metrics, in their native format,
 Let's start this pod.
 
 ```bash
-$ kubectl apply -f adapter.yaml
+kubectl apply -f adapter.yaml
 ```
 
 Now that the pod is running, let's access to the container application:
@@ -87,7 +87,10 @@ Now that the pod is running, let's access to the container application:
 > NOTE: We can do this, because it was declared the first one on the containers list, and K8s, will treat it as the default one. Rule of thumb, dedclare the main container always the first one.
 
 ```bash
-$ kubectl exec -it web -- /bin/bash
+kubectl exec -it web -- /bin/bash
+```
+
+```
 Defaulted container "web-ctr" out of: web-ctr, transformer
 ```
 
@@ -159,5 +162,5 @@ nginxexporter_build_info{commit="5f88afbd906baae02edfbab4f5715e06d88538a0",date=
 ## Cleanup
 
 ```bash
-$ kubectl delete -f ./
+kubectl delete -f ./
 ```
