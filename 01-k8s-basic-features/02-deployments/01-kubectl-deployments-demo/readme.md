@@ -43,13 +43,21 @@ Now we can run this as:
 
 ```bash
 kubectl create -f nginx.deployment.yml --save-config
+```
+
+We get the follwing output
+
+```
 deployment.apps/my-nginx created
 ```
 
-And if we get a look of the state now, we will find out
+And if we get a look of the state now, we will find out what has been created
 
 ```bash
 kubectl get all
+```
+
+```
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/my-nginx-5fb9556b5c-t8qf4   1/1     Running   0          37s
 

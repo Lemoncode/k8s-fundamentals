@@ -1,37 +1,39 @@
 ## Deployments Core Concepts
 
-* A **ReplicaSet** is a declarative way to manage Pods
+- A **ReplicaSet** is a declarative way to manage Pods
 
-* A **Deployment** is a declarative way to manage Pods using a ReplicaSet
+- A **Deployment** is a declarative way to manage Pods using a ReplicaSet
 
-* **Deployments** wrap ReplicaSet and simplified the overall functionality.
+- **Deployments** wrap ReplicaSet and simplified the overall functionality.
 
-* **Deployments** are high order level wrapper around ReplicaSets
+- **Deployments** are high order level wrapper around ReplicaSets
 
-* Pods, Deployments and ReplicaSets
-    - Pods represent the most basic resource in Kubernetes
-    - Can be created and destroyed but are never re-created
-    - What happens if a Pod is destroyed?
-    - Deployments and ReplicaSets ensure Pods stay running and can be used to scale Pods
+- Pods, Deployments and ReplicaSets
 
-* The Role of ReplicaSets
-    - ReplicaSets act as a Pod controller
-        * Self-healing mechanism
-        * Ensure the requested number of Pods are available
-        * Provide fault-tolerance
-        * Can be used to scale Pods
-        * Relies on a Pod template
-        * No need to create Pods directly!
-        * Used by deployments
+  - Pods represent the most basic resource in Kubernetes
+  - Can be created and destroyed but are never re-createdﬂ
+  - What happens if a Pod is destroyed?
+  - Deployments and ReplicaSets ensure Pods stay running and can be used to scale Pods
 
-* The Role of Deployments
-    - A Deployment manage Pods:
-        * Pods are managed using ReplicaSets
-        * Scales ReplicaSets, which scale Pods
-        * Supports zero-downtime updates by creating and destroying ReplicSets
-        * Provides rollback functionality
-        * Creates a unique label that is assigned to the ReplicaSet and generated Pods
-        * YAML is very similar to a ReplicaSet
+- The Role of ReplicaSets
+
+  - ReplicaSets act as a Pod controller
+    - Self-healing mechanism
+    - Ensure the requested number of Pods are available
+    - Provide fault-tolerance
+    - Can be used to scale Pods
+    - Relies on a Pod template
+    - No need to create Pods directly!
+    - Used by deployments
+
+- The Role of Deployments
+  - A Deployment manage Pods:
+    - Pods are managed using ReplicaSets
+    - Scales ReplicaSets, which scale Pods
+    - Supports zero-downtime updates by creating and destroying ReplicSets
+    - Provides rollback functionality
+    - Creates a unique label that is assigned to the ReplicaSet and generated Pods
+    - YAML is very similar to a ReplicaSet
 
 ## Creating a Deployment
 
@@ -46,8 +48,8 @@ spec:
   template:
     spec: # 4
       containers:
-      - name: my-nginx
-        image: nginx:alpine # 5
+        - name: my-nginx
+          image: nginx:alpine # 5
 ```
 
 1. Kubernetes API version and resource type (Deployment)
@@ -63,7 +65,7 @@ apiVersion: apps/v1 # 1
 kind: Deployment
 metadata: # 2
   name: frontend
-  labels: 
+  labels:
     app: my-nginx
     tier: frontend
 spec:
@@ -76,8 +78,8 @@ spec:
         tier: frontend
     spec:
       containers:
-      - name: my-nginx
-        image: nginx:alpine
+        - name: my-nginx
+          image: nginx:alpine
 ```
 
 1. Kubernetes API version and resource type (Deployment)
@@ -92,11 +94,11 @@ apiVersion: apps/v1
 kind: Deployment
 # More code
 template: # 4
-    metadata:
-      labels:
-        tier: frontend
-    spec:
-      containers:
+  metadata:
+    labels:
+      tier: frontend
+  spec:
+    containers:
       - name: my-nginx
         image: nginx:alpine
         livenessProbe:
@@ -111,15 +113,15 @@ template: # 4
 
 ## kubectl and Deployments
 
-* Create a Deployment
+- Create a Deployment
 
 ```bash
 kubectl create -f file.deployment.yml
 ```
 
-* Creating a Deployment: Use the _kubectl_ command along with the `--filename` or `-f` switch.
+- Creating a Deployment: Use the _kubectl_ command along with the `--filename` or `-f` switch.
 
-* Creating or Applying Changes: Use the _kubectl apply_ command along with the `--filename` or `-f` switch.
+- Creating or Applying Changes: Use the _kubectl apply_ command along with the `--filename` or `-f` switch.
 
 ```bash
 # Alternate way to create or apply changes to a Deployment from YAML
@@ -130,7 +132,7 @@ kubectl apply -f file.deployment.yml
 kubectl create -f file.deployment.yml --save-config
 ```
 
-* Getting Deployments
+- Getting Deployments
 
 List all deployments
 
@@ -138,10 +140,10 @@ List all deployments
 kubectl get deployments
 ```
 
-* Deployment and Labels 
+- Deployment and Labels
 
 List the labels for all Deployments using the _--show-labels switch_
-To get information about a Deployment with a specific label, use _-l switch_ 
+To get information about a Deployment with a specific label, use _-l switch_
 
 ```bash
 # List all Deployments and their labels
@@ -151,7 +153,7 @@ kubectl get deployment --show-labels
 kubectl get deployment -l app=nginx
 ```
 
-* Deleting a Deployment
+- Deleting a Deployment
 
 To delete a Deployment use kubectl delete
 Will delete the Deployment and all associated Pods/Containers
@@ -161,7 +163,7 @@ Will delete the Deployment and all associated Pods/Containers
 kubectl delete deployment [deployment-name]
 ```
 
-* Scaling Pods Horizontally
+- Scaling Pods Horizontally
 
 Update the YAML file or use kubectl scale command
 
@@ -178,13 +180,13 @@ We can also put the replicas into the _yaml_ when we start
 ```yml
 spec:
   replicas: 3
-  selector: 
+  selector:
     tier: frontend
 ```
 
 ## kubectl Deployments Demo
 
-[kubectl deployments demo](02-deployments/01-kubectl-deployments-demo)
+[kubectl deployments demo](./01-kubectl-deployments-demo)
 
 ## Why use deployment instead replicas sets
 
@@ -194,21 +196,22 @@ spec:
 
 > Zero downtime deployments allow software updates to be deployed to production without impacting end users.
 
-* One of the strengths of Kubernetes is zero downtime deployments
+- One of the strengths of Kubernetes is zero downtime deployments
 
-* Update an application's Pods without imapcting end users
+- Update an application's Pods without imapcting end users
 
-* Several options are available:
-    - Rolling updates
-        * This is the deafult. Sustituir poco a poco los pods de la antigua versión por los de la nueva versión.
-    - Blue-green deployments
-        * You have multiple environments running at the same time, and when you probe that the new environment is ready we switch traffic to the new application
-    - Canary deployments
-        * Route just a little of traffic
-    - Rollbacks
-        * Go back to previous versions
+- Several options are available:
 
-* Updating a Deployment
+  - Rolling updates
+    - This is the deafult. Sustituir poco a poco los pods de la antigua versión por los de la nueva versión.
+  - Blue-green deployments
+    - You have multiple environments running at the same time, and when you probe that the new environment is ready we switch traffic to the new application
+  - Canary deployments
+    - Route just a little of traffic
+  - Rollbacks
+    - Go back to previous versions
+
+- Updating a Deployment
 
 Update a deployment by changing the YAML and applying changes to the cluster with kubectl apply
 
