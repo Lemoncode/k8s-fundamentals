@@ -6,11 +6,7 @@
   "image": "mcr.microsoft.com/devcontainers/base:bullseye",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.26.4",
-      "helm": "latest",
-      "minikube": "1.31.1"
-    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   }
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

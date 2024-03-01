@@ -53,12 +53,14 @@ We can delete the pod
 kubectl delete pod my-nginx
 
 ```
+
 pod "my-nginx" deleted
-```
+
+````
 
 ```bash
 kubectl get all
-```
+````
 
 ```
 NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
@@ -94,8 +96,8 @@ NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   20h
 ```
 
-* Working with Pods Using kubectl
-    - Different `kubectl` commands can be used to run, view, and delete Pods
+- Working with Pods Using kubectl
+  - Different `kubectl` commands can be used to run, view, and delete Pods
 
 ```
 kubectl run [pod-name] --image=nginx:alpine

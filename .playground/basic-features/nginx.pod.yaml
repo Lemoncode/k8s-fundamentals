@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: my-nginx
+  name: my-nginx
+spec:
+  containers:
+  - image: nginx:alpine
+    name: my-nginx
+    ports:
+      - containerPort: 80
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+

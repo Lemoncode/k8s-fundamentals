@@ -17,16 +17,15 @@ metadata:
     name: my-nginx
 spec:
   containers:
-  - name: my-nginx
-    image: nginx:alpine
-    ports:
-      - containerPort: 80
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
+    - name: my-nginx
+      image: nginx:alpine
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
 ```
-
 
 ```bash
 kubectl create -f nginx.pod.yml --save-config
@@ -74,10 +73,10 @@ Containers:
       /var/run/secrets/kubernetes.io/serviceaccount from default-token-wx46j (ro)
 Conditions:
   Type              Status
-  Initialized       True 
-  Ready             True 
-  ContainersReady   True 
-  PodScheduled      True 
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
 Volumes:
   default-token-wx46j:
     Type:        Secret (a volume populated by a Secret)
@@ -110,11 +109,12 @@ metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
       {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{"name":"my-nginx"},"name":"my-nginx","namespace":"default"},"spec":{"containers":[{"image":"nginx:alpine","name":"my-nginx","ports":[{"containerPort":80}],"resources":{"limits":{"cpu":"500m","memory":"128Mi"}}}]}}
+
 # .......
 ```
 
 ```bash
-kubectl apply -f nginx.pod.yml 
+kubectl apply -f nginx.pod.yml
 ```
 
 **apply** we can use to create or update, for exmple changing the nginx image. You can't change the ports
@@ -127,7 +127,7 @@ pod/my-nginx unchanged
 kubectl exec my-nginx -it -- sh
 ```
 
-Inside the running container  we can run any supported command, like `ls`:
+Inside the running container we can run any supported command, like `ls`:
 
 ```
 / # ls
@@ -135,7 +135,7 @@ bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbi
 ```
 
 ```bash
-kubectl edit -f nginx.pod.yml 
+kubectl edit -f nginx.pod.yml
 ```
 
 _edit_ pops up and editor (vim)
@@ -145,7 +145,7 @@ Edit cancelled, no changes made.
 ```
 
 ```bash
-kubectl delete -f nginx.pod.yml 
+kubectl delete -f nginx.pod.yml
 ```
 
 ```
