@@ -82,8 +82,11 @@ kubectl exec nginx-standalone -it -- sh
 
 Now we can install `curl` using `apk`, the package manager for Alpine
 
-```bash
+```sh
 / # apk add curl
+```
+
+```sh
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/community/x86_64/APKINDEX.tar.gz
 (1/4) Installing ca-certificates (20191127-r2)
