@@ -15,7 +15,7 @@ docker run -d -p 27017:27017 \
   -e MONGO_INITDB_DATABASE=tododb \
   -e MONGO_INITDB_ROOT_USERNAME=admin \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
-  mongo:4.4.7
+  mongo:7.0.6
 ```
 
 ### Set up api
