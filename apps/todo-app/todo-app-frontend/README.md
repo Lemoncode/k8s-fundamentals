@@ -25,14 +25,14 @@ npm start
 Build your image tagging with any value that you disare:
 
 ```bash
-./dockerize.sh "todo-app-frontend:0.0.2"
+./dockerize.sh "todo-app-frontend-fnd:0.0.1"
 ```
 
-Now fater build we can run as follows:
+Now after build we can run as follows:
 
 ```bash
 docker run -d -p 8080:8080 \
   -e TODO_APP_API=localhost:8083 \
   -e TODO_APP_TITLE=Other \
-  todo-app-frontend:0.0.2
+  todo-app-frontend-fnd:0.0.1
 ```

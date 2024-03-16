@@ -1,0 +1,42 @@
+services:
+  mongo:
+    container_name: todoapp_db
+    image: mongo:7.0.6
+    environment:
+      - MONGO_INITDB_DATABASE=tododb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - todoapp_db:/data/db
+    networks:
+      - todoapp
+
+  backend:
+    container_name: todoapp_backend
+    build: ./todo-app-api
+    environment:
+      - MONGODB_URI=mongodb://admin:password@mongo:27017/tododb?authSource=admin
+    depends_on:
+      - mongo
+    networks:
+      - todoapp
+    ports:
+      - "3000:3000"
+
+  frontend:
+    container_name: todoapp_frontend
+    build: ./todo-app-frontend
+    environment:
+      - TODO_APP_API=localhost:3000
+      - TODO_APP_TITLE=Other
+    depends_on:
+      - backend
+    ports: 
+      - "8080:8080"
+
+networks:
+  todoapp:
+    driver: bridge
+
+volumes:
+  todoapp_db:

@@ -1,4 +1,7 @@
-const initialData = require('./mock-todo-collection.json');
+// https://www.stefanjudis.com/snippets/how-to-import-json-files-in-es-modules-node-js/
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const initialData = require("./mock-todo-collection.json");
 
 const createSortFunc = (property, obj) => {
   const sortOrder = obj[property];
@@ -10,7 +13,7 @@ const createSortFunc = (property, obj) => {
   if (sortOrder > 0) {
     return (objA, objB) => objB[property] - objA[property];
   }
-}
+};
 
 const getMaxValue = (collection = [], property) => {
   const maxValueFunctor = collection.reduce((acc, curr) => {
@@ -24,7 +27,7 @@ const getMaxValue = (collection = [], property) => {
   });
 
   return maxValueFunctor;
-}
+};
 
 const select = (property, obj) => obj[property];
 
@@ -35,22 +38,32 @@ class Collection {
 
   insert(todo, cb) {
     try {
-      const maxValue = getMaxValue(this.data, '_id');
-      const maxId = select('_id', maxValue);
+      const maxValue = getMaxValue(this.data, "_id");
+      const maxId = select("_id", maxValue);
       const newTodo = {
         ...todo,
-        _id: +maxId + 1
+        _id: +maxId + 1,
       };
 
       this.data = [...this.data, newTodo];
+      if (!cb) {
+        return Promise.resolve(newTodo);
+      }
       cb(null, newTodo);
     } catch (error) {
+      if (!cb) {
+        return Promise.reject(error);
+      }
       cb(error, null);
     }
   }
 
-  insertOne(todo, cb) {
-    this.insert(todo, cb);
+  async insertOne(todo, cb) {
+    if (!cb) {
+      await this.insert(todo);
+    } else {
+      this.insert(todo, cb);
+    }
   }
 
   find() {
@@ -68,10 +81,14 @@ class Collection {
   }
 
   toArray(cb) {
-    cb(null, [...this.data]);
+    if (!cb) {
+      return Promise.resolve([...this.data]);
+    } else {
+      cb(null, [...this.data]);
+    }
   }
 }
 
-const collection = new Collection();
+export const collection = new Collection();
 
-module.exports = collection;
+// module.exports = collection;

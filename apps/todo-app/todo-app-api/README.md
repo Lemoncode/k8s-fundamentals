@@ -1,11 +1,10 @@
+## Testing locally
+
+If we don't feed the `mongo uri`, via environement variable, the service will work with data in memory. Create `.env` on local, to provide the desired value:
 
 ```ini
 MONGODB_URI=
 ```
-
-## Testing locally
-
-If we don't feed the `mongo uri`, the service will work with data in memory.
 
 ```bash
 npm start
@@ -25,7 +24,7 @@ docker run -d -p 27017:27017 \
   -e MONGO_INITDB_DATABASE=tododb \
   -e MONGO_INITDB_ROOT_USERNAME=admin \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
-  mongo:4.4.7
+  mongo:7.0.6
 ```
 
 With this database configuration, create `.env` and set the following content
@@ -34,19 +33,31 @@ With this database configuration, create `.env` and set the following content
 MONGODB_URI=mongodb://admin:password@localhost:27017/tododb?authSource=admin
 ```
 
+To check the results inside `mongo` we can run:
+
+```bash
+docker exec -it mongo sh
+```
+
+Now from the new terminal. we can run the Mongo Shell
+
+```bash
+mongosh --username admin --password password
+```
+
 ## How to use as running container
 
 Build your image tagging with any value that you disare:
 
 ```bash
-./dockerize.sh "todo-app-backend:0.0.2"
+./dockerize.sh "todo-app-api-fdn:0.0.1"
 ```
 
 Without `mongo`
 
 ```bash
 docker run -d -p 3000:3000 \
-  todo-app-backend:0.0.2
+  todo-app-api-fdn:0.0.1
 ```
 
 With `mongo`
@@ -62,7 +73,7 @@ docker run -d -p 27017:27017 \
   -e MONGO_INITDB_DATABASE=tododb \
   -e MONGO_INITDB_ROOT_USERNAME=admin \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
-  mongo:4.4.7
+  mongo:7
 ```
 
 ```bash
@@ -71,3 +82,5 @@ docker run -d -p 3000:3000 \
   -e MONGODB_URI="mongodb://admin:password@mongo:27017/tododb?authSource=admin" \
   todo-app-backend:0.0.2
 ```
+
+Or simply start it up with `docker compose up` from root.
