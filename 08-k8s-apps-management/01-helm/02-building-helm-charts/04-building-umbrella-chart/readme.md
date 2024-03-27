@@ -81,8 +81,8 @@ Create `./chart/todos/charts/database/Chart.yaml`
 ```yaml
 apiVersion: v2
 name: database
-appVersion: "4.4.7"
-description: A Helm chart Todos Database Mongodb 4.4.7
+appVersion: "7.6.0"
+description: A Helm chart Todos Database Mongodb 7.6.0
 version: 0.1.0
 type: application
 ```

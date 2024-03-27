@@ -537,7 +537,7 @@ We place the code into`_helpers.tpl` file and wrapped with a defined function. T
 
 When that sub‑template is defined, you can reuse it anywhere in your chart with an `include` function.
 
-It's stored in templates directory, and is not processed by Hlem template because is prefixed with `_`
+It's stored in templates directory, and is not processed by Helm template because is prefixed with `_`
 
 ```
 mychart/

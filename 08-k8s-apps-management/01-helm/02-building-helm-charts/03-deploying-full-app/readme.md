@@ -173,13 +173,13 @@ Before we can create backend infrastructure, we have to deploy a new backend ima
 Change directory to `app/backend`, and run:
 
 ```bash
-./dockerize.sh "jaimesalas/todo-app-api:0.1.0"
+./dockerize.sh "jaimesalas/todo-app-api-fnd:0.1.0"
 ```
 
 And push to the remote repository
 
 ```bash
-docker push jaimesalas/todo-app-api:0.1.0
+docker push jaimesalas/todo-app-api-fnd:0.1.0
 ```
 
 Create `backend.yaml`
@@ -201,7 +201,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jaimesalas/todo-app-api:0.1.0
+          image: jaimesalas/todo-app-api-fnd:0.1.0
           imagePullPolicy: Always
           ports:
             - name: backend

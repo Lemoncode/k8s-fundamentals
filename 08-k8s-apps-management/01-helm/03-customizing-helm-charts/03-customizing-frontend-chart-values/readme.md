@@ -190,7 +190,7 @@ spec:
 
 Also, we would like to change the image easily if a new version of the application has been deployed. The image name has two parts, the repository and the tag.
 
-So let's create an image object in the `values.yaml` file with two poverties, the Docker Hub repository, `jaimesalas/todo-app-frontend`, and the tag, `0.1.0`.
+So let's create an image object in the `values.yaml` file with two poverties, the Docker Hub repository, `jaimesalas/todo-app-frontend-fnd`, and the tag, `0.0.1`.
 
 > Note that the tag must be a string. If it's a number, the .0 will be removed by the template engine.
 
@@ -201,8 +201,8 @@ config:
   backend_uri: "backend.minikube.local"
 replicaCount: 1
 +image:
-+ repository: jaimesalas/todo-app-frontend
-+ tag: "0.1.0"
++ repository: jaimesalas/todo-app-frontend-fnd
++ tag: "0.0.1"
 
 ```
 
@@ -217,9 +217,9 @@ spec:
 +     image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
 ```
 
-That way, if we relrease a new version of the application, we do not have to edit the deployment file anymore. We just change the image tag in the `values.yaml` file and run `helm upgrade`.
+That way, if we release a new version of the application, we do not have to edit the deployment file anymore. We just change the image tag in the `values.yaml` file and run `helm upgrade`.
 
-The service also has a hard‑coded front‑end name that can be replaced the same way, with our dynamic name Release, dash, Chart.
+The `service` also has a hard‑coded front‑end name that can be replaced the same way, with our dynamic name Release, dash, Chart.
 
 ```diff
 #update ./chart/todos/charts/frontend/templates/frontend-service.yaml
@@ -251,7 +251,7 @@ config:
 replicaCount: 1
 image:
   repository: jaimesalas/todo-app-frontend
-  tag: "0.1.0"
+  tag: "0.0.1"
 +service:
 + port: 80
 + type: ClusterIP
@@ -378,7 +378,7 @@ secret:
   mongodb_uri: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkQG1vbmdvZGI6MjcwMTcvdG9kb2RiP2F1dGhTb3VyY2U9YWRtaW4K
   # mongodb://admin:password@mongodb:27017/tododb?authSource=admin
 image:
-  repository: jaimesalas/todo-app-api
+  repository: jaimesalas/todo-app-api-fnd
   tag: "0.1.0"
 
 replicaCount: 1
@@ -394,7 +394,6 @@ ingress:
 - Create `charts/backend/templates/ingress.yaml`
 
 ```yaml
-apiVersion: networking.k8s.io/v1
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

@@ -8,6 +8,6 @@ spec:
   selector:
     app: {{ .Release.Name }}-{{ .Chart.Name }}
   ports:
-    - name: monongodb
+    - name: mongodb
       port: 27017
       targetPort: 27017
