@@ -1,14 +1,26 @@
-#! /bin/bash
+#!/bin/bash
 
-MASTER_IP="10.0.0.10"
+IPADDR="10.0.0.10"
 NODENAME=$(hostname -s)
 POD_CIDR="192.168.0.0/16"
 
-sudo kubeadm config images pull
+kubeadm config print init-defaults > ClusterConfiguration.yaml
 
-echo "Preflight Check Passed: Downloaded All Required Images"
+sed -ri "s|^(\s*advertiseAddress:).*|\1 ${IPADDR}|" ClusterConfiguration.yaml
+sed -ri "s|^(\s*name:).*|\1 ${NODENAME}|" ClusterConfiguration.yaml
+sed -ri "s|^(\s*kubernetesVersion:).*|\1 ${KUBERNETES_VERSION%-*}|" ClusterConfiguration.yaml
+sed -ri "s|^(\s*criSocket:).*|\1 unix:///run/cri-dockerd.sock|" ClusterConfiguration.yaml
+sed -ri "s|^(\s*)serviceSubnet:.*|&\n\1podSubnet: ${POD_CIDR}|" ClusterConfiguration.yaml
 
-sudo kubeadm init --apiserver-advertise-address=$MASTER_IP  --apiserver-cert-extra-sans=$MASTER_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
+# Set the cgroupDriver to systemd...matching that of your container runtime, containerd
+cat <<EOF >> ClusterConfiguration.yaml
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+EOF
+
+sudo kubeadm init --config=ClusterConfiguration.yaml
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -30,7 +42,7 @@ cp /etc/kubernetes/admin.conf /vagrant/configs/config
 touch /vagrant/configs/join.sh
 chmod +x /vagrant/configs/join.sh
 
-kubeadm token create --print-join-command > /vagrant/configs/join.sh
+echo "$(kubeadm token create --print-join-command) --cri-socket unix:///run/cri-dockerd.sock" > /vagrant/configs/join.sh
 
 # Install Calico Network Plugin
 
@@ -42,7 +54,8 @@ kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/ma
 
 # Install Kubernetes Dashboard
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+KUBERNETES_DASHBOARD_VERSION=$(curl -s https://api.github.com/repos/kubernetes/dashboard/releases/latest | grep tag_name | cut -d '"' -f 4 | sed 's/v//g')
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v${KUBERNETES_DASHBOARD_VERSION}/aio/deploy/recommended.yaml
 
 # Create Dashboard User
 
@@ -69,7 +82,7 @@ subjects:
   namespace: kubernetes-dashboard
 EOF
 
-kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}" >> /vagrant/configs/token
+kubectl -n kubernetes-dashboard create token admin-user > /vagrant/configs/token
 
 sudo -i -u vagrant bash << 'EOF'
 mkdir -p $HOME/.kube
