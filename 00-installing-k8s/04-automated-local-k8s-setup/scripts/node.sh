@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xe
+
 /bin/bash /vagrant/configs/join.sh -v
 
 sudo -i -u vagrant bash << 'EOF'

@@ -1,4 +1,5 @@
 #! /bin/bash
+set -xe
 
 MASTER_IP="10.0.0.10"
 NODENAME=$(hostname -s)
@@ -8,7 +9,7 @@ sudo kubeadm config images pull
 
 echo "Preflight Check Passed: Downloaded All Required Images"
 
-sudo kubeadm init --apiserver-advertise-address=$MASTER_IP  --apiserver-cert-extra-sans=$MASTER_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
+sudo kubeadm init --apiserver-advertise-address=$MASTER_IP --apiserver-cert-extra-sans=$MASTER_IP --pod-network-cidr=$POD_CIDR --node-name $NODENAME --ignore-preflight-errors Swap
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -34,7 +35,8 @@ kubeadm token create --print-join-command > /vagrant/configs/join.sh
 
 # Install Calico Network Plugin
 
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+CALICO_VERSION="$(curl -s https://api.github.com/repos/projectcalico/calico/releases/latest | jq -r .tag_name)"
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/calico.yaml
 
 # Install Metrics Server
 
