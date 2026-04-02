@@ -5,21 +5,21 @@
 ### Installing on Linux
 
 ```bash
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install vagrant
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
 ```
 
-### How to install Vagrant on Ubuntu 20.04
+### How to install Vagrant on Ubuntu 22.04
 
 [Article reference](https://linuxize.com/post/how-to-install-vagrant-on-ubuntu-20-04/)
 
 ```bash
-curl -O https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb
+curl -O https://releases.hashicorp.com/vagrant/2.4.9/vagrant_2.4.9-1_amd64.deb
 ```
 
 ```bash
-sudo apt install ./vagrant_2.2.18_x86_64.deb
+sudo apt install ./vagrant_2.4.9-1_amd64.deb
 ```
 
 ## Start up VMs
@@ -27,19 +27,20 @@ sudo apt install ./vagrant_2.2.18_x86_64.deb
 Create `Vagrantfile`
 
 ```ruby
-
+numWorkers = 1
 
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update -y
+    NUM_WORKERS=#{numWorkers}
     echo "172.16.94.10 c1-cp1" >> /etc/hosts
-    echo "172.16.94.11 c1-node1" >> /etc/hosts
-    echo "172.16.94.12 c1-node2" >> /etc/hosts
-    echo "172.16.94.13 c1-node3" >> /etc/hosts
+    for i in $(seq 1 $NUM_WORKERS); do
+      echo "172.16.94.1${i} c1-node${i}" >> /etc/hosts
+    done
   SHELL
 
   config.vm.define "c1-cp1" do |controlp|
-    controlp.vm.box = "bento/ubuntu-20.04"
+    controlp.vm.box = "bento/ubuntu-22.04"
     controlp.vm.hostname = "c1-cp1"
     controlp.vm.network "private_network", ip: "172.16.94.10"
     controlp.vm.provider "virtualbox" do |vb|
@@ -48,9 +49,9 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  (1..3).each do |i|
+  (1..numWorkers).each do |i|
     config.vm.define "c1-node#{i}" do |node|
-      node.vm.box = "bento/ubuntu-20.04"
+      node.vm.box = "bento/ubuntu-22.04"
       node.vm.hostname = "c1-node#{i}"
       node.vm.network "private_network", ip: "172.16.94.1#{i}"
       node.vm.provider "virtualbox" do |vb|
@@ -60,7 +61,6 @@ Vagrant.configure("2") do |config|
     end
   end
 end
-
 
 ```
 
@@ -102,9 +102,9 @@ sudo mkdir -p /etc/vbox
 sudo nano /etc/vbox/networks.conf
 ```
 
-* Edit `/etc/vbox/networks.conf` with the following content:
+- Edit `/etc/vbox/networks.conf` with the following content:
 
-```
+```log
 * 172.16.94.0/24
 ```
 

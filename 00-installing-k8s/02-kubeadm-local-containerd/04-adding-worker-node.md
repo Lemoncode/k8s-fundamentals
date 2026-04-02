@@ -21,10 +21,8 @@ cat /etc/fstab
 Check the changes by running `cat /etc/fstab`
 
 ```bash
-#0 - Joining Nodes to a Cluster
-
-#Install a container runtime - containerd
-#containerd prerequisites, first load two modules and configure them to load on boot
+# Install a container runtime - containerd
+# containerd prerequisites, first load two modules and configure them to load on boot
 sudo modprobe overlay
 sudo modprobe br_netfilter
 ```
@@ -37,8 +35,8 @@ EOF
 ```
 
 ```bash
-#Setup required sysctl params, these persist across reboots.
-cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+# Setup required sysctl params, these persist across reboots.
+cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -46,7 +44,7 @@ EOF
 ```
 
 ```bash
-#Apply sysctl params without reboot
+# Apply sysctl params without reboot
 sudo sysctl --system
 ```
 
@@ -69,54 +67,55 @@ fs.inotify.max_user_instances = 1024
 ```
 
 ```bash
-#Install containerd
+# Install containerd
 sudo apt-get update
 sudo apt-get install -y containerd
 ```
 
 ```bash
-#Configure containerd
+# Configure containerd
 sudo mkdir -p /etc/containerd
 sudo containerd config default | sudo tee /etc/containerd/config.toml
 ```
 
 ```bash
-#Set the cgroup driver for containerd to systemd which is required for the kubelet.
-#For more information on this config file see:
-# https://github.com/containerd/cri/blob/master/docs/config.md and also
-# https://github.com/containerd/containerd/blob/master/docs/ops.md
+# Set the cgroup driver for containerd to systemd which is required for the kubelet.
+# For more information on this config file see:
+#   https://github.com/containerd/cri/blob/master/docs/config.md and also
+#   https://github.com/containerd/containerd/blob/master/docs/ops.md
 
-#At the end of this section
+# Modify the value of sandbox_image of this section
+  [plugins."io.containerd.grpc.v1.cri"]
+    ...
+    sandbox_image = "registry.k8s.io/pause:3.10.1"
+    ...
+
+# At the end of this section
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
         ...
-#UPDATE: This line is now in the config.toml file
-#change it from SystemdCgroup = false to SystemdCgroup = true
+# UPDATE: This line is now in the config.toml file
+# Change it from SystemdCgroup = false to SystemdCgroup = true
             SystemdCgroup = true
 ```
 
-Apply the above change using nano
+Apply the above change using:
 
 ```bash
-sudo nano /etc/containerd/config.toml
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo sed -ri 's|(sandbox_image = ).*|\1"registry.k8s.io/pause:3.10.1"|' /etc/containerd/config.toml
 ```
 
 ```diff
-#Set the cgroup driver for containerd to systemd which is required for the kubelet.
-#For more information on this config file see:
-# https://github.com/containerd/cri/blob/master/docs/config.md and also
-# https://github.com/containerd/containerd/blob/master/docs/ops.md
+# Set the cgroup driver for containerd to systemd which is required for the kubelet.
+# For more information on this config file see:
+#   https://github.com/containerd/cri/blob/master/docs/config.md and also
+#   https://github.com/containerd/containerd/blob/master/docs/ops.md
 # ......
- [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
-
-        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-          base_runtime_spec = ""
-          container_annotations = []
-          pod_annotations = []
-          privileged_without_host_devices = false
-          runtime_engine = ""
-          runtime_root = ""
-          runtime_type = "io.containerd.runc.v2"
-
+  [plugins."io.containerd.grpc.v1.cri"]
+    ...
+-   sandbox_image = "registry.k8s.io/pause:3.8"
++   sandbox_image = "registry.k8s.io/pause:3.10.1"
+    ...
           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
             BinaryName = ""
             CriuImagePath = ""
@@ -134,45 +133,43 @@ sudo nano /etc/containerd/config.toml
 ```
 
 ```bash
-#Restart containerd with the new configuration
+# Restart containerd with the new configuration
 sudo systemctl restart containerd
-
 ```
 
 ```bash
-#Install Kubernetes packages - kubeadm, kubelet and kubectl
-#Add Google's apt repository gpg key
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+# Install common dependencies
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+```
+
+```bash
+# Install Kubernetes packages - kubeadm, kubelet and kubectl
+KUBERNETES_VERSION=1.35.3-1.1
+curl -fsSL "https://pkgs.k8s.io/core:/stable:/v$(cut -d. -f1,2 <<<$KUBERNETES_VERSION)/deb/Release.key" | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
 
 ```bash
 #Add the Kubernetes apt repository
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$(cut -d. -f1,2 <<<$KUBERNETES_VERSION)/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 ```
 
 ```bash
 #Update the package list
 sudo apt-get update
-apt-cache policy kubelet | head -n 20
 ```
 
 ```bash
 #Install the required packages, if needed we can request a specific version.
 #Pick the same version you used on the Control Plane Node in 0-PackageInstallation-containerd.sh
-VERSION=1.25.2-00
-sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
+sudo apt-get install -y kubelet=$KUBERNETES_VERSION kubeadm=$KUBERNETES_VERSION kubectl=$KUBERNETES_VERSION
 sudo apt-mark hold kubelet kubeadm kubectl
 
 #To install the latest, omit the version parameters
 #sudo apt-get install kubelet kubeadm kubectl
 #sudo apt-mark hold kubelet kubeadm kubectl
-
 ```
 
 ```bash
-
 #Check the status of our kubelet and our container runtime.
 #The kubelet will enter a crashloop until it's joined
 systemctl status kubelet.service
@@ -180,9 +177,9 @@ systemctl status containerd.service
 ```
 
 ```bash
-#Ensure both are set to start when the system starts up.
-sudo systemctl enable kubelet.service
-sudo systemctl enable containerd.service
+# Ensure both are set to start when the system starts up.
+sudo systemctl enable --now kubelet.service
+sudo systemctl enable --now containerd.service
 
 
 #Log out of c1-node1 and back on to c1-cp1
@@ -194,21 +191,21 @@ vagrant ssh c1-cp1
 ```
 
 ```bash
-#On c1-cp1 - if you didn't keep the output, on the Control Plane Node, you can get the token.
+# On c1-cp1 - if you didn't keep the output, on the Control Plane Node, you can get the token.
 kubeadm token list
 ```
 
 ```bash
-#If you need to generate a new token, perhaps the old one timed out/expired.
+# If you need to generate a new token, perhaps the old one timed out/expired.
 kubeadm token create
 ```
 
 ```bash
-#On the Control Plane Node, you can find the CA cert hash.
+# On the Control Plane Node, you can find the CA cert hash.
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 
-#You can also use print-join-command to generate token and print the join command in the proper format
-#COPY THIS INTO YOUR CLIPBOARD
+# You can also use print-join-command to generate token and print the join command in the proper format
+# COPY THIS INTO YOUR CLIPBOARD
 kubeadm token create --print-join-command
 ```
 
@@ -219,14 +216,15 @@ kubeadm join 172.16.94.10:6443 --token q1na70.ubovfczdf10ek3lo --discovery-token
 ```
 
 ```bash
-#Back on the worker node c1-node1, using the Control Plane Node (API Server) IP address or name, the token and the cert has, let's join this Node to our cluster.
+# Back on the worker node c1-node1, using the Control Plane Node (API Server) IP address or name,
+# the token and the cert has, let's join this Node to our cluster.
 vagrant ssh c1-node1
 ```
 
 Use the token previously generated
 
 ```bash
-#PASTE_JOIN_COMMAND_HERE be sure to add sudo
+# PASTE_JOIN_COMMAND_HERE be sure to add sudo
 sudo kubeadm join 172.16.94.10:6443 \
  --token q1na70.ubovfczdf10ek3lo \
  --discovery-token-ca-cert-hash sha256:47780398ea95f472ba00996a6facbe27cb55b2fd3ba56d48389a4d0718219797
@@ -279,4 +277,3 @@ kubectl get nodes
 vagrant ssh c1-node2
 # You can skip the token re-creation if you have one that's still valid.
 ```
-

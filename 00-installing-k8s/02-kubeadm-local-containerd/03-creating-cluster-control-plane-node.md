@@ -6,12 +6,13 @@
 vagrant ssh c1-cp1
 ```
 
-### Creating a Cluster
+## Creating a Cluster
 
 ```bash
 # Create our kubernetes cluster, specify a pod network range matching that in calico.yaml!
 # Only on the Control Plane Node, download the yaml files for the pod network.
-wget https://docs.projectcalico.org/manifests/calico.yaml
+CALICO_VERSION="$(curl -s https://api.github.com/repos/projectcalico/calico/releases/latest | jq -r .tag_name)"
+curl -sfO https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/calico.yaml
 ```
 
 > To make our live more easy, we can edit files in host. By default, Vagrant will share your project directory (the directory with the Vagrantfile) to /vagrant.
@@ -59,11 +60,15 @@ In older kubeadm versions it `criSocket` pointed to `/var/run/dockershim.sock`. 
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
+  imagePullSerial: true
   name: node
   taints: null
 ```
 
 ```bash
+# Be sure you have this set up
+KUBERNETES_VERSION=1.35.3-1.1
+
 # Inside default configuration file, we need to change four things.
 # 1. The IP Endpoint for the API Server `localAPIEndpoint.advertiseAddress`
 # 2. `nodeRegistration.criSocket` from docker to containerd
@@ -79,24 +84,16 @@ sed -ri 's|^(\s*advertiseAddress:).*|\1 172.16.94.10|' ClusterConfiguration.yaml
 sed -ri 's|^(\s*name:).*|\1 c1-cp1|' ClusterConfiguration.yaml
 
 # Update `kubernetesVersion` to match our version:
-sed -ri 's|^(\s*kubernetesVersion:).*|\1 1.25.2|' ClusterConfiguration.yaml
+sed -ri "s|^(\s*kubernetesVersion:).*|\1 ${KUBERNETES_VERSION%%-*}|" ClusterConfiguration.yaml
 
 # Append after `serviceSubnet` the pod subnet CIDR
 sed -ri 's|^(\s*)serviceSubnet:.*|&\n\1podSubnet: 192.168.0.0/16|' ClusterConfiguration.yaml
-
-# Set the cgroupDriver to systemd...matching that of your container runtime, containerd
-cat <<EOF >> ClusterConfiguration.yaml
----
-apiVersion: kubelet.config.k8s.io/v1beta1
-kind: KubeletConfiguration
-cgroupDriver: systemd
-EOF
 ```
 
 Finally `ClusterConfiguration.yaml` must look like this:
 
 ```yaml
-apiVersion: kubeadm.k8s.io/v1beta2
+apiVersion: kubeadm.k8s.io/v1beta4
 bootstrapTokens:
   - groups:
       - system:bootstrappers:kubeadm:default-node-token
@@ -110,33 +107,41 @@ localAPIEndpoint:
   advertiseAddress: 172.16.94.10
   bindPort: 6443
 nodeRegistration:
-  criSocket: /run/containerd/containerd.sock
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+  imagePullSerial: true
   name: c1-cp1
   taints: null
+timeouts:
+  controlPlaneComponentHealthCheck: 4m0s
+  discovery: 5m0s
+  etcdAPICall: 2m0s
+  kubeletHealthCheck: 4m0s
+  kubernetesAPICall: 1m0s
+  tlsBootstrap: 5m0s
+  upgradeManifests: 5m0s
 ---
-apiServer:
-  timeoutForControlPlane: 4m0s
-apiVersion: kubeadm.k8s.io/v1beta2
+apiServer: {}
+apiVersion: kubeadm.k8s.io/v1beta4
+caCertificateValidityPeriod: 87600h0m0s
+certificateValidityPeriod: 8760h0m0s
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controllerManager: {}
-dns:
-  type: CoreDNS
+dns: {}
+encryptionAlgorithm: RSA-2048
 etcd:
   local:
     dataDir: /var/lib/etcd
-imageRepository: k8s.gcr.io
+imageRepository: registry.k8s.io
 kind: ClusterConfiguration
-kubernetesVersion: v1.25.2
+kubernetesVersion: 1.35.3
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.96.0.0/12
   podSubnet: 192.168.0.0/16
+proxy: {}
 scheduler: {}
----
-apiVersion: kubelet.config.k8s.io/v1beta1
-kind: KubeletConfiguration
-cgroupDriver: systemd
 ```
 
 Now we can bootstrap the cluster
@@ -150,7 +155,7 @@ sudo kubeadm init --config=ClusterConfiguration.yaml
 
 If the previous command has succeeded, we must see the following output:
 
-```bash
+```log
 # ....
 Your Kubernetes control-plane has initialized successfully!
 
@@ -294,6 +299,6 @@ ls /etc/kubernetes
 
 The output of above command
 
-```bash
+```text
 admin.conf  controller-manager.conf  kubelet.conf  manifests  pki  scheduler.conf
 ```

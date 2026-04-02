@@ -2,21 +2,26 @@
 
 Continuing from previous demo
 
+Install required packages
+
+```bash
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg jq
+```
+
 Adding the repository to our system, so we can trust on it.
 
 ```bash
 # Install K8s packages - kubeadm, kubelet and kubectl
 # Add Google's apt repository gpg key
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+KUBERNETES_VERSION=1.35.3-1.1
+curl -fsSL "https://pkgs.k8s.io/core:/stable:/v$(cut -d. -f1,2 <<<$KUBERNETES_VERSION)/deb/Release.key" | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
 
 The next step is to add the K8s apt repository to our local repository list:
 
 ```bash
 # Add the K8s apt repository
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$(cut -d. -f1,2 <<<$KUBERNETES_VERSION)/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 ```
 
 With this new repository added we want to update the repository metadata information
@@ -33,31 +38,22 @@ With this command `apt-cache policy kubelet | head -n 20` we can find out what i
 vagrant@c1-cp1:~$ apt-cache policy kubelet | head -n 20
 kubelet:
   Installed: (none)
-  Candidate: 1.25.2-00
+  Candidate: 1.35.3-1.1
   Version table:
-     1.25.2-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.25.1-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.25.0-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.24.6-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.24.5-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.24.4-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.24.3-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
-     1.24.2-00 500
-        500 https://apt.kubernetes.io kubernetes-xenial/main amd64 Packages
+     1.35.3-1.1 500
+        500 https://pkgs.k8s.io/core:/stable:/v1.35/deb  Packages
+     1.35.2-1.1 500
+        500 https://pkgs.k8s.io/core:/stable:/v1.35/deb  Packages
+     1.35.1-1.1 500
+        500 https://pkgs.k8s.io/core:/stable:/v1.35/deb  Packages
+     1.35.0-1.1 500
+        500 https://pkgs.k8s.io/core:/stable:/v1.35/deb  Packages
 ```
 
 We're going to install a specific version
 
 ```bash
-VERSION=1.25.2-00
-sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
+sudo apt-get install -y kubelet=$KUBERNETES_VERSION kubeadm=$KUBERNETES_VERSION kubectl=$KUBERNETES_VERSION
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
@@ -81,6 +77,6 @@ One final step is to ensure that both of these services are set to start
 
 ```bash
 #Ensure both are set to start when the system starts up.
-sudo systemctl enable kubelet.service
-sudo systemctl enable containerd.service
+sudo systemctl enable --now kubelet.service
+sudo systemctl enable --now containerd.service
 ```

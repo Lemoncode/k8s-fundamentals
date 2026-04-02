@@ -1,3 +1,5 @@
+# Automated local K8S setup
+
 ## Reference
 
 This is the original [article](https://devopscube.com/kubernetes-cluster-vagrant/)
@@ -25,7 +27,7 @@ We can get the nodes of our cluster by running
 kubectl get nodes
 ```
 
-```
+```log
 master-node     Ready    control-plane,master   15m    v1.21.4
 worker-node01   Ready    worker                 12m    v1.21.4
 worker-node02   Ready    worker                 9m4s   v1.21.4
@@ -37,7 +39,7 @@ We can find out the pods running in our system by
 kubectl get pods --all-namespaces
 ```
 
-```
+```log
 NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system            calico-kube-controllers-58497c65d5-wdbxk     1/1     Running   0          19m
 kube-system            calico-node-24cqj                            1/1     Running   0          17m
@@ -65,7 +67,7 @@ deployment.apps/nginx-deployment created
 service/nginx-service created
 ```
 
-You should be able to access Nginx on any of the node’s IPs on port `32000`:
+You should be able to access Nginx on any of the node's IPs on port `32000`:
 
 ```bash
 curl http://10.0.0.10:32000/
@@ -89,4 +91,22 @@ To destroy the VMs
 
 ```bash
 vagrant destroy
+```
+
+To expose Kubernetes Dashboard
+
+```bash
+# Expose port 8080 inside VM
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8080:80 >/dev/null &
+# Expose port 8080 to internet using pinggy.io
+ssh -p 443 -L4300:localhost:4300 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -R0:localhost:8080 eu.free.pinggy.io
+```
+
+To expose Headlamp Dashboard
+
+```bash
+# Expose port 8081 inside VM
+kubectl -n kube-system port-forward svc/headlamp 8081:80 >/dev/null &
+# Expose port 8081 to internet using pinggy.io
+ssh -p 443 -L4300:localhost:4300 -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -R0:localhost:8081 eu.free.pinggy.io
 ```

@@ -2,7 +2,7 @@
 
 ## Setup
 
-1. 4 VMs Ubuntu 20.04, 1 control plane, 3 nodes
+1. 4 VMs Ubuntu 22.04, 1 control plane, 3 nodes
 2. Static IPs on individual VMs
 3. /etc/hosts/ hosts file includes name to IP mappings for VMs
 4. Swap is disabled
@@ -54,7 +54,7 @@ We also need to configure some `sysctl` parameters
 
 ```bash
 # Setup required sysctl params, these persist across reboots.
-cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -92,31 +92,46 @@ Inside the above configuration file will be the configuration attributes for `co
 # https://github.com/containerd/cri/blob/master/docs/config.md and also
 # https://github.com/containerd/containerd/blob/master/docs/ops.md
 # ......
- [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      base_runtime_spec = ""
+      cni_conf_dir = ""
+      cni_max_conf_num = 0
+      container_annotations = []
+      pod_annotations = []
+      privileged_without_host_devices = false
+      privileged_without_host_devices_all_devices_allowed = false
+      runtime_engine = ""
+      runtime_path = ""
+      runtime_root = ""
+      runtime_type = "io.containerd.runc.v2"
+      sandbox_mode = "podsandbox"
+      snapshotter = ""
 
-        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-          base_runtime_spec = ""
-          container_annotations = []
-          pod_annotations = []
-          privileged_without_host_devices = false
-          runtime_engine = ""
-          runtime_root = ""
-          runtime_type = "io.containerd.runc.v2"
-
-          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-            BinaryName = ""
-            CriuImagePath = ""
-            CriuPath = ""
-            CriuWorkPath = ""
-            IoGid = 0
-            IoUid = 0
-            NoNewKeyring = false
-            NoPivotRoot = false
-            Root = ""
-            ShimCgroup = ""
--           SystemdCgroup = false
-+           SystemdCgroup = true
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+        BinaryName = ""
+        CriuImagePath = ""
+        CriuPath = ""
+        CriuWorkPath = ""
+        IoGid = 0
+        IoUid = 0
+        NoNewKeyring = false
+        NoPivotRoot = false
+        Root = ""
+        ShimCgroup = ""
+-       SystemdCgroup = false
++       SystemdCgroup = true
 # ......
+```
+
+We can change it with this command:
+
+```bash
+# Set SystemdCgroup to true
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+# Updates sandbox image with new version
+# See https://kubernetes.io/docs/setup/production-environment/container-runtimes/#override-pause-image-containerd
+sudo sed -ri 's|(sandbox_image = ).*|\1"registry.k8s.io/pause:3.10.1"|' /etc/containerd/config.toml
 ```
 
 Now we can restart `containerd` with the new configuration

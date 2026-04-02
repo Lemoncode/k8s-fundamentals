@@ -42,13 +42,23 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/${CALICO
 
 kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/main/manifests/metrics-server.yaml
 
+# Install Helm
+
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+
 # Install Kubernetes Dashboard
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+helm repo add kubernetes-dashboard https://kubernetes-retired.github.io/dashboard/
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
+  --create-namespace \
+  --namespace kubernetes-dashboard \
+  --set settings.ingress.enabled=true \
+  --set nginx.enabled=true \
+  --set kong.proxy.http.enabled=true
 
 # Create Dashboard User
 
-cat <<EOF | kubectl apply -f -
+kubectl apply -f - <<EOF
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -56,7 +66,7 @@ metadata:
   namespace: kubernetes-dashboard
 EOF
 
-cat <<EOF | kubectl apply -f -
+kubectl apply -f - <<EOF
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -71,10 +81,29 @@ subjects:
   namespace: kubernetes-dashboard
 EOF
 
-kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}" >> /vagrant/configs/token
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/service-account.name: "admin-user"
+EOF
+
+kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" | base64 -d > /vagrant/configs/dashboard-token
+
+# Install Headlamp Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/headlamp/main/kubernetes-headlamp.yaml
+kubectl -n kube-system create serviceaccount headlamp-admin
+kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin
+kubectl create token headlamp-admin -n kube-system --duration=8760h > /vagrant/configs/headlamp-token
 
 sudo -i -u vagrant bash << 'EOF'
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+echo 'alias k=kubectl' >> $HOME/.bashrc
 EOF
+
